@@ -1,4 +1,5 @@
 'use strict';
+var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -39,12 +40,15 @@ module.exports = {
       },
       {
         test: /\.scss/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader?outputStyle=expanded&" +
+        "includePaths[]=" + (path.resolve(__dirname, "./node_modules")) )
       },
       {
         test: /\.css/,
         loader: 'style-loader!css-loader'
-      }
+      },
+      {test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
+      { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' }
     ]
   },
   plugins: plugins

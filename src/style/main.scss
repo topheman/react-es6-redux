@@ -1,5 +1,5 @@
-$background: #EEEFFF;
+$link-color:            #900000;
+$link-hover-color:      black;
 
-body{
-  background-color: $background;
-}
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+@import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
