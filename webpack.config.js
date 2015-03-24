@@ -1,32 +1,49 @@
 'use strict';
-
+var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 
 module.exports = {
   entry: {
-    bundle: "./src/components/App.jsx",
-    main: "./src/style/main.scss"
+    "js/bundle.js": [
+      'webpack/hot/only-dev-server',
+      "./src/components/App.jsx"
+    ],
+    "css/main.css": "./src/style/main.scss"
   },
   output: {
-    path: './build/assets',
     publicPath: "/assets/",
-    filename: "js/[name].js"
+    filename: "[name]",
+    path: "./build/assets"
   },
-  devtool: "#inline-source-map",
+  cache: true,
+  debug: true,
+  devtool: false,
   devServer: {
-    contentBase: './public'
+    contentBase: './public',
+    inline: true
   },
   module: {
     loaders: [
-      {test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader'},
+      {
+        test: /\.js(x?)$/,
+        exclude: /node_modules/,
+        loader: 'react-hot!babel-loader'
+      },
       {
         test: /\.scss/,
         loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+      },
+      {
+        test: /\.css/,
+        loader: 'style-loader!css-loader'
       }
     ]
   },
   plugins: [
-    // extract inline css into separate 'styles.css'
-    new ExtractTextPlugin('css/[name].css')
+    //// extract inline css into separate 'styles.css'
+    new ExtractTextPlugin('[name]'),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ]
 };
