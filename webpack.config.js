@@ -2,6 +2,13 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+var plugins = [];
+plugins.push(new ExtractTextPlugin('[name]'))// extract inline css into separate 'styles.css' file
+//dont active HMR on build for production
+if(!process.env.BUILD){
+  plugins.push(new webpack.HotModuleReplacementPlugin());
+}
+plugins.push(new webpack.NoErrorsPlugin());
 
 module.exports = {
   entry: {
@@ -40,10 +47,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    //// extract inline css into separate 'styles.css'
-    new ExtractTextPlugin('[name]'),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ]
+  plugins: plugins
 };
