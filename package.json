@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --progress --colors",
-    "build": "webpack --config webpack.config.js",
-    "build-prod": "BUILD=true webpack -p --config webpack.config.js"
+    "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors",
+    "build": "grunt build & ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js",
+    "build-prod": "BUILD=true grunt build-prod && ./node_modules/webpack/bin/webpack.js -p --config ./webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -28,12 +28,20 @@
     "css-loader": "^0.9.1",
     "extract-text-webpack-plugin": "^0.5.0",
     "file-loader": "^0.8.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-processhtml": "^0.3.7",
+    "grunt-run": "^0.3.0",
+    "load-grunt-tasks": "^3.1.0",
     "node-sass": "^3.0.0-alpha.0",
     "react-hot-loader": "^1.2.4",
+    "run-sequence": "^1.0.2",
     "sass-loader": "^1.0.0",
     "style-loader": "^0.9.0",
     "url-loader": "^0.5.5",
-    "webpack": "^1.7.3"
+    "webpack": "^1.7.3",
+    "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
     "bootstrap-sass": "^3.3.4",
