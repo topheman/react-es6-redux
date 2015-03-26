@@ -24,7 +24,7 @@ Here are the following steps I intend to follow (may change) - should be tagged 
 
 - [x] Setup transpiler to use ES6 (babel via webpack were selected)
 - [x] Setup simpliest React component (make sure jsx and ES6 transpiling works)
-- [x] Add sass / bootstrap support via webpack (to have the same kinds of constraints as a regular app)
+- [x] Add sass / bootstrap support via webpack (to have the same kinds of constraints as a regular app) [v0.2.0](https://github.com/topheman/react-es6/tree/v0.2.0)
 - [ ] Add simple Gulpfile to : 
 	- [ ] copy assets from `src`to `build`
 	- [ ] run the `webpack` build
