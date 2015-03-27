@@ -3,13 +3,27 @@ var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+if(process.env.PROD){
+  console.log('PRODUCTION mode');
+}
+else{
+  console.log('DEVELOPMENT mode');
+}
+
 var plugins = [];
 plugins.push(new ExtractTextPlugin('[name]'))// extract inline css into separate 'styles.css' file
-//dont active HMR on build for production
-if(!process.env.BUILD){
-  plugins.push(new webpack.HotModuleReplacementPlugin());
-}
+plugins.push(new webpack.HotModuleReplacementPlugin());//@todo remove hmr and others on production builds
 plugins.push(new webpack.NoErrorsPlugin());
+
+var resolve = {
+  alias : {}
+};
+if(process.env.PROD){
+  resolve.alias['routes.jsx'] = path.resolve(__dirname, './src/routes.build.jsx');
+}
+else{
+  resolve.alias['routes.jsx'] = path.resolve(__dirname, './src/routes.jsx');
+}
 
 module.exports = {
   entry: {
@@ -51,5 +65,6 @@ module.exports = {
       { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' }
     ]
   },
+  resolve: resolve,
   plugins: plugins
 };
