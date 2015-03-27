@@ -1,6 +1,6 @@
 {
   "name": "react-es6",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A simple app to try React and ES6, using topheman-apis-proxy as data api backend",
   "main": "index.js",
   "scripts": {
@@ -45,7 +45,8 @@
   },
   "dependencies": {
     "bootstrap-sass": "^3.3.4",
-    "react": "^0.13.1"
+    "react": "^0.13.1",
+    "react-router": "^0.13.2"
   },
   "private": true
 }

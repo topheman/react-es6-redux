@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-export class Home extends React.Component {
+export default class Home extends React.Component {
   render() {
     return (
       <div>
-        Hello {this.props.name}!
+        This is the Home page
       </div>
     );
   }

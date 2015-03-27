@@ -29,7 +29,7 @@ Here are the following steps I intend to follow (may change) - should be tagged 
 	- [x] copy assets from `src`to `build` with grunt
 	- [x] run the `webpack` build with npm
 	- [x] launch the whole with `npm run build` or `npm run build-prod`
-- [ ] Add React.Router
+- [x] Add React.Router [v0.4.0](https://github.com/topheman/react-es6/tree/v0.4.0)
 - [ ] Make the App using React components and routes (keep in mind isomorphism for later)
 - [ ] ...
 

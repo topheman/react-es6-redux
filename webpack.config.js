@@ -15,7 +15,7 @@ module.exports = {
   entry: {
     "js/bundle.js": [
       'webpack/hot/only-dev-server',
-      "./src/components/App.jsx"
+      "./src/bootstrap.jsx"
     ],
     "css/main.css": "./src/style/main.scss"
   },
