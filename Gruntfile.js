@@ -26,6 +26,17 @@ module.exports = function (grunt) {
           {expand: true, cwd: 'public/', src: ['**'], dest: 'build/'},
         ]
       }
+    },
+
+    connect: {
+      build: {
+        options: {
+          port: 9001,
+          base: 'build',
+          open: true,
+          keepalive: true
+        }
+      }
     }
 
   });
@@ -41,5 +52,11 @@ module.exports = function (grunt) {
     'copy:build',
     'processhtml:build'
   ]);
+
+  grunt.registerTask('serve', function(target){
+    if(target === 'build'){
+      grunt.task.run('connect:build');
+    }
+  });
 
 }
