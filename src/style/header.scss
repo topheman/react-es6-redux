@@ -1,11 +1,3 @@
-header .container-fluid{
-  max-width:768px;
-  li.active > a > .badge{
-    background-color: $badge-active-bg;
-    color: $badge-active-color;
-  }
-}
-
 /** github logo from my other sites**/
 /** networks header */
 .site-networks{
@@ -64,10 +56,10 @@ ul.site-networks li a:hover span.icon{
   transform: rotate(360deg);
 }
 ul.site-networks li.twitter a span.icon{
-  background-image: url(/assets/images/twitter.png);
+  background-image: url(../../public/assets/images/twitter.png);
 }
 ul.site-networks li.github a span.icon{
-  background-image: url(/assets/images/github.png);
+  background-image: url(../../public/assets/images/github.png);
 }
 @media only screen
 and (max-width: $grid-float-breakpoint) and (min-width : 370px)
@@ -106,11 +98,11 @@ only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
 
   ul.site-networks li.twitter a span.icon{
-    background-image: url(/assets/images/twitter-retina.png);
+    background-image: url(../../public/assets/images/twitter-retina.png);
     background-size: 32px 32px;
   }
   ul.site-networks li.github a span.icon{
-    background-image: url(/assets/images/github-retina.png);
+    background-image: url(../../public/assets/images/github-retina.png);
     background-size: 32px 32px;
   }
 }

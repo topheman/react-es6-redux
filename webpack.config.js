@@ -18,12 +18,6 @@ plugins.push(new webpack.NoErrorsPlugin());
 var resolve = {
   alias : {}
 };
-if(process.env.PROD){
-  resolve.alias['routes.jsx'] = path.resolve(__dirname, './src/routes.build.jsx');
-}
-else{
-  resolve.alias['routes.jsx'] = path.resolve(__dirname, './src/routes.jsx');
-}
 
 module.exports = {
   entry: {
@@ -54,8 +48,10 @@ module.exports = {
       },
       {
         test: /\.scss/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader?outputStyle=expanded&" +
-        "includePaths[]=" + (path.resolve(__dirname, "./node_modules")) )
+        loader: ExtractTextPlugin.extract("style-loader",
+          "css-loader!sass-loader?outputStyle=expanded&" +
+          "includePaths[]=" + (path.resolve(__dirname, "./node_modules"))
+        )
       },
       {
         test: /\.css/,
