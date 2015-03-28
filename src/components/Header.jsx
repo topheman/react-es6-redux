@@ -42,7 +42,7 @@ export default class Header extends React.Component {
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div className={collapsedMenuClassName} id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
-                <li><Link to="about">About</Link></li>
+                <li><Link to="github">Search Github Users</Link></li>
               </ul>
             </div>
             <!-- /.navbar-collapse -->
