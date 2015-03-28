@@ -35,8 +35,8 @@ module.exports = {
     path: "./build/assets"
   },
   cache: true,
-  debug: true,
-  devtool: "eval",
+  debug: process.env.PROD ? false : true,
+  devtool: process.env.PROD ? false : "sourcemap",
   devServer: {
     contentBase: './public',
     inline: true
@@ -51,7 +51,7 @@ module.exports = {
       {
         test: /\.scss/,
         loader: ExtractTextPlugin.extract("style-loader",
-          "css-loader!sass-loader?outputStyle=expanded&" +
+          "css-loader?sourceMap!sass-loader?sourceMap=true&sourceMapContents=true&outputStyle=expanded&" +
           "includePaths[]=" + (path.resolve(__dirname, "./node_modules"))
         )
       },

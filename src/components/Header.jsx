@@ -15,8 +15,6 @@ export default class Header extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(e){
-    console.log(this);
-    console.log('click', this.state.collapsed);
     var collapsed = this.state.collapsed;
     this.setState({collapsed:!collapsed});
   }
