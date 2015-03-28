@@ -18,6 +18,7 @@ plugins.push(new webpack.NoErrorsPlugin());
 var resolve = {
   alias : {}
 };
+resolve.alias['configuration'] = path.resolve(__dirname, './src/config' + (process.env.PROD ? '.build' : '') + '.js');
 
 module.exports = {
   entry: {
