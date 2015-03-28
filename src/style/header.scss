@@ -1,0 +1,127 @@
+header .container-fluid{
+  max-width:768px;
+  li.active > a > .badge{
+    background-color: $badge-active-bg;
+    color: $badge-active-color;
+  }
+}
+
+/** github logo from my other sites**/
+/** networks header */
+.site-networks{
+  position:absolute;
+  right:20px;
+  top:10px;
+  margin:0;
+  padding:0;
+}
+ul.site-networks{
+  list-style: none;
+  text-align: center;
+  padding:0px 0px 10px 0px;
+}
+ul.site-networks li{
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left:15px;
+}
+ul.site-networks li a{
+  display: block;
+  width:32px;
+  height:32px;
+  text-decoration: none;
+  padding-top:0px;
+  -webkit-transition : all 0.5s;
+  -moz-transition : all 0.5s;
+  -ms-transition : all 0.5s;
+  -o-transition : all 0.5s;
+  transition : all 0.5s;
+}
+ul.site-networks li a span.icon{
+  position: absolute;
+  display: block;
+  width:32px;
+  height: 32px;
+  -webkit-transition : all 0.5s;
+  -moz-transition : all 0.5s;
+  -ms-transition : all 0.5s;
+  -o-transition : all 0.5s;
+  transition : all 0.5s;
+}
+ul.site-networks li a span.desc{
+  display: none;
+}
+ul.site-networks li a:hover{
+
+}
+ul.site-networks li a:hover span.icon{
+  left:0px;
+  -webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+ul.site-networks li.twitter a span.icon{
+  background-image: url(/assets/images/twitter.png);
+}
+ul.site-networks li.github a span.icon{
+  background-image: url(/assets/images/github.png);
+}
+@media only screen
+and (max-width: $grid-float-breakpoint) and (min-width : 370px)
+{
+  ul.site-networks{
+    right:70px;
+  }
+  ul.site-networks li{
+    margin-left:0px;
+  }
+  .site-title {
+    font-size: 26px;
+  }
+  .content {
+    padding: 0 10px;
+  }
+  img{
+    max-width: 100%;
+  }
+}
+/** for small devices */
+@media only screen
+and (max-width : 370px) {
+  ul.site-networks{
+    display: none;
+  }
+}
+
+/*specific to retinas*/
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+
+  ul.site-networks li.twitter a span.icon{
+    background-image: url(/assets/images/twitter-retina.png);
+    background-size: 32px 32px;
+  }
+  ul.site-networks li.github a span.icon{
+    background-image: url(/assets/images/github-retina.png);
+    background-size: 32px 32px;
+  }
+}
+
+.panel.panel-default .glyphicon.glyphicon-info-sign{
+  font-size:120%;
+}
+
+.navbar-default button.navbar-toggle {
+  border-color : #900000;
+}
+.navbar-default .navbar-toggle span.icon-bar{
+  background-color: #900000;
+}
