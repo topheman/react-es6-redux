@@ -25,7 +25,9 @@ module.exports = {
       'webpack/hot/only-dev-server',
       "./src/bootstrap.jsx"
     ],
-    "css/main.css": "./src/style/main.scss"
+    "css/main.css": [
+      "./src/style/main.scss"
+    ]
   },
   output: {
     publicPath: "/assets/",
@@ -34,7 +36,7 @@ module.exports = {
   },
   cache: true,
   debug: true,
-  devtool: false,
+  devtool: "eval",
   devServer: {
     contentBase: './public',
     inline: true

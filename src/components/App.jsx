@@ -9,7 +9,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Header title="react-es6"/>
         <div className="container">
           <RouteHandler />
         </div>
