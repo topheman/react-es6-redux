@@ -3,24 +3,7 @@
 import React from 'react';
 import UsersSimpleProfileList from './UsersSimpleProfileList.jsx';
 
-import http from '../../services/http.js';
-
-//http.getJson('/github/')
-//  .end(function(err,res){
-//      if(err){
-//        console.error(err);
-//        return;
-//      }
-//      console.log(res);
-//    });
-
-var mockUsers = [
-  {name : 'Bonjour'},
-  {name : 'Hello'},
-  {name : 'Buenos Días'},
-  {name : 'Buongiorno'},
-  {name : 'Gutten Morgen'}
-];
+import github from '../../services/github.js';
 
 export default class SearchUsersBox extends React.Component {
   constructor(props){
@@ -28,20 +11,34 @@ export default class SearchUsersBox extends React.Component {
     //init state
     this.state = {
       userName : "",
-      users : mockUsers
+      results : null,
+      fetching: false
     };
     //init context bindings
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
-    //mock filter (waiting for the connection with service via ajax)
+    this.setState({fetching: true});
     var currentUser = this.state.userName;
-    var users = mockUsers.filter(function(user){
-      return user.name.indexOf(currentUser) > -1;
-    });
-    this.setState({users:users});
+    //prevent submiting empty user
+    if (currentUser !== "") {
+      github.searchUser(currentUser)
+        .end(function (err, res) {
+          if (err) {
+            this.setState({
+              results: {
+                error: "An error occured, please try again."
+              }
+            });
+            this.setState({fetching: false});
+            return;
+          }
+          this.setState({results: res.body});
+          this.setState({fetching: false});
+        }.bind(this));
+    }
   }
   handleChange(e){
     //not sure it's the best way because it will trigger a render on something handled by the browser
@@ -50,12 +47,12 @@ export default class SearchUsersBox extends React.Component {
   }
   render() {
     var userName = this.state.userName;
-    var users = this.state.users;
+    var results = this.state.results;
     return (
       <div>
         <form onSubmit={this.handleSubmit} className="form-horizontal">
           <div className="form-group">
-            <label htmlFor="user-name" className="col-sm-2">Github username</label>
+            <label htmlFor="user-name" className="col-sm-2">Search for a Github User</label>
             <div className="col-sm-10">
               <input type="text" className="form-control" id="user-name" placeholder="Enter username" onChange={this.handleChange}/>
             </div>
@@ -66,7 +63,7 @@ export default class SearchUsersBox extends React.Component {
             </div>
           </div>
         </form>
-        <UsersSimpleProfileList users={users}/>
+        <UsersSimpleProfileList results={results}/>
       </div>
     )
   }

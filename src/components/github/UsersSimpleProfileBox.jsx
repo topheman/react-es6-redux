@@ -10,7 +10,10 @@ export default class UsersSimpleProfileBox extends React.Component {
   render() {
     var user = this.props.user;
     return (
-      <tr><td>{user.name}</td></tr>
+      <tr>
+        <td><img src={user.$avatar_url} width="40"/></td>
+        <td>{user.login}</td>
+      </tr>
     )
   }
 }
