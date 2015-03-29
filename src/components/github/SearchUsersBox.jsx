@@ -3,6 +3,17 @@
 import React from 'react';
 import UsersSimpleProfileList from './UsersSimpleProfileList.jsx';
 
+import http from '../../services/http.js';
+
+//http.getJson('/github/')
+//  .end(function(err,res){
+//      if(err){
+//        console.error(err);
+//        return;
+//      }
+//      console.log(res);
+//    });
+
 var mockUsers = [
   {name : 'Bonjour'},
   {name : 'Hello'},
