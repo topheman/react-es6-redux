@@ -55,11 +55,14 @@ ul.site-networks li a:hover span.icon{
   -o-transform: rotate(360deg);
   transform: rotate(360deg);
 }
+/** since logos are included with the css in base64, we don't bother about pixel ratio media query (everybody gets the retina version)*/
 ul.site-networks li.twitter a span.icon{
-  background-image: url(../../public/assets/images/twitter.png);
+  background-image: url(../../public/assets/images/twitter-retina.png);
+  background-size: 32px 32px;
 }
 ul.site-networks li.github a span.icon{
-  background-image: url(../../public/assets/images/github.png);
+  background-image: url(../../public/assets/images/github-retina.png);
+  background-size: 32px 32px;
 }
 @media only screen
 and (max-width: $grid-float-breakpoint) and (min-width : 370px)
@@ -86,29 +89,6 @@ and (max-width : 370px) {
   ul.site-networks{
     display: none;
   }
-}
-
-/*specific to retinas*/
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (   min--moz-device-pixel-ratio: 2),
-only screen and (     -o-min-device-pixel-ratio: 2/1),
-only screen and (        min-device-pixel-ratio: 2),
-only screen and (                min-resolution: 192dpi),
-only screen and (                min-resolution: 2dppx) {
-
-  ul.site-networks li.twitter a span.icon{
-    background-image: url(../../public/assets/images/twitter-retina.png);
-    background-size: 32px 32px;
-  }
-  ul.site-networks li.github a span.icon{
-    background-image: url(../../public/assets/images/github-retina.png);
-    background-size: 32px 32px;
-  }
-}
-
-.panel.panel-default .glyphicon.glyphicon-info-sign{
-  font-size:120%;
 }
 
 .navbar-default button.navbar-toggle {
