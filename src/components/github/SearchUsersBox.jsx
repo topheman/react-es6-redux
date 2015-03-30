@@ -2,6 +2,7 @@
 
 import React from 'react';
 import UsersSimpleProfileList from './UsersSimpleProfileList.jsx';
+import Spinner from '../common/Spinner.jsx';
 
 import github from '../../services/github.js';
 
@@ -48,6 +49,7 @@ export default class SearchUsersBox extends React.Component {
   render() {
     var userName = this.state.userName;
     var results = this.state.results;
+    var fetching = this.state.fetching;
     return (
       <div>
         <form onSubmit={this.handleSubmit} className="form-horizontal">
@@ -60,6 +62,7 @@ export default class SearchUsersBox extends React.Component {
           <div className="form-group">
             <div className="col-sm-offset-2 col-sm-10">
               <button type="submit" className="btn btn-default pull-right">Search</button>
+              <Spinner fetching={fetching} className="pull-left"/>
             </div>
           </div>
         </form>
