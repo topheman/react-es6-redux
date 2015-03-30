@@ -3,6 +3,7 @@ import Router from 'react-router';
 var RouteHandler = Router.RouteHandler;
 
 import Header from './Header.jsx';
+import Footer from './Footer.jsx';
 
 export default class App extends React.Component {
   render() {
@@ -12,6 +13,7 @@ export default class App extends React.Component {
         <div className="container">
           <RouteHandler />
         </div>
+        <Footer/>
       </div>
     )
   }
