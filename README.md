@@ -31,7 +31,8 @@ Here are the following steps I intend to follow (may change) - should be tagged 
 	- [x] launch the whole with `npm run build` or `npm run build-prod`
 - [x] Add React.Router [v0.4.0](https://github.com/topheman/react-es6/tree/v0.4.0)
 - [x] HTML 5 history API support to router with `Router.HistoryLocation` [v0.4.1](https://github.com/topheman/react-es6/tree/v0.4.1) (removed since can't have .htaccess or server-side code on github pages that does a "catch all" to redirect to index.html)
-- [ ] Make the App using React components and routes (keep in mind isomorphism for later)
+- [x] First part of the App : Github user search [v0.5.0](https://github.com/topheman/react-es6/tree/v0.5.0)
+- [ ] Second part of the App : Display a full Github User profile according to the username given in the route
 - [ ] ...
 
 ###Basic features :
@@ -54,3 +55,24 @@ May change
 	* feature : 
 		* shows full profile of user
 		* shows repositories of user (pagination ?)
+
+###Setup
+
+####Install
+
+The react-es6 part :
+
+```shell
+git clone https://github.com/topheman/react-es6.git
+cd react-es6
+npm install
+```
+
+You'll have to install the [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) backend, follow the [installation steps](https://github.com/topheman/topheman-apis-proxy#installation) README section.
+
+####Run
+
+* Open a terminal in the react-es6 folder and `npm run dev`
+* Open a terminal in the topheman-apis-proxy folder and `grunt serve` (see more in the [run in local](https://github.com/topheman/topheman-apis-proxy#run-in-local) README section)
+* Go to http://localhost:8080/
+
