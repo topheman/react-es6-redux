@@ -6,18 +6,30 @@ import Spinner from '../common/Spinner.jsx';
 
 import github from '../../services/github.js';
 
+import localStorageWrapper from '../../services/localStorageWrapper.js';
+
 export default class SearchUsersBox extends React.Component {
   constructor(props){
     super(props);
     //init state
     this.state = {
-      userName : "",
-      results : null,
+      userName : localStorageWrapper.get('github.search.userName'),
+      results : localStorageWrapper.get('github.search.results') || null,
       fetching: false
     };
+    //if results are cached in storage, recache for X mins
+    localStorageWrapper.extend('github.search.userName');
+    localStorageWrapper.extend('github.search.results');
     //init context bindings
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+  handleFocus(e) {
+    var target = e.target;
+    //dirty but curiously in React this is a known bug and workaround ...
+    setTimeout(function() {
+      target.select();
+    }, 0);
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -36,6 +48,8 @@ export default class SearchUsersBox extends React.Component {
             this.setState({fetching: false});
             return;
           }
+          localStorageWrapper.set('github.search.results',res.body);
+          localStorageWrapper.set('github.search.userName',currentUser);
           this.setState({results: res.body});
           this.setState({fetching: false});
         }.bind(this));
@@ -56,7 +70,7 @@ export default class SearchUsersBox extends React.Component {
           <div className="form-group">
             <label htmlFor="user-name" className="col-sm-2">Search for a Github User</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="user-name" placeholder="Enter username" onChange={this.handleChange}/>
+              <input type="text" className="form-control" id="user-name" placeholder="Enter username" value={userName} onChange={this.handleChange} onFocus={this.handleFocus}/>
             </div>
           </div>
           <div className="form-group">
