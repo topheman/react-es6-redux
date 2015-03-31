@@ -21,10 +21,10 @@ export default class SearchUsersBox extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    this.setState({fetching: true});
     var currentUser = this.state.userName;
     //prevent submiting empty user
     if (currentUser !== "") {
+      this.setState({fetching: true});
       github.searchUser(currentUser)
         .end(function (err, res) {
           if (err) {
