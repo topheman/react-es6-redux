@@ -11,7 +11,7 @@ export default class App extends React.Component {
       <div>
         <Header title="react-es6"/>
         <div className="container">
-          <RouteHandler />
+          <RouteHandler {...this.props}/>
         </div>
         <Footer/>
       </div>
