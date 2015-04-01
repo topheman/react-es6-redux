@@ -13,9 +13,7 @@ export default class UsersSimpleProfileList extends React.Component {
     var results = this.props.results;
     if (results === null) {
       return (
-        <div>
-          Type a username.
-        </div>
+        <div></div>
       )
     }
     else if(results.error){
