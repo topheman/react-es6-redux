@@ -49,7 +49,7 @@ export default class SearchUsersBox extends React.Component {
         .catch(function(error){
           this.setState({
             results: {
-              error: "An error occured, please try again."
+              error: error.humanMessage
             },
             fetching: false
           });

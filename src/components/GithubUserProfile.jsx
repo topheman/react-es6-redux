@@ -25,7 +25,7 @@ export default class GithubUserProfile extends React.Component {
         .catch(function(error){
           this.setState({
             data : {
-              error : "An error occured, please try again."
+              error : error.humanMessage
             },
             fetching: false
           });
