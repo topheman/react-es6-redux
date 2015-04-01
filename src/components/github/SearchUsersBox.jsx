@@ -67,11 +67,11 @@ export default class SearchUsersBox extends React.Component {
     var fetching = this.state.fetching;
     return (
       <div>
-        <form onSubmit={this.handleSubmit} className="form-horizontal">
+        <form onSubmit={this.handleSubmit} className="form-horizontal" action=".">
           <div className="form-group">
             <label htmlFor="user-name" className="col-sm-2">Search for a Github User</label>
             <div className="col-sm-10">
-              <input type="search" className="form-control" id="user-name" placeholder="Enter username" value={userName} onChange={this.handleChange} onFocus={this.handleFocus}/>
+              <input type="search" name="user-name" className="form-control" id="user-name" placeholder="Enter username" value={userName} onChange={this.handleChange} onFocus={this.handleFocus}/>
             </div>
           </div>
           <div className="form-group">
