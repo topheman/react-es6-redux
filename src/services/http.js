@@ -6,9 +6,20 @@ import configuration from 'configuration';
 
 export default {
   get(relativeUrl){
-    return request.get(configuration.backendBaseUrl+relativeUrl);
-  },
-  getJson(relativeUrl){
-    return this.get(relativeUrl).set('Accept', 'application/json');
+    var promise = new Promise(function(resolve, reject){
+      request.get(configuration.backendBaseUrl+relativeUrl).set('Accept', 'application/json')
+        .end(function(err, res){
+          if(err){
+            reject(err);
+          }
+          resolve({
+            data: res.body,
+            infos: {
+              ratelimitRemaining: res.headers['x-ratelimit-remaining']
+            }
+          });
+        });
+    });
+    return promise;
   }
 }

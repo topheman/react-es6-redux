@@ -38,20 +38,21 @@ export default class SearchUsersBox extends React.Component {
     if (currentUser !== "") {
       this.setState({fetching: true});
       github.searchUser(currentUser)
-        .end(function (err, res) {
-          if (err) {
-            this.setState({
-              results: {
-                error: "An error occured, please try again."
-              }
-            });
-            this.setState({fetching: false});
-            return;
-          }
-          localStorageWrapper.set('github.search.results',res.body);
+        .then(function(result){
+          localStorageWrapper.set('github.search.results',result.data);
           localStorageWrapper.set('github.search.userName',currentUser);
-          this.setState({results: res.body});
-          this.setState({fetching: false});
+          this.setState({
+            results: result.data,
+            fetching: false
+          });
+        }.bind(this))
+        .catch(function(error){
+          this.setState({
+            results: {
+              error: "An error occured, please try again."
+            },
+            fetching: false
+          });
         }.bind(this));
     }
   }

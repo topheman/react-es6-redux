@@ -9,7 +9,6 @@ import UserFullProfile from './githubUserProfile/UserFullProfile.jsx';
 export default class GithubUserProfile extends React.Component {
   constructor(props){
     super(props);
-    console.log(props);
     this.state = {};
     //directly passing data retrieved previously from the server for server-side rendering
     if(props.params.data){
@@ -17,21 +16,19 @@ export default class GithubUserProfile extends React.Component {
     }
     //client-side fetching via xhr based on username
     else if(props.params.username){
-      console.log('fetching');
       this.state.fetching = true;
       github.getUser(props.params.username)
-        .end(function(err,res){
-          if(err){
-            this.setState({
-              data : {
-                error : "An error occured, please try again."
-              }
-            });
-            this.setState({fetching: false});
-            return;
-          }
-          this.setState({data: res.body});
+        .then(function(result){
+          this.setState({data: result.data});
           this.setState({fetching: false});
+        }.bind(this))
+        .catch(function(error){
+          this.setState({
+            data : {
+              error : "An error occured, please try again."
+            },
+            fetching: false
+          });
         }.bind(this));
     }
   }
