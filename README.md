@@ -62,6 +62,8 @@ May change
 
 The react-es6 part :
 
+`npm install grunt-cli -g` (if you don't have it)
+
 ```shell
 git clone https://github.com/topheman/react-es6.git
 cd react-es6
@@ -74,5 +76,15 @@ You'll have to install the [topheman-apis-proxy](https://github.com/topheman/top
 
 * Open a terminal in the react-es6 folder and `npm run dev`
 * Open a terminal in the topheman-apis-proxy folder and `grunt serve` (see more in the [run in local](https://github.com/topheman/topheman-apis-proxy#run-in-local) README section)
-* Go to http://localhost:8080/
+* Go to [http://localhost:8080/](http://localhost:8080/)
 
+####Build
+
+At the root of the project :
+
+* for production (minified/optimized ...) : `npm run build-prod`
+* for debug (like in dev - with sourceMaps and all) : `npm run build`
+
+A `/build` folder will be created with your project built in it.
+
+You can run it with `grunt serve:build`
