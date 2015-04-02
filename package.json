@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors",
     "build": "grunt build & ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js",
-    "build-prod": "grunt build-prod && PROD=true ./node_modules/webpack/bin/webpack.js -p --config ./webpack.config.js"
+    "build-prod": "grunt build && PROD=true ./node_modules/webpack/bin/webpack.js -p --config ./webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "bootstrap-sass": "^3.3.4",
+    "lscache": "^1.0.5",
     "react": "^0.13.1",
     "react-router": "^0.13.2",
     "superagent": "^1.1.0"

@@ -2,6 +2,10 @@
 
 import React from 'react';
 
+import Router from 'react-router';
+
+var Link = Router.Link;
+
 export default class UsersSimpleProfileBox extends React.Component {
   constructor(props){
     super(props);
@@ -9,11 +13,11 @@ export default class UsersSimpleProfileBox extends React.Component {
   }
   render() {
     var user = this.props.user;
+    var link = '/github/user/' + user.login;
     return (
-      <tr>
-        <td><img src={user.$avatar_url} width="40"/></td>
-        <td>{user.login}</td>
-      </tr>
+      <Link to={link} className="list-group-item">
+        <img src={user.$avatar_url} width="40"/> <strong>{user.login}</strong>
+      </Link>
     )
   }
 }

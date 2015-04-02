@@ -6,38 +6,53 @@ import Spinner from '../common/Spinner.jsx';
 
 import github from '../../services/github.js';
 
+import localStorageWrapper from '../../services/localStorageWrapper.js';
+
 export default class SearchUsersBox extends React.Component {
   constructor(props){
     super(props);
     //init state
     this.state = {
-      userName : "",
-      results : null,
+      userName : localStorageWrapper.get('github.search.userName'),
+      results : localStorageWrapper.get('github.search.results') || null,
       fetching: false
     };
+    //if results are cached in storage, recache for X mins
+    localStorageWrapper.extend('github.search.userName');
+    localStorageWrapper.extend('github.search.results');
     //init context bindings
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
+  handleFocus(e) {
+    var target = e.target;
+    //dirty but curiously in React this is a known bug and workaround ...
+    setTimeout(function() {
+      target.select();
+    }, 0);
+  }
   handleSubmit(e) {
     e.preventDefault();
-    this.setState({fetching: true});
     var currentUser = this.state.userName;
     //prevent submiting empty user
     if (currentUser !== "") {
+      this.setState({fetching: true});
       github.searchUser(currentUser)
-        .end(function (err, res) {
-          if (err) {
-            this.setState({
-              results: {
-                error: "An error occured, please try again."
-              }
-            });
-            this.setState({fetching: false});
-            return;
-          }
-          this.setState({results: res.body});
-          this.setState({fetching: false});
+        .then(function(result){
+          localStorageWrapper.set('github.search.results',result.data);
+          localStorageWrapper.set('github.search.userName',currentUser);
+          this.setState({
+            results: result.data,
+            fetching: false
+          });
+        }.bind(this))
+        .catch(function(error){
+          this.setState({
+            results: {
+              error: error.humanMessage
+            },
+            fetching: false
+          });
         }.bind(this));
     }
   }
@@ -52,11 +67,11 @@ export default class SearchUsersBox extends React.Component {
     var fetching = this.state.fetching;
     return (
       <div>
-        <form onSubmit={this.handleSubmit} className="form-horizontal">
+        <form onSubmit={this.handleSubmit} className="form-horizontal" action=".">
           <div className="form-group">
             <label htmlFor="user-name" className="col-sm-2">Search for a Github User</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="user-name" placeholder="Enter username" onChange={this.handleChange}/>
+              <input type="search" name="user-name" className="form-control" id="user-name" placeholder="Enter username" value={userName} onChange={this.handleChange} onFocus={this.handleFocus}/>
             </div>
           </div>
           <div className="form-group">

@@ -20,6 +20,7 @@ module.exports = function (grunt) {
       }
     },
 
+    //this one isn't used because there are only images as assets and they are included in css as base64
     copy: {
       build: {
         files:[
@@ -43,13 +44,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build',[
     'clean:build',
-    'copy:build',
-    'processhtml:build'
-  ]);
-
-  grunt.registerTask('build-prod',[
-    'clean:build',
-    'copy:build',
     'processhtml:build'
   ]);
 

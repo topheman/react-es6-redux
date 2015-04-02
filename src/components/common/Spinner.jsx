@@ -9,9 +9,7 @@ export default class Spinner extends React.Component {
   }
   render(){
     var fetching = this.props.fetching;
-    console.log('fetching',fetching);
     if(fetching == true){
-      console.log('so it true');
       return (
         <div className="spinner">
           <div className="bounce1"></div>

@@ -13,9 +13,7 @@ export default class UsersSimpleProfileList extends React.Component {
     var results = this.props.results;
     if (results === null) {
       return (
-        <div>
-          Type a username.
-        </div>
+        <div></div>
       )
     }
     else if(results.error){
@@ -34,20 +32,14 @@ export default class UsersSimpleProfileList extends React.Component {
     }
     else {
       return (
-        <div>
-          <table className="table">
-            <thead>
-              <tr>
-                <td colSpan="2">Total results : {results.total_count} / showing : {results.items.length}</td>
-              </tr>
-            </thead>
-            <tbody>
-              {results.items.map(function (user) {
-                user.$avatar_url = user.avatar_url+"&s=40";
-                return <UsersSimpleProfileBox key={user.id} user={user}/>
-              })}
-            </tbody>
-          </table>
+        <div className="panel panel-default">
+          <div className="panel-heading">Total result : {results.total_count} / showing : {results.items.length}</div>
+          <div className="list-group">
+            {results.items.map(function (user) {
+              user.$avatar_url = user.avatar_url+"&s=40";
+              return <UsersSimpleProfileBox key={user.id} user={user}/>
+            })}
+          </div>
         </div>
       )
     }
