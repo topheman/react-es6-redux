@@ -4,7 +4,7 @@ import React from 'react';
 
 import Panel from '../common/Panel.jsx';
 import TrInfo from './TrInfo.jsx';
-import Spinner from '../common/Spinner.jsx';
+import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 
 //@todo cache the last 10 profiles accessed
 
@@ -40,24 +40,10 @@ export default class UserFullProfile extends React.Component {
         </Panel>
       );
     }
-    else if(profile && profile.error){
-      var error = profile.error;
-      return (
-        <Panel title="OOups!">
-          <div className="alert alert-danger col-xs-offset-1 col-xs-10" role="alert">
-          {error}
-          </div>
-        </Panel>
-      );
-    }
-    else{
-      //initial case before xhr
-      //better speed loading perception if username already present
+    else {
       return(
-        <Panel title={profile.pristineLogin}>
-          <Spinner fetching={fetching} className="center-block"/>
-        </Panel>
-      );
+        <DisplayInfosPanel infos={profile} originalTitle={profile.pristineLogin}/>
+      )
     }
   }
 }
