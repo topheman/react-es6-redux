@@ -9,36 +9,45 @@ import UserFullProfile from './githubUserProfile/UserFullProfile.jsx';
 export default class GithubUserProfile extends React.Component {
   constructor(props){
     super(props);
-    this.state = {};
-    //directly passing data retrieved previously from the server for server-side rendering
+    this.state = {
+      profile: {
+        pristineLogin: props.params.username
+      },
+      repos: {}
+    };
+    //server-side rendering based on passing data retrieved previously from the server
     if(props.params.data){
-      this.state.data = props.data;
+      this.state.profile = props.data.profile;
+      this.state.repos = props.data.repos;
     }
-    //client-side fetching via xhr based on username
+    //client-side fetching via xhr
     else if(props.params.username){
-      this.state.fetching = true;
+      this.state.profile.fetching = true;
+      //client-side fetching of the profile via xhr based on username
       github.getUser(props.params.username)
         .then(function(result){
-          this.setState({data: result.data});
-          this.setState({fetching: false});
+          this.setState({
+            profile: {
+              data: result.data,
+              fetching: false
+            }
+          });
         }.bind(this))
         .catch(function(error){
           this.setState({
-            data : {
-              error : error.humanMessage
-            },
-            fetching: false
+            profile: {
+              error : error.humanMessage,
+              fetching: false
+            }
           });
         }.bind(this));
     }
   }
   render(){
-    var user = this.state.data;
-    var fetching = this.state.fetching;
+    var profile = this.state.profile;
     return (
       <div>
-        <Spinner fetching={fetching}/>
-        <UserFullProfile user={user}/>
+        <UserFullProfile profile={profile}/>
       </div>
     );
   }
