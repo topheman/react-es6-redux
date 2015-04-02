@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Panel from './Panel.jsx';
+import Panel from '../common/Panel.jsx';
 import TrInfo from './TrInfo.jsx';
 import Spinner from '../common/Spinner.jsx';
 
