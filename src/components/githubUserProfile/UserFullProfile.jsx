@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Panel from '../common/Panel.jsx';
-import TrInfo from './TrInfo.jsx';
+import Tr from '../common/Tr.jsx';
 import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 
 //@todo cache the last 10 profiles accessed
@@ -27,13 +27,13 @@ export default class UserFullProfile extends React.Component {
           <div className=" col-md-9 col-lg-9 ">
             <table className="table table-user-information">
               <tbody>
-                <TrInfo label="Full Name" value={user.name}/>
-                <TrInfo label="Location" value={user.location}/>
-                <TrInfo label="Joined" value={new Date(user.created_at)}/>
-                <TrInfo label="Website" value={user.blog}/>
-                <TrInfo label="Followers" value={user.followers}/>
-                <TrInfo label="Following" value={user.following}/>
-                <TrInfo label="About" value={user.bio}/>
+                <Tr label="Full Name" value={user.name}/>
+                <Tr label="Location" value={user.location}/>
+                <Tr label="Joined" value={new Date(user.created_at)}/>
+                <Tr type="link" display="colspan" value={user.blog}/>
+                <Tr label="Followers" value={user.followers}/>
+                <Tr label="Following" value={user.following}/>
+                <Tr label="About" value={user.bio}/>
               </tbody>
             </table>
           </div>
