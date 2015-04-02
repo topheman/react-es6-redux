@@ -33,6 +33,7 @@ export default class SearchUsersBox extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
+    document.getElementById('user-name').blur();
     var currentUser = this.state.userName;
     //prevent submiting empty user
     if (currentUser !== "") {
