@@ -21,9 +21,7 @@ export default class TrInfo extends React.Component {
       )
     }
     else{
-      return(
-        <div></div>
-      )
+      return <noscript/>;
     }
   }
 }

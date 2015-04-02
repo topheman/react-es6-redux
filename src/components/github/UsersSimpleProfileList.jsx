@@ -12,9 +12,7 @@ export default class UsersSimpleProfileList extends React.Component {
   render() {
     var results = this.props.results;
     if (results === null) {
-      return (
-        <div></div>
-      )
+      return <noscript/>
     }
     else if(results.error){
       return (
