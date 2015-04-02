@@ -7,7 +7,7 @@ import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 
 //@todo cache the last 10 profiles accessed
 
-export default class UserRepos extends React.Component {
+export default class Repos extends React.Component {
   render(){
     var repositories = this.props.repositories;
     var fetching = repositories.fetching;

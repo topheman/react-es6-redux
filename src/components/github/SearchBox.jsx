@@ -1,14 +1,14 @@
 'use strict';
 
 import React from 'react';
-import UsersSimpleProfileList from './UsersSimpleProfileList.jsx';
+import ProfileList from './ProfileList.jsx';
 import Spinner from '../common/Spinner.jsx';
 
 import github from '../../services/github.js';
 
 import localStorageWrapper from '../../services/localStorageWrapper.js';
 
-export default class SearchUsersBox extends React.Component {
+export default class SearchBox extends React.Component {
   constructor(props){
     super(props);
     //init state
@@ -82,7 +82,7 @@ export default class SearchUsersBox extends React.Component {
             </div>
           </div>
         </form>
-        <UsersSimpleProfileList results={results}/>
+        <ProfileList results={results}/>
       </div>
     )
   }

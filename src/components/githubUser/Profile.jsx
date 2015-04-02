@@ -8,7 +8,7 @@ import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 
 //@todo cache the last 10 profiles accessed
 
-export default class UserFullProfile extends React.Component {
+export default class Profile extends React.Component {
   render(){
     var profile = this.props.profile;
     var fetching = profile.fetching;

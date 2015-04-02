@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import UsersSimpleProfileBox from './UsersSimpleProfileBox.jsx';
+import ProfileBox from './ProfileBox.jsx';
 
-export default class UsersSimpleProfileList extends React.Component {
+export default class ProfileList extends React.Component {
   constructor(props){
     super(props);
     this.state = {};
@@ -35,7 +35,7 @@ export default class UsersSimpleProfileList extends React.Component {
           <div className="list-group">
             {results.items.map(function (user) {
               user.$avatar_url = user.avatar_url+"&s=40";
-              return <UsersSimpleProfileBox key={user.id} user={user}/>
+              return <ProfileBox key={user.id} user={user}/>
             })}
           </div>
         </div>

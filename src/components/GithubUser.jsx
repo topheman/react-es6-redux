@@ -4,10 +4,10 @@ import React from 'react';
 
 import github from '../services/github.js';
 import Spinner from './common/Spinner.jsx';
-import UserFullProfile from './githubUserProfile/UserFullProfile.jsx';
-import UserRepos from './githubUserProfile/UserRepos.jsx';
+import Profile from './githubUser/Profile.jsx';
+import Repos from './githubUser/Repos.jsx';
 
-export default class GithubUserProfile extends React.Component {
+export default class GithubUser extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -51,8 +51,8 @@ export default class GithubUserProfile extends React.Component {
     var repositories = this.state.repositories;
     return (
       <div>
-        <UserFullProfile profile={profile}/>
-        <UserRepos repositories={repositories}/>
+        <Profile profile={profile}/>
+        <Repos repositories={repositories}/>
       </div>
     );
   }

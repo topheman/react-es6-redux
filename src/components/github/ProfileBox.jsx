@@ -6,7 +6,7 @@ import Router from 'react-router';
 
 var Link = Router.Link;
 
-export default class UsersSimpleProfileBox extends React.Component {
+export default class ProfileBox extends React.Component {
   constructor(props){
     super(props);
     this.state = {}
