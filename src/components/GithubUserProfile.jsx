@@ -5,6 +5,7 @@ import React from 'react';
 import github from '../services/github.js';
 import Spinner from './common/Spinner.jsx';
 import UserFullProfile from './githubUserProfile/UserFullProfile.jsx';
+import UserRepos from './githubUserProfile/UserRepos.jsx';
 
 export default class GithubUserProfile extends React.Component {
   constructor(props){
@@ -13,12 +14,14 @@ export default class GithubUserProfile extends React.Component {
       profile: {
         pristineLogin: props.params.username
       },
-      repos: {}
+      repositories: {
+        pristineLogin: props.params.username
+      }
     };
     //server-side rendering based on passing data retrieved previously from the server
     if(props.params.data){
       this.state.profile = props.data.profile;
-      this.state.repos = props.data.repos;
+      this.state.repositories = props.data.repositories;
     }
     //client-side fetching via xhr
     else if(props.params.username){
@@ -45,9 +48,11 @@ export default class GithubUserProfile extends React.Component {
   }
   render(){
     var profile = this.state.profile;
+    var repositories = this.state.repositories;
     return (
       <div>
         <UserFullProfile profile={profile}/>
+        <UserRepos repositories={repositories}/>
       </div>
     );
   }
