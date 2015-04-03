@@ -25,13 +25,13 @@ export default {
   get(relativeUrl){
     var promise = new Promise(function(resolve, reject){
       var result = null;
-      for(var endpoint in mockJsonFiles){
+      for(let endpoint in mockJsonFiles){
         if(endpoint.indexOf('*') === -1 && relativeUrl.indexOf(endpoint) > -1){
           result = mockJsonFiles[endpoint];
           break;
         }
         else{
-          var regexp = new RegExp(endpoint.replace('*','\\w+') + '.*');
+          let regexp = new RegExp(endpoint.replace('*','\\w+') + '.*');
           if(regexp.test(relativeUrl) === true){
             result = mockJsonFiles[endpoint];
             break;
