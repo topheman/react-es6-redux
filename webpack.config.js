@@ -2,9 +2,18 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var mockObjects = false;
 
 if(process.env.PROD){
   console.log('PRODUCTION mode');
+}
+else if(process.env.TEST){
+  console.log('TEST mode');
+  mockObjects = true;
+}
+else if(process.env.MOCK){
+  console.log('MOCK mode');
+  mockObjects = true;
 }
 else{
   console.log('DEVELOPMENT mode');
@@ -19,6 +28,7 @@ var resolve = {
   alias : {}
 };
 resolve.alias['configuration'] = path.resolve(__dirname, './src/config' + (process.env.PROD ? '.build' : '') + '.js');
+resolve.alias['serviceHttp'] = path.resolve(__dirname, './src/services/http' + (mockObjects ? '.stub' : '') + '.js');
 
 module.exports = {
   entry: {
@@ -48,6 +58,10 @@ module.exports = {
         test: /\.js(x?)$/,
         exclude: /node_modules/,
         loader: 'react-hot!babel-loader'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       },
       {
         test: /\.scss/,

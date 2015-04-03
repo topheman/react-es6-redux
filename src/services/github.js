@@ -1,6 +1,6 @@
 'use strict';
 
-import http from './http.js';
+import http from 'serviceHttp';
 
 export default {
   searchUser(userName){

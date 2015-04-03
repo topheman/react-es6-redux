@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors",
+    "dev-mock": "MOCK=true ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors",
     "build": "grunt build & ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js",
     "build-prod": "grunt build && PROD=true ./node_modules/webpack/bin/webpack.js -p --config ./webpack.config.js"
   },
@@ -34,6 +35,7 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-processhtml": "^0.3.7",
     "grunt-run": "^0.3.0",
+    "json-loader": "^0.5.1",
     "load-grunt-tasks": "^3.1.0",
     "node-sass": "^3.0.0-alpha.0",
     "react-hot-loader": "^1.2.4",
