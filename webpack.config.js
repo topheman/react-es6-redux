@@ -27,7 +27,7 @@ plugins.push(new webpack.NoErrorsPlugin());
 var resolve = {
   alias : {}
 };
-resolve.alias['configuration'] = path.resolve(__dirname, './src/config' + (process.env.PROD ? '.build' : '') + '.js');
+resolve.alias['configuration'] = path.resolve(__dirname, './src/config' + (process.env.PROD ? '.build' : (process.env.MOCK ? '.mock' : '') ) + '.js');
 resolve.alias['serviceHttp'] = path.resolve(__dirname, './src/services/http' + (mockObjects ? '.stub' : '') + '.js');
 
 module.exports = {

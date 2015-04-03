@@ -3,7 +3,11 @@
 /**
  * This module is here to replace http.js for test purposes (or offline development)
  * to provide data from the json files referenced bellow which are snapshots of results from the github API
+ *
+ * In /src/config.mock.js you can configure the timeOut (to emulate network traffic)
  */
+
+import configuration from 'configuration';
 
 import _mockGithubUser from './http.mocks/user.json';
 import _mockGithubRepos from './http.mocks/repos.json';
@@ -44,8 +48,16 @@ export default {
             etag: (new Date()).getTime().toString()//@todo mock it ?
           }
         };
-        console.info('http.stub.js',relativeUrl,resolvedData);
-        return resolve(resolvedData);
+        if(typeof configuration.timeOut === 'number'){
+          setTimeout(function(){
+            console.info('http.stub.js',relativeUrl,resolvedData);
+            return resolve(resolvedData);
+          },configuration.timeOut);
+        }
+        else{
+          console.info('http.stub.js',relativeUrl,resolvedData);
+          return resolve(resolvedData);
+        }
       }
       else{
         var resolvedData = {
@@ -53,8 +65,16 @@ export default {
           message: "No endpoint matched in available mocks",
           humanMessage: "An error occured, please try again."
         }
-        console.error('http.stub.js',relativeUrl,resolvedData);
-        reject(resolvedData);
+        if(typeof configuration.timeOut === 'number'){
+          setTimeout(function(){
+            console.error('http.stub.js',relativeUrl,resolvedData);
+            return reject(resolvedData);
+          },configuration.timeOut);
+        }
+        else{
+          console.error('http.stub.js',relativeUrl,resolvedData);
+          return reject(resolvedData);
+        }
       }
     });
     return promise;
