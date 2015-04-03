@@ -12,14 +12,16 @@ export default {
           if(err || !res){
             if(typeof res !== 'undefined' && res.headers && typeof res.headers['x-ratelimit-remaining'] !== 'undefined'){
               return reject({
-                type: 'rateLimit',
+                kind: 'rateLimit',
                 message: err,
-                humanMessage: "The server is very crowded, please try again in a few seconds."
+                humanMessage: "The server is very crowded, please try again in a few seconds.",
+                status: res.status,
+                type: res.type
               })
             }
             else {
               return reject({
-                type: "error",
+                kind: "error",
                 message: err ? err : 'No response',
                 humanMessage: "An error occured, please try again."
               });
@@ -27,8 +29,11 @@ export default {
           }
           return resolve({
             data: res.body,
+            status: res.status,
+            type: res.type,
             infos: {
-              ratelimitRemaining: res.headers['x-ratelimit-remaining']
+              ratelimitRemaining: res.headers['x-ratelimit-remaining'],
+              etag:res.headers['etag']
             }
           });
         });
