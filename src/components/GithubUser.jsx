@@ -25,8 +25,8 @@ export default class GithubUser extends React.Component {
     }
     //client-side fetching via xhr
     else if(props.params.username){
-      this.state.profile.fetching = true;
       //client-side fetching of the profile via xhr based on username
+      this.state.profile.fetching = true;
       github.getUser(props.params.username)
         .then(function(result){
           this.setState({
@@ -39,6 +39,26 @@ export default class GithubUser extends React.Component {
         .catch(function(error){
           this.setState({
             profile: {
+              error : error.humanMessage,
+              fetching: false
+            }
+          });
+        }.bind(this));
+      //client-side fetching of the repositories via xhr based on the username
+      this.state.repositories.fetching = true;
+      github.getUserRepos(props.params.username)
+        .then(function(result){
+          this.setState({
+            repositories: {
+              pristineLogin: props.params.username,//pass again (since it was erased)
+              data: result.data,
+              fetching: false
+            }
+          });
+        }.bind(this))
+        .catch(function(error){
+          this.setState({
+            repositories: {
               error : error.humanMessage,
               fetching: false
             }

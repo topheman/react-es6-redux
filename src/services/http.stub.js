@@ -15,10 +15,10 @@ import _mockGithubFollowers from './http.mocks/followers.json';
 import _mockGithubUsersSearch from './http.mocks/users.search.json';
 
 const mockJsonFiles = {
-  '/github/users/': _mockGithubUser,
-  '/github/search/users?q=': _mockGithubUsersSearch,
   '/github/users/*/repos': _mockGithubRepos,
-  '/github/users/*/followers': _mockGithubFollowers
+  '/github/users/*/followers': _mockGithubFollowers,
+  '/github/users/': _mockGithubUser,
+  '/github/search/users?q=': _mockGithubUsersSearch
 };
 
 export default {

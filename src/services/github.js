@@ -8,5 +8,8 @@ export default {
   },
   getUser(userName){
     return http.get('/github/users/'+userName);
+  },
+  getUserRepos(userName){
+    return http.get('/github/users/'+userName+'/repos');
   }
 }
