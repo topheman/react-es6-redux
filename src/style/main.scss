@@ -6,3 +6,7 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 @import "header.scss";
 @import "footer.scss";
 @import "spinner.scss";
+
+.glyphicon-star {
+  color: darken(yellow,15%);
+}

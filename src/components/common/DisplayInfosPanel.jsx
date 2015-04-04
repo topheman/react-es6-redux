@@ -16,8 +16,10 @@ export default class DisplayInfosPanel extends React.Component {
       var error = infos.error;
       return (
         <Panel title="OOups!">
-          <div className="alert alert-danger col-xs-offset-1 col-xs-10" role="alert">
-          {error}
+          <div className="row">
+            <div className="alert alert-danger col-xs-offset-1 col-xs-10" role="alert">
+              {error}
+            </div>
           </div>
         </Panel>
       );
@@ -27,7 +29,9 @@ export default class DisplayInfosPanel extends React.Component {
       //better speed loading perception if username already present
       return(
         <Panel title={originalTitle}>
-          <Spinner fetching={fetching} className="center-block"/>
+          <div className="row">
+            <Spinner fetching={fetching} className="center-block"/>
+          </div>
         </Panel>
       );
     }
