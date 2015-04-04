@@ -4,6 +4,7 @@ import React from 'react';
 
 import Panel from '../common/Panel.jsx';
 import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
+import DisplayStars from '../common/DisplayStars.jsx';
 
 //@todo cache the last 10 profiles accessed
 
@@ -15,7 +16,7 @@ export default class Repos extends React.Component {
     if (repositories && repositories.data){
       var repos = repositories.data;
       originalTitle += ' (' + repos.length +')';
-      //sort repos (like github does) the latest update on top
+      //sort repos latest modified on top
       repos.sort(function(ra,rb){
         return (new Date(rb.updated_at)).getTime() - (new Date(ra.updated_at)).getTime();
       })
@@ -28,7 +29,7 @@ export default class Repos extends React.Component {
                   <a href={repo.html_url} key={repo.name} className="list-group-item" title={repo.full_name}>
                     {repo.name}
                     <div className="pull-right">
-                    {repo.stargazers_count} <span className="glyphicon glyphicon-star"></span>
+                      <DisplayStars number={repo.stargazers_count}/>
                     </div>
                   </a>
                 )
