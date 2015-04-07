@@ -22,19 +22,17 @@ export default class Repos extends React.Component {
       })
       return (
         <Panel title={originalTitle}>
-          <div className="panel-body">
-            <div className="list-group">
-              {repos.map(function(repo){
-                return(
-                  <a href={repo.html_url} key={repo.name} className="list-group-item" title={repo.full_name}>
-                    {repo.name}
-                    <div className="pull-right">
-                      <DisplayStars number={repo.stargazers_count}/>
-                    </div>
-                  </a>
-                )
-              })}
-            </div>
+          <div className="list-group">
+            {repos.map(function(repo){
+              return(
+                <a href={repo.html_url} key={repo.name} className="list-group-item" title={repo.full_name}>
+                  {repo.name}
+                  <div className="pull-right">
+                    <DisplayStars number={repo.stargazers_count}/>
+                  </div>
+                </a>
+              )
+            })}
           </div>
         </Panel>
       );
