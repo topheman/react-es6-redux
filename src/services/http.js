@@ -13,12 +13,14 @@ export default {
       //add query params
       if(typeof params === 'object' && params !== null){
         if(Object.keys(params).length > 0){
-          url += '?';
+          var query = '';
           for(let name in params){
             if(typeof params[name] !== 'object') {
-              url += name + '=' + params[name];
+              query += query === '' ? '' : '&';
+              query += name + '=' + params[name];
             }
           }
+          url += (query !== '') ? ('?'+query) : '';
         }
       }
 
@@ -42,7 +44,7 @@ export default {
               });
             }
           }
-          return resolve({
+          var objectToResolve = {
             data: res.body,
             status: res.status,
             type: res.type,
@@ -50,7 +52,24 @@ export default {
               ratelimitRemaining: res.headers['x-ratelimit-remaining'],
               etag:res.headers['etag']
             }
-          });
+          };
+          if(res.headers['link']){
+            let result = {};
+            var toProcess = res.headers['link'].split(' ');
+            for(let i=0; i<toProcess.length; i++){
+              if(i%2 === 0) {
+                result[toProcess[i+1].replace('rel="','').replace(/\"\,?/,'')] = toProcess[i].replace('<','').replace('>;','');//@todo cleaner way with one regexp ?
+              }
+            }
+            objectToResolve.infos.link = result;
+            if(result.last) {
+              let totalPages = result.last.match(/page=([0-9]+)/);
+              if(totalPages[1]){
+                objectToResolve.infos.totalPages = parseInt(totalPages[1]);
+              }
+            }
+          }
+          return resolve(objectToResolve);
         });
     });
     return promise;

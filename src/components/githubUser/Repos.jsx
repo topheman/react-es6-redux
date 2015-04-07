@@ -16,10 +16,6 @@ export default class Repos extends React.Component {
     if (repositories && repositories.data){
       var repos = repositories.data;
       originalTitle += ' (' + repos.length +')';
-      //sort repos latest modified on top
-      repos.sort(function(ra,rb){
-        return (new Date(rb.updated_at)).getTime() - (new Date(ra.updated_at)).getTime();
-      })
       return (
         <Panel title={originalTitle}>
           <div className="list-group">
