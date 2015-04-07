@@ -18,7 +18,7 @@ const mockJsonFiles = {
   '/github/users/*/repos': _mockGithubRepos,
   '/github/users/*/followers': _mockGithubFollowers,
   '/github/users/': _mockGithubUser,
-  '/github/search/users?q=': _mockGithubUsersSearch
+  '/github/search/users?': _mockGithubUsersSearch
 };
 
 export default {

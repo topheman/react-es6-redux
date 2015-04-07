@@ -5,9 +5,24 @@ import request from 'superagent';
 import configuration from 'configuration';
 
 export default {
-  get(relativeUrl){
+  get(relativeUrl,params){
     var promise = new Promise(function(resolve, reject){
-      request.get(configuration.backendBaseUrl+relativeUrl).set('Accept', 'application/json')
+
+      var url = configuration.backendBaseUrl+relativeUrl;
+
+      //add query params
+      if(typeof params === 'object' && params !== null){
+        if(Object.keys(params).length > 0){
+          url += '?';
+          for(let name in params){
+            if(typeof params[name] !== 'object') {
+              url += name + '=' + params[name];
+            }
+          }
+        }
+      }
+
+      request.get(url).set('Accept', 'application/json')
         .end(function(err, res){
           if(err || !res){
             if(typeof res !== 'undefined' && res.headers && typeof res.headers['x-ratelimit-remaining'] !== 'undefined'){
