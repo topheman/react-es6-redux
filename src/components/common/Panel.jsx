@@ -11,9 +11,7 @@ export default class Panel extends React.Component {
           <div className="panel-heading">
             <h3 className="panel-title">{title}</h3>
           </div>
-          <div className="panel-body">
-            {this.props.children}
-          </div>
+          {this.props.children}
         </div>
       </div>
     );

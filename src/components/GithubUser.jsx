@@ -73,6 +73,36 @@ export default class GithubUser extends React.Component {
         });
     }
   }
+  reposGotoPage(pageNum){
+    //client-side fetching of the repositories via xhr based on the username
+    this.state.repositories.fetching = true;
+    github.getUserRepos(props.params.username,{
+      page: pageNum,
+      sort: "updated",
+      per_page: this.state.repositories.infos.per_page
+    })
+      .then((result) => {
+        this.setState({
+          repositories: {
+            pristineLogin: props.params.username,//pass again (since it was erased)
+            data: result.data,
+            infos: result.infos,
+            fetching: false
+          }
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          repositories: {
+            error : error.humanMessage,
+            fetching: false
+          }
+        });
+      });
+  }
+  reposChangePerPage(perPage){
+
+  }
   render(){
     var profile = this.state.profile;
     var repositories = this.state.repositories;
