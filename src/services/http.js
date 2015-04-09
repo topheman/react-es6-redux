@@ -23,6 +23,10 @@ export default {
           url += (query !== '') ? ('?'+query) : '';
         }
       }
+      //init the object param, not to have to check it bellow
+      else{
+        params = {};
+      }
 
       request.get(url).set('Accept', 'application/json')
         .end(function(err, res){
@@ -71,6 +75,13 @@ export default {
           }
           else {
             objectToResolve.infos.totalPages = 1;
+          }
+          //passing some relevant infos from the params in the request to the response
+          if(typeof params.page !== 'undefined'){
+            objectToResolve.infos.page = params.page;
+          }
+          if(typeof params.per_page !== 'undefined'){
+            objectToResolve.infos.per_page = params.per_page;
           }
           return resolve(objectToResolve);
         });
