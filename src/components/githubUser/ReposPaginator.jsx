@@ -14,7 +14,7 @@ export default class ReposPaginator extends React.Component {
 		this.handleClickGotoPage = this.handleClickGotoPage.bind(this);
 	}
 	gotoPage(pageNum){
-		this.props.gotoPage(pageNum);
+		console.log('ReposPaginator.gotoPage',pageNum);
 	}
 	gotoNextPage(){
 		this.gotoPage(this.props.infos.page+1);
@@ -31,6 +31,13 @@ export default class ReposPaginator extends React.Component {
 	handleClickGotoPage(e){
 		e.preventDefault();
 		console.log(e.target.className);
+		var accepted = ['gotoFirstPage',
+		'gotoPreviousPage',
+		'gotoNextPage',
+		'gotoLastPage'];
+		if(accepted.indexOf(e.target.className) > -1){
+			this[e.target.className]();
+		}
 	}
 	render(){
 		var infos = this.props.infos;
