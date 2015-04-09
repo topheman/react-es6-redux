@@ -39,22 +39,22 @@ export default class SearchBox extends React.Component {
     if (currentUser !== "") {
       this.setState({fetching: true});
       github.searchUser(currentUser)
-        .then(function(result){
+        .then((result) => {
           localStorageWrapper.set('github.search.results',result.data);
           localStorageWrapper.set('github.search.userName',currentUser);
           this.setState({
             results: result.data,
             fetching: false
           });
-        }.bind(this))
-        .catch(function(error){
+        })
+        .catch((error) => {
           this.setState({
             results: {
               error: error.humanMessage
             },
             fetching: false
           });
-        }.bind(this));
+        });
     }
   }
   handleChange(e){

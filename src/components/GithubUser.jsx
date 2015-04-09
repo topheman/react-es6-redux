@@ -30,22 +30,22 @@ export default class GithubUser extends React.Component {
       //client-side fetching of the profile via xhr based on username
       this.state.profile.fetching = true;
       github.getUser(props.params.username)
-        .then(function(result){
+        .then((result) => {
           this.setState({
             profile: {
               data: result.data,
               fetching: false
             }
           });
-        }.bind(this))
-        .catch(function(error){
+        })
+        .catch((error) => {
           this.setState({
             profile: {
               error : error.humanMessage,
               fetching: false
             }
           });
-        }.bind(this));
+        });
       //client-side fetching of the repositories via xhr based on the username
       this.state.repositories.fetching = true;
       github.getUserRepos(props.params.username,{
@@ -53,28 +53,30 @@ export default class GithubUser extends React.Component {
         sort: "updated",
         per_page: ORIGINAL_REPOS_PER_PAGE
       })
-        .then(function(result){
+        .then((result) => {
           this.setState({
             repositories: {
               pristineLogin: props.params.username,//pass again (since it was erased)
               data: result.data,
+              infos: result.infos,
               fetching: false
             }
           });
-        }.bind(this))
-        .catch(function(error){
+        })
+        .catch((error) => {
           this.setState({
             repositories: {
               error : error.humanMessage,
               fetching: false
             }
           });
-        }.bind(this));
+        });
     }
   }
   render(){
     var profile = this.state.profile;
     var repositories = this.state.repositories;
+    console.log(repositories);
     return (
       <div>
         <Profile profile={profile}/>

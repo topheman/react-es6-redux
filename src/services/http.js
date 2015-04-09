@@ -69,6 +69,9 @@ export default {
               }
             }
           }
+          else {
+            objectToResolve.infos.totalPages = 1;
+          }
           return resolve(objectToResolve);
         });
     });
