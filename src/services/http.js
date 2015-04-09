@@ -57,6 +57,14 @@ export default {
               etag:res.headers['etag']
             }
           };
+          //passing some relevant infos from the params in the request to the response
+          if(typeof params.page !== 'undefined'){
+            objectToResolve.infos.page = params.page;
+          }
+          if(typeof params.per_page !== 'undefined'){
+            objectToResolve.infos.per_page = params.per_page;
+          }
+          //adding metas infos
           if(res.headers['link']){
             let result = {};
             var toProcess = res.headers['link'].split(' ');
@@ -72,16 +80,15 @@ export default {
                 objectToResolve.infos.totalPages = parseInt(totalPages[1]);
               }
             }
+            else{
+              let totalPages = result.prev.match(/page=([0-9]+)/);
+              if(totalPages[1]){
+                objectToResolve.infos.totalPages = parseInt(totalPages[1])+1;
+              }
+            }
           }
           else {
             objectToResolve.infos.totalPages = 1;
-          }
-          //passing some relevant infos from the params in the request to the response
-          if(typeof params.page !== 'undefined'){
-            objectToResolve.infos.page = params.page;
-          }
-          if(typeof params.per_page !== 'undefined'){
-            objectToResolve.infos.per_page = params.per_page;
           }
           return resolve(objectToResolve);
         });

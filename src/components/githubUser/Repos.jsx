@@ -10,13 +10,19 @@ import ReposPaginator from './ReposPaginator.jsx';
 //@todo cache the last 10 profiles accessed
 
 export default class Repos extends React.Component {
+  constructor(props){
+    super(props);
+    this.reposGotoPage = this.reposGotoPage.bind(this);
+  }
+  reposGotoPage(pageNum){
+    this.props.reposGotoPage(pageNum);
+  }
   render(){
     var repositories = this.props.repositories;
     var fetching = repositories.fetching;
     var originalTitle = repositories.pristineLogin + "'s repositories";
     if (repositories && repositories.data){
       var repos = repositories.data;
-      originalTitle += ' (' + repos.length +')';
       return (
         <Panel title={originalTitle}>
           <div className="panel-body">
@@ -34,7 +40,7 @@ export default class Repos extends React.Component {
             </div>
           </div>
           <div className="panel-footer">
-            <ReposPaginator infos={repositories.infos}/>
+            <ReposPaginator infos={repositories.infos} reposGotoPage={this.reposGotoPage}/>
           </div>
         </Panel>
       );

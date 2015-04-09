@@ -20,6 +20,7 @@ export default class GithubUser extends React.Component {
         pristineLogin: props.params.username
       }
     };
+    this.reposGotoPage = this.reposGotoPage.bind(this);
     //server-side rendering based on passing data retrieved previously from the server
     if(props.params.data){
       this.state.profile = props.data.profile;
@@ -76,7 +77,7 @@ export default class GithubUser extends React.Component {
   reposGotoPage(pageNum){
     //client-side fetching of the repositories via xhr based on the username
     this.state.repositories.fetching = true;
-    github.getUserRepos(props.params.username,{
+    github.getUserRepos(this.state.repositories.pristineLogin,{
       page: pageNum,
       sort: "updated",
       per_page: this.state.repositories.infos.per_page
@@ -84,7 +85,7 @@ export default class GithubUser extends React.Component {
       .then((result) => {
         this.setState({
           repositories: {
-            pristineLogin: props.params.username,//pass again (since it was erased)
+            pristineLogin: this.state.repositories.pristineLogin,//pass again (since it was erased)
             data: result.data,
             infos: result.infos,
             fetching: false
@@ -106,11 +107,10 @@ export default class GithubUser extends React.Component {
   render(){
     var profile = this.state.profile;
     var repositories = this.state.repositories;
-    console.log(repositories);
     return (
       <div>
         <Profile profile={profile}/>
-        <Repos repositories={repositories}/>
+        <Repos repositories={repositories} reposGotoPage={this.reposGotoPage}/>
       </div>
     );
   }
