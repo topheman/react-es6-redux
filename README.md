@@ -39,7 +39,8 @@ Here are the following steps I intend to follow (may change) - should be tagged 
 		- [x] returns metadata such as pagination information
 	- [x] Component displaying Github user full profile
 	- [x] Component displaying Github user repositories, with pagination
-- [ ] Refactor components using some React hooks like `componentWillMount`
+- [x] Refactor components using some React hooks like `componentWillMount` [v0.6.1](https://github.com/topheman/react-es6/tree/v0.6.1)
+	- [x] UI : spinner on repositories pagination
 - [ ] Add Flux to manage states (choose an implementation)
 - [ ] ...
 
