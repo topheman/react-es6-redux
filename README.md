@@ -32,8 +32,22 @@ Here are the following steps I intend to follow (may change) - should be tagged 
 - [x] Add React.Router [v0.4.0](https://github.com/topheman/react-es6/tree/v0.4.0)
 - [x] HTML 5 history API support to router with `Router.HistoryLocation` [v0.4.1](https://github.com/topheman/react-es6/tree/v0.4.1) (removed since can't have .htaccess or server-side code on github pages that does a "catch all" to redirect to index.html)
 - [x] First part of the App : Github user search [v0.5.0](https://github.com/topheman/react-es6/tree/v0.5.0)
-- [ ] Second part of the App : Display a full Github User profile according to the username given in the route
+- [x] Second part of the App : Display a full Github User profile according to the username given in the route [v0.6.0](https://github.com/topheman/react-es6/tree/v0.6.0)
+	- [x] Network layer module now :
+		- [x] uses ES6 Promise
+		- [x] has a mock version
+		- [x] returns metadata such as pagination information
+	- [x] Component displaying Github user full profile
+	- [x] Component displaying Github user repositories, with pagination
+- [ ] Refactor components using some React hooks like `componentWillMount`
+- [ ] Add Flux to manage states (choose an implementation)
 - [ ] ...
+
+If I got time, some implementations would be worth it on projects on the side :
+
+* Extract the http / Github isomorphic network layer to a node module, so that it could be used in standalone.
+* Implement a localstorage cache middleware for superagent.
+
 
 ###Basic features :
 
