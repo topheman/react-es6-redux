@@ -5,10 +5,6 @@ import React from 'react';
 import ProfileBox from './ProfileBox.jsx';
 
 export default class ProfileList extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {};
-  }
   render() {
     var results = this.props.results;
     if (results === null) {

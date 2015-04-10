@@ -3,10 +3,6 @@
 import React from 'react';
 
 export default class Spinner extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {};
-  }
   render(){
     var fetching = this.props.fetching;
     if(fetching == true){

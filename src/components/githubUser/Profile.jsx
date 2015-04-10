@@ -6,8 +6,6 @@ import Panel from '../common/Panel.jsx';
 import Tr from '../common/Tr.jsx';
 import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 
-//@todo cache the last 10 profiles accessed
-
 export default class Profile extends React.Component {
   render(){
     var profile = this.props.profile;

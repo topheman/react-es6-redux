@@ -11,8 +11,12 @@ import ReposPaginator from './ReposPaginator.jsx';
 
 export default class Repos extends React.Component {
   constructor(props){
+
     super(props);
+
+    //init context bindings - due to diff between React.createClass and ES6 class
     this.reposGotoPage = this.reposGotoPage.bind(this);
+
   }
   reposGotoPage(pageNum){
     this.props.reposGotoPage(pageNum);

@@ -11,17 +11,17 @@ const ORIGINAL_REPOS_PER_PAGE = 15;
 
 export default class GithubUser extends React.Component {
   constructor(props){
+
     super(props);
-    this.state = {
-      profile: {
-        pristineLogin: props.params.username
-      },
-      repositories: {
-        pristineLogin: props.params.username
-      }
-    };
+
+    //init context bindings - due to diff between React.createClass and ES6 class
+    this._getInitialState = this._getInitialState.bind(this);
     this.reposGotoPage = this.reposGotoPage.bind(this);
     this.init = this.init.bind(this);
+
+    //init state
+    this.state = this._getInitialState();
+
     //server-side rendering based on passing data retrieved previously from the server
     if(props.params.data){
       this.state.profile = props.data.profile;
@@ -30,6 +30,17 @@ export default class GithubUser extends React.Component {
     //client-side fetching via xhr
     else if(props.params.username){
       this.init(props.params.username);
+    }
+
+  }
+  _getInitialState(){
+    return{
+      profile: {
+        pristineLogin: this.props.params.username
+      },
+      repositories: {
+        pristineLogin: this.props.params.username
+      }
     }
   }
   init(userName){

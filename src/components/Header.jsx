@@ -7,12 +7,19 @@ var Link = Router.Link;
 
 export default class Header extends React.Component {
   constructor(props){
-    //can't use getInitialState with React+ES6 (this is why must create contstructor that calls super + init state)
-    super(props);
-    this.state = {collapsed: true};
 
-    //reswitch context due to ES6 classes context management with React :-(
+    super(props);
+
+    //init context bindings - due to diff between React.createClass and ES6 class
+    this._getInitialState = this._getInitialState.bind(this);
     this.handleClick = this.handleClick.bind(this);
+
+    //init state
+    this.state = this._getInitialState();
+
+  }
+  _getInitialState(){
+    return {collapsed: true};
   }
   handleClick(e){
     var collapsed = this.state.collapsed;

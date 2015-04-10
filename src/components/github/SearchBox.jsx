@@ -10,19 +10,28 @@ import localStorageWrapper from '../../services/localStorageWrapper.js';
 
 export default class SearchBox extends React.Component {
   constructor(props){
+
     super(props);
+
+    //init context bindings - due to diff between React.createClass and ES6 class
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this._getInitialState = this._getInitialState.bind(this);
+
     //init state
-    this.state = {
+    this.state = this._getInitialState();
+
+    //if results are cached in storage, recache for X mins
+    localStorageWrapper.extend('github.search.userName');
+    localStorageWrapper.extend('github.search.results');
+
+  }
+  _getInitialState(){
+    return {
       userName : localStorageWrapper.get('github.search.userName'),
       results : localStorageWrapper.get('github.search.results') || null,
       fetching: false
     };
-    //if results are cached in storage, recache for X mins
-    localStorageWrapper.extend('github.search.userName');
-    localStorageWrapper.extend('github.search.results');
-    //init context bindings
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
   handleFocus(e) {
     var target = e.target;

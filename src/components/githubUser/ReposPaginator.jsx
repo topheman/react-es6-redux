@@ -5,7 +5,6 @@ import React from 'react';
 export default class ReposPaginator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
     this.gotoPage = this.gotoPage.bind(this);
     this.gotoNextPage = this.gotoNextPage.bind(this);
     this.gotoPreviousPage = this.gotoPreviousPage.bind(this);
