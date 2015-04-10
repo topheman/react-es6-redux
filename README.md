@@ -54,22 +54,9 @@ If I got time, some implementations would be worth it on projects on the side :
 
 May change
 
-* Home page :
-	* feature : search for users
-	* <searchUsers> component
-		* form field
-		* manages AJAX requests
-		* feeds the <basicList> of users retrieved 
-	* <basicList> component
-		* takes users from <searchUsers> as input, loops through
-		* lists users and displays them in <basicUser> component
-	* <basicUser> component
-		* displays some infos
-		* shows a link to the full profile (via router)
-* /user/:username :
-	* feature : 
-		* shows full profile of user
-		* shows repositories of user (pagination ?)
+* `/` : Home page : Display a short description of the project with a try button to :
+* `/github` : Provide a search form that displays a list of github users (with their avatars) - a request to the Github API is made.
+* `/github/user/:username` : Display a user profile with his repositories, with pagination.
 
 ###Setup
 
