@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React from 'react/addons';
 
 import github from '../services/github.js';
 import Spinner from './common/Spinner.jsx';
@@ -18,6 +18,7 @@ export default class GithubUser extends React.Component {
     this._getInitialState = this._getInitialState.bind(this);
     this.reposGotoPage = this.reposGotoPage.bind(this);
     this.init = this.init.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
 
     //init state
     this.state = this._getInitialState();
@@ -27,11 +28,13 @@ export default class GithubUser extends React.Component {
       this.state.profile = props.data.profile;
       this.state.repositories = props.data.repositories;
     }
-    //client-side fetching via xhr
-    else if(props.params.username){
-      this.init(props.params.username);
-    }
 
+  }
+  componentWillMount(){
+    //only launch xhr if there isn't any data in state (could have been server-side pre-loaded)
+    if(!this.state.profile.data) {
+      this.init(this.state.profile.pristineLogin);
+    }
   }
   _getInitialState(){
     return{
@@ -45,7 +48,12 @@ export default class GithubUser extends React.Component {
   }
   init(userName){
     //client-side fetching of the profile via xhr based on username
-    this.state.profile.fetching = true;
+    var newState = React.addons.update(this.state,{
+      profile:{
+        fetching: {$set: true}
+      }
+    });
+    this.setState(newState);
     github.getUser(userName)
       .then((result) => {
         this.setState({
@@ -64,7 +72,12 @@ export default class GithubUser extends React.Component {
         });
       });
     //client-side fetching of the repositories via xhr based on the username
-    this.state.repositories.fetching = true;
+    var newState = React.addons.update(this.state,{
+      repositories:{
+        fetching: {$set: true}
+      }
+    });
+    this.setState(newState);
     github.getUserRepos(userName,{
       page: 1,
       sort: "updated",
@@ -91,7 +104,12 @@ export default class GithubUser extends React.Component {
   }
   reposGotoPage(pageNum){
     //client-side fetching of the repositories via xhr based on the username
-    this.state.repositories.fetching = true;
+    var newState = React.addons.update(this.state,{
+      repositories:{
+        fetching: {$set: true}
+      }
+    });
+    this.setState(newState);
     github.getUserRepos(this.state.repositories.pristineLogin,{
       page: pageNum,
       sort: "updated",

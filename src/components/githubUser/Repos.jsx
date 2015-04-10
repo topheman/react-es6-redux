@@ -29,7 +29,8 @@ export default class Repos extends React.Component {
       var repos = repositories.data;
       return (
         <Panel title={originalTitle}>
-          <div className="panel-body">
+          <div className="panel-body repos-list">
+            <ReposPaginator infos={repositories.infos} reposGotoPage={this.reposGotoPage} fetching={fetching}/>
             <div className="list-group">
               {repos.map(function(repo){
                 return(
@@ -42,9 +43,7 @@ export default class Repos extends React.Component {
                 )
               })}
             </div>
-          </div>
-          <div className="panel-footer">
-            <ReposPaginator infos={repositories.infos} reposGotoPage={this.reposGotoPage}/>
+            <ReposPaginator infos={repositories.infos} reposGotoPage={this.reposGotoPage} fetching={fetching}/>
           </div>
         </Panel>
       );

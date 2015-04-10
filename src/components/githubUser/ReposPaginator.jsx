@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import Spinner from '../common/Spinner.jsx';
+
 export default class ReposPaginator extends React.Component {
   constructor(props) {
     super(props);
@@ -42,6 +44,7 @@ export default class ReposPaginator extends React.Component {
 
   render() {
     var infos = this.props.infos;
+    var fetching = this.props.fetching;
     if (infos.totalPages > 1) {
       var pages, currentPage;
       var firstPage,
@@ -60,7 +63,7 @@ export default class ReposPaginator extends React.Component {
       if (infos.page > 2) {
         previousPage = (
           <li className="previous">
-            <a href="#" title="Previous page" onClick={this.getClickGotoPageHandler('gotoFirstPage')}>
+            <a href="#" title="Previous page" onClick={this.getClickGotoPageHandler('gotoPreviousPage')}>
               <span aria-hidden="true">&larr;</span>
             </a>
           </li>
@@ -85,14 +88,17 @@ export default class ReposPaginator extends React.Component {
         );
       }
       return (
-        <nav>
-          <ul className="pager">
-            {firstPage}
-            {previousPage}
-            {lastPage}
-            {nextPage}
-          </ul>
-        </nav>
+        <div className="repos-paginator">
+          <Spinner fetching={fetching}/>
+          <nav>
+            <ul className="pager">
+              {firstPage}
+              {previousPage}
+              {lastPage}
+              {nextPage}
+            </ul>
+          </nav>
+        </div>
       );
     }
     else {

@@ -10,3 +10,14 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 .glyphicon-star {
   color: darken(yellow,15%);
 }
+.repos-list .pager{
+  margin: 0 0 10px 0;
+}
+.repos-list{
+  width: 100%;
+}
+.repos-list .spinner{
+  position: absolute;
+  left: 50%;
+  margin-left: -35px;
+}
