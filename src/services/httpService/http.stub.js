@@ -7,8 +7,6 @@
  * In /src/config.mock.js you can configure the timeOut (to emulate network traffic)
  */
 
-import configuration from 'configuration';
-
 import _mockGithubUser from './http.mocks/user.json';
 import _mockGithubRepos from './http.mocks/repos.json';
 import _mockGithubFollowers from './http.mocks/followers.json';
@@ -23,7 +21,7 @@ const mockJsonFiles = {
 
 export default {
   get(relativeUrl){
-    var promise = new Promise(function(resolve, reject){
+    var promise = new Promise((resolve, reject) => {
       var result = null;
       for(let endpoint in mockJsonFiles){
         if(endpoint.indexOf('*') === -1 && relativeUrl.indexOf(endpoint) > -1){
@@ -48,11 +46,11 @@ export default {
             etag: (new Date()).getTime().toString()//@todo mock it ?
           }
         };
-        if(typeof configuration.timeOut === 'number'){
+        if(typeof this.configuration.timeOut === 'number'){
           setTimeout(function(){
             console.info('http.stub.js',relativeUrl,resolvedData);
             return resolve(resolvedData);
-          },configuration.timeOut);
+          },this.configuration.timeOut);
         }
         else{
           console.info('http.stub.js',relativeUrl,resolvedData);
@@ -65,11 +63,11 @@ export default {
           message: "No endpoint matched in available mocks",
           humanMessage: "An error occured, please try again."
         }
-        if(typeof configuration.timeOut === 'number'){
+        if(typeof this.configuration.timeOut === 'number'){
           setTimeout(function(){
             console.error('http.stub.js',relativeUrl,resolvedData);
             return reject(resolvedData);
-          },configuration.timeOut);
+          },this.configuration.timeOut);
         }
         else{
           console.error('http.stub.js',relativeUrl,resolvedData);

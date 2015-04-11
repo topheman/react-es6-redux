@@ -2,13 +2,11 @@
 
 import request from 'superagent';
 
-import configuration from 'configuration';
-
 export default {
   get(relativeUrl,params){
-    var promise = new Promise(function(resolve, reject){
+    var promise = new Promise((resolve, reject) => {
 
-      var url = configuration.backendBaseUrl+relativeUrl;
+      var url = this.configuration.backendBaseUrl+relativeUrl;
 
       //add query params
       if(typeof params === 'object' && params !== null){
