@@ -1,6 +1,9 @@
 'use strict';
 
 import React from 'react';
+import Router from 'react-router';
+
+var Link = Router.Link;
 
 import ProfileBox from './ProfileBox.jsx';
 
@@ -8,7 +11,11 @@ export default class ProfileList extends React.Component {
   render() {
     var results = this.props.results;
     if (results === null) {
-      return <noscript/>
+      return (
+        <p>
+          Just search for a Github user or organization ... or access directly to <Link to="/github/user/topheman">my profile</Link>.
+        </p>
+      )
     }
     else if(results.error){
       return (

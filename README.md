@@ -42,13 +42,13 @@ Here are the following steps I intend to follow (may change) - should be tagged 
 - [x] Refactor components using some React hooks like `componentWillMount` [v0.6.1](https://github.com/topheman/react-es6/tree/v0.6.1)
 	- [x] UI : spinner on repositories pagination
 - [x] Get rid of webpack resolve.alias on httpService in favor of depencency injection (would have messed up the `require` of node - or forced to find hack to require modules in node through webpack)[v0.6.2](https://github.com/topheman/react-es6/tree/v0.6.2)
-- [ ] Add Flux to manage states (choose an implementation)
 - [ ] ...
 
 If I got time, some implementations would be worth it on projects on the side :
 
 * Extract the http / Github isomorphic network layer to a node module, so that it could be used in standalone.
 * Implement a localstorage cache middleware for superagent.
+* Add Flux to manage states (choose an implementation)
 
 
 ###Basic features :
@@ -80,6 +80,14 @@ You'll have to install the [topheman-apis-proxy](https://github.com/topheman/top
 * Open a terminal in the react-es6 folder and `npm run dev`
 * Open a terminal in the topheman-apis-proxy folder and `grunt serve` (see more in the [run in local](https://github.com/topheman/topheman-apis-proxy#run-in-local) README section)
 * Go to [http://localhost:8080/](http://localhost:8080/)
+
+You can also run the app in mock mode (without any backend - the http request are mocked), usefull for :
+
+* working offline
+* create unit tests without changing code
+ 
+Just run : `npm run dev-mock`
+
 
 ####Build
 
