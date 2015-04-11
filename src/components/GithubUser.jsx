@@ -47,13 +47,17 @@ export default class GithubUser extends React.Component {
     }
   }
   init(userName){
-    //client-side fetching of the profile via xhr based on username
+    //init the state as fetching
     var newState = React.addons.update(this.state,{
       profile:{
+        fetching: {$set: true}
+      },
+      repositories:{
         fetching: {$set: true}
       }
     });
     this.setState(newState);
+    //client-side fetching of the profile via xhr based on username
     github.getUser(userName)
       .then((result) => {
         this.setState({
@@ -72,12 +76,6 @@ export default class GithubUser extends React.Component {
         });
       });
     //client-side fetching of the repositories via xhr based on the username
-    var newState = React.addons.update(this.state,{
-      repositories:{
-        fetching: {$set: true}
-      }
-    });
-    this.setState(newState);
     github.getUserRepos(userName,{
       page: 1,
       sort: "updated",
