@@ -33,7 +33,6 @@ export default class Header extends React.Component {
       <div>
         <nav className="navbar navbar-default" role="navigation">
           <div className="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div className="navbar-header">
               <button type="button" onClick={this.handleClick} className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 <span className="sr-only">Toggle navigation</span>
@@ -46,15 +45,12 @@ export default class Header extends React.Component {
               </Link>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div className={collapsedMenuClassName} id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li><Link to="github">Search Github Users</Link></li>
               </ul>
             </div>
-            <!-- /.navbar-collapse -->
           </div>
-          <!-- /.container-fluid -->
         </nav>
 
         <ul className="site-networks">
