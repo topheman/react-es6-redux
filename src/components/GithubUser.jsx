@@ -24,9 +24,11 @@ export default class GithubUser extends React.Component {
     this.state = this._getInitialState();
 
     //server-side rendering based on passing data retrieved previously from the server
-    if(props.params.data){
+    if(props.data){
       this.state.profile = props.data.profile;
+      this.state.profile.pristineLogin = props.username;
       this.state.repositories = props.data.repositories;
+      this.state.repositories.pristineLogin = props.username;
     }
 
   }
