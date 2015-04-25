@@ -46,7 +46,7 @@ export default class GithubUser extends React.Component {
       repositories: {
         pristineLogin: this.props.params.username
       }
-    }
+    };
   }
   init(userName){
     //init the state as fetching
