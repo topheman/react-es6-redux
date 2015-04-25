@@ -1,6 +1,6 @@
 {
   "name": "react-es6",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A simple app to try React and ES6, using topheman-apis-proxy as data api backend",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,8 @@
     "url": "https://github.com/topheman/react-es6.git"
   },
   "keywords": [
-    "react"
+    "react",
+    "ES6"
   ],
   "author": "Christophe Rosset",
   "license": "MIT",
