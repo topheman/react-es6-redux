@@ -1,9 +1,7 @@
 'use strict';
 
 import React from 'react';
-import Router from 'react-router';
-
-var Link = Router.Link;
+import { Router, Link } from 'react-router';
 
 import ProfileBox from './ProfileBox.jsx';
 

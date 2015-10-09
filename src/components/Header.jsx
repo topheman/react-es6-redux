@@ -1,9 +1,7 @@
 'use strict';
 
 import React from 'react';
-import Router from 'react-router';
-
-var Link = Router.Link;
+import { Router, IndexLink, Link } from 'react-router';
 
 export default class Header extends React.Component {
   constructor(props){
@@ -40,14 +38,14 @@ export default class Header extends React.Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <Link className="navbar-brand logo" to="home">
+              <IndexLink to="/" className="navbar-brand logo">
                 <span>{this.props.title}</span>
-              </Link>
+              </IndexLink>
             </div>
 
             <div className={collapsedMenuClassName} id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
-                <li><Link to="github">Search Github Users</Link></li>
+                <li><Link to="/github">Search Github Users</Link></li>
               </ul>
             </div>
           </div>

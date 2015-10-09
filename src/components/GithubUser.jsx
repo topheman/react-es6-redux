@@ -1,6 +1,7 @@
 'use strict';
 
-import React from 'react/addons';
+import React from 'react';
+import update from 'react-addons-update';
 
 import github from '../services/github.js';
 import Spinner from './common/Spinner.jsx';
@@ -50,7 +51,7 @@ export default class GithubUser extends React.Component {
   }
   init(userName){
     //init the state as fetching
-    var newState = React.addons.update(this.state,{
+    var newState = update(this.state,{
       profile:{
         fetching: {$set: true}
       },
@@ -104,7 +105,7 @@ export default class GithubUser extends React.Component {
   }
   reposGotoPage(pageNum){
     //client-side fetching of the repositories via xhr based on the username
-    var newState = React.addons.update(this.state,{
+    var newState = update(this.state,{
       repositories:{
         fetching: {$set: true}
       }

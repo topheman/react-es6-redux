@@ -33,7 +33,8 @@ export default class Tr extends React.Component {
       }
     }
     else{
-      return <noscript/>;
+      //won't return <noscript/> if so, getting following : Warning: validateDOMNesting(...): <noscript> cannot appear as a child of <tbody>. See Profile > tbody > Tr > noscript.
+      return <tr/>;
     }
   }
 }

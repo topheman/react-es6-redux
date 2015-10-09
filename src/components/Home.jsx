@@ -1,9 +1,7 @@
 'use strict';
 
 import React from 'react';
-import Router from 'react-router';
-
-var Link = Router.Link;
+import { Router, Link } from 'react-router';
 
 export default class Home extends React.Component {
   render() {
@@ -23,7 +21,7 @@ export default class Home extends React.Component {
           You can access the source code on the <a href="https://github.com/topheman/react-es6" title="react-es6 on github">github repo</a> and also read <a href="http://dev.topheman.com/playing-with-es6-and-react/" title="Playing with React and ES6">the blog post</a> about it.
         </p>
         <p><strong>TL;DR</strong> : click on the button to try it !</p>
-        <p className="text-center"><Link className="btn btn-default btn-primary btn-lg" to="github">TRY the DAMN thing !</Link></p>
+        <p className="text-center"><Link className="btn btn-default btn-primary btn-lg" to="/github">TRY the DAMN thing !</Link></p>
         <p>The third step (turning the app to isomorphic is now finished, you can try <a href="https://topheman-react-es6-isomorphic.herokuapp.com/" title="Try topheman/react-es6-isomorphic">topheman/react-es6-isomorphic - demo</a>)</p>
       </div>
     );
