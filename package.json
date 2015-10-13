@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "./node_modules/.bin/webpack-dev-server --progress --colors",
     "dev-mock": "MOCK=true ./node_modules/.bin/webpack-dev-server --progress --colors",
-    "build": "grunt build & ./node_modules/.bin/webpack --config ./webpack.config.js",
-    "build-prod": "grunt build && PROD=true ./node_modules/.bin/webpack -p --config ./webpack.config.js"
+    "build": "grunt build & ./node_modules/.bin/webpack",
+    "build-prod": "grunt build && PROD=true ./node_modules/.bin/webpack"
   },
   "repository": {
     "type": "git",

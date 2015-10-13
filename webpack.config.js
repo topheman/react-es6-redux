@@ -24,6 +24,14 @@ plugins.push(new ExtractTextPlugin('[name]'))// extract inline css into separate
 plugins.push(new webpack.HotModuleReplacementPlugin());//@todo remove hmr and others on production builds
 plugins.push(new webpack.NoErrorsPlugin());
 
+if(process.env.PROD){
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: true
+    }
+  }));
+}
+
 var resolve = {
   alias : {}
 };
