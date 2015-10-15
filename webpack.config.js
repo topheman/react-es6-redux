@@ -3,6 +3,7 @@ var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var mockObjects = false;
+var common = require('./common');
 
 if(process.env.PROD){
   console.log('PRODUCTION mode');
@@ -27,6 +28,7 @@ plugins.push(new ExtractTextPlugin('css/main.css',{
   disable: false,
     allChunks: true
 }));
+plugins.push(new webpack.BannerPlugin(common.getBanner()));
 
 if(process.env.PROD){
   plugins.push(new webpack.optimize.UglifyJsPlugin({
