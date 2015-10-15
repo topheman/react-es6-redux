@@ -4,6 +4,12 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var mockObjects = false;
 var common = require('./common');
+var plugins = [];
+var MODE_DEV_SERVER = process.argv[1].indexOf('webpack-dev-server') > -1 ? true : false;
+
+console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode');
+
+/** environment setup */
 
 if(process.env.PROD){
   console.log('PRODUCTION mode');
@@ -20,7 +26,19 @@ else{
   console.log('DEVELOPMENT mode');
 }
 
-var plugins = [];
+/** before build */
+
+//in build mode, cleanup build folder before
+if(MODE_DEV_SERVER === false){
+  console.log('Cleaning ...');
+  var deleted = require('del').sync(['build/*','build/**/*',"!.git/**/*"]);
+  deleted.forEach(function(e){
+    console.log(e);
+  });
+}
+
+/** plugins setup */
+
 plugins.push(new webpack.HotModuleReplacementPlugin());//@todo remove hmr and others on production builds
 plugins.push(new webpack.NoErrorsPlugin());
 // extract css into one main.css file
@@ -37,6 +55,8 @@ if(process.env.PROD){
     }
   }));
 }
+
+/** webpack config */
 
 var resolve = {
   alias : {}

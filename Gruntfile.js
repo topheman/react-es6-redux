@@ -14,12 +14,6 @@ module.exports = function (grunt) {
       }
     },
 
-    clean: {
-      build: {
-        src : ['build/*','build/**/*',"!.git/**/*"]
-      }
-    },
-
     //this one isn't used because there are only images as assets and they are included in css as base64
     copy: {
       build: {
@@ -43,7 +37,6 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build',[
-    'clean:build',
     'processhtml:build'
   ]);
 
