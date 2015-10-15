@@ -20,9 +20,13 @@ else{
 }
 
 var plugins = [];
-plugins.push(new ExtractTextPlugin('[name]'))// extract inline css into separate 'styles.css' file
 plugins.push(new webpack.HotModuleReplacementPlugin());//@todo remove hmr and others on production builds
 plugins.push(new webpack.NoErrorsPlugin());
+// extract css into one main.css file
+plugins.push(new ExtractTextPlugin('css/main.css',{
+  disable: false,
+    allChunks: true
+}));
 
 if(process.env.PROD){
   plugins.push(new webpack.optimize.UglifyJsPlugin({
@@ -40,17 +44,15 @@ resolve.alias['httpServiceConfiguration'] = path.resolve(__dirname, './src/servi
 
 module.exports = {
   entry: {
-    "js/bundle.js": [
+    "js/bundle": [
       'webpack/hot/only-dev-server',
       "./src/bootstrap.jsx"
     ],
-    "css/main.css": [
-      "./src/style/main.scss"
-    ]
+    "css/main": "./src/style/main.scss"
   },
   output: {
     publicPath: "/assets/",
-    filename: "[name]",
+    filename: "[name].js",
     path: "./build/assets"
   },
   cache: true,
