@@ -25,7 +25,7 @@ If you want to go further, read the [blog post](http://dev.topheman.com/playing-
 
 The react-es6 part :
 
-`npm install grunt-cli -g` (if you don't have it)
+`npm install gulp-cli -g` (if you don't have it)
 
 ```shell
 git clone https://github.com/topheman/react-es6.git
@@ -58,7 +58,7 @@ At the root of the project :
 
 A `/build` folder will be created with your project built in it.
 
-You can run it with `grunt serve:build`
+You can run it with `npm run serve-build`
 
 ###Steps :
 
