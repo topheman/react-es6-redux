@@ -16,7 +16,13 @@ function getInfos(){
   return infos;
 }
 
-function getBanner(){
+/**
+ * Called in default mode by webpack (will format it correctly in comments)
+ * Called in formatted mode by gulp (for html comments)
+ * @param {String} mode default/formatted
+ * @returns {String}
+ */
+function getBanner(mode){
   var _ = require('lodash');
   var infos = getInfos();
   var compiled = _.template([
@@ -30,8 +36,12 @@ function getBanner(){
     '@copyright <%= year %>(c) <%= (pkg.author && pkg.author.name) ? pkg.author.name : pkg.author %>',
     '@license <%= pkg.license %>',
     ''
-  ].join('\n'));
+  ].join(mode === 'formatted' ? '\n * ' : '\n'));
   return compiled(infos);
+}
+
+function getBannerHtml(){
+  return '<!--\n * \n * ' + getBanner('formatted') + '\n-->\n';
 }
 
 function _getUrlToCommit(pkg, gitRevisionLong){
@@ -52,3 +62,4 @@ function _getUrlToCommit(pkg, gitRevisionLong){
 
 module.exports.getInfos = getInfos;
 module.exports.getBanner = getBanner;
+module.exports.getBannerHtml = getBannerHtml;

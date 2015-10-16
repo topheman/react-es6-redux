@@ -6,6 +6,9 @@ var processhtml = require('gulp-processhtml');
 var gutil = require('gulp-util');
 var minifyHtml = require('gulp-minify-html');
 var gulpif = require('gulp-if');
+var footer = require('gulp-footer');
+
+var common = require('./common');
 
 if(process.env.PROD){
   console.log('PRODUCTION mode');
@@ -50,6 +53,7 @@ gulp.task('compile', function() {
     }))
     .pipe(processhtml())
     .pipe(gulpif(process.env.PROD ? true : false, minifyHtml({empty: true}))) //only minify html in production
+    .pipe(footer(common.getBannerHtml()))
     .pipe(gulp.dest('./build'));
 });
 
