@@ -4,6 +4,8 @@ var gulp = require('gulp');
 var inject = require('gulp-inject');
 var processhtml = require('gulp-processhtml');
 var gutil = require('gulp-util');
+var minifyHtml = require('gulp-minify-html');
+var gulpif = require('gulp-if');
 
 if(process.env.PROD){
   console.log('PRODUCTION mode');
@@ -47,6 +49,7 @@ gulp.task('compile', function() {
       transform: getTagFromFilepath
     }))
     .pipe(processhtml())
+    .pipe(gulpif(process.env.PROD ? true : false, minifyHtml({empty: true}))) //only minify html in production
     .pipe(gulp.dest('./build'));
 });
 
