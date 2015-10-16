@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var inject = require('gulp-inject');
 var processhtml = require('gulp-processhtml');
+var gutil = require('gulp-util');
 
 if(process.env.PROD){
   console.log('PRODUCTION mode');
@@ -11,9 +12,19 @@ else{
   console.log('DEVELOPMENT mode');
 }
 
+function getWebpackHash(){
+  try{
+    return require('./build/stats.json').hash;
+  }
+  catch(e){
+    throw new Error('./build/stats.json file missing, please relaunch the build', e);
+  }
+}
+
 function getTagFromFilepath(filepath){
   //fix path
   filepath = filepath.replace('/build','.');
+  gutil.log('Injecting', filepath);
   //return tag
   if(/\.js$/.test(filepath)){
     return '<script src="' + filepath + '"></script>';
@@ -25,12 +36,13 @@ function getTagFromFilepath(filepath){
 }
 
 gulp.task('compile', function() {
+  var hash = process.env.PROD ? '-'+getWebpackHash() : '';
   return gulp.src('./public/index.html')
-    .pipe(inject( gulp.src('./build/assets/js/bundle.js', {read: false}), {
+    .pipe(inject( gulp.src('./build/assets/js/bundle'+hash+'.js', {read: false}), {
       starttag: '<!-- inject:js -->',
       transform: getTagFromFilepath
     }))
-    .pipe(inject( gulp.src('./build/assets/css/main.css', {read: false}), {
+    .pipe(inject( gulp.src('./build/assets/css/main'+hash+'.css', {read: false}), {
       starttag: '<!-- inject:css -->',
       transform: getTagFromFilepath
     }))

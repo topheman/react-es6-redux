@@ -28,6 +28,8 @@ else{
 
 /** before build */
 
+var hash = process.env.PROD ? '-[hash]' : '';
+
 //in build mode, cleanup build folder before
 if(MODE_DEV_SERVER === false){
   console.log('Cleaning ...');
@@ -42,7 +44,7 @@ if(MODE_DEV_SERVER === false){
 plugins.push(new webpack.HotModuleReplacementPlugin());//@todo remove hmr and others on production builds
 plugins.push(new webpack.NoErrorsPlugin());
 // extract css into one main.css file
-plugins.push(new ExtractTextPlugin('css/main.css',{
+plugins.push(new ExtractTextPlugin('css/main' + hash + '.css',{
   disable: false,
     allChunks: true
 }));
@@ -54,6 +56,17 @@ if(process.env.PROD){
       warnings: true
     }
   }));
+}
+
+if(MODE_DEV_SERVER === false){
+  //write infos about the build (to retrieve the hash) https://webpack.github.io/docs/long-term-caching.html#get-filenames-from-stats
+  plugins.push(function() {
+    this.plugin("done", function(stats) {
+      require("fs").writeFileSync(
+        path.join(__dirname, "build", "stats.json"),
+        JSON.stringify(stats.toJson()));
+    });
+  });
 }
 
 /** webpack config */
@@ -74,7 +87,7 @@ module.exports = {
   },
   output: {
     publicPath: "/assets/",
-    filename: "[name].js",
+    filename: "[name]" + hash + ".js",
     path: "./build/assets"
   },
   cache: true,
