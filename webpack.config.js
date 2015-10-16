@@ -41,7 +41,6 @@ if(MODE_DEV_SERVER === false){
 
 /** plugins setup */
 
-plugins.push(new webpack.HotModuleReplacementPlugin());//@todo remove hmr and others on production builds
 plugins.push(new webpack.NoErrorsPlugin());
 // extract css into one main.css file
 plugins.push(new ExtractTextPlugin('css/main' + hash + '.css',{

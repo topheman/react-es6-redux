@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "./node_modules/.bin/webpack-dev-server --progress --colors",
+    "dev": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
     "dev-mock": "MOCK=true ./node_modules/.bin/webpack-dev-server --progress --colors",
     "build": "./node_modules/.bin/webpack --progress && gulp build",
     "build-prod": "PROD=true ./node_modules/.bin/webpack --progress && PROD=true gulp build",
