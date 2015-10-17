@@ -76,10 +76,10 @@ var resolve = {
 //only used browser side
 resolve.alias['httpServiceConfiguration'] = path.resolve(__dirname, './src/services/httpService/config/environment/config' + (process.env.PROD ? '.build' : (process.env.MOCK ? '.mock' : '.dev' ) ) + '.js');
 
-module.exports = {
+var config = {
   entry: {
     "js/bundle": [
-      'webpack/hot/only-dev-server',
+      'webpack/hot/only-dev-server',//removed on build mode
       "./src/bootstrap.jsx"
     ],
     "css/main": "./src/style/main.scss"
@@ -125,3 +125,10 @@ module.exports = {
   resolve: resolve,
   plugins: plugins
 };
+
+if(MODE_DEV_SERVER === false){
+  //remove 'webpack/hot/only-dev-server' on build
+  config.entry["js/bundle"].shift();
+}
+
+module.exports = config;
