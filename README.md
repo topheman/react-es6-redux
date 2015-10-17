@@ -25,8 +25,6 @@ If you want to go further, read the [blog post](http://dev.topheman.com/playing-
 
 The react-es6 part :
 
-`npm install gulp-cli -g` (if you don't have it)
-
 ```shell
 git clone https://github.com/topheman/react-es6.git
 cd react-es6
