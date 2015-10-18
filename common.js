@@ -1,6 +1,25 @@
 'use strict';
 
+function projectIsGitManaged(){
+  var fs = require('fs');
+  var path = require('path');
+  try {
+    // Query the entry
+    var stats = fs.lstatSync(path.join(__dirname,'.git'));
+
+    // Is it a directory?
+    if (stats.isDirectory()) {
+      return true;
+    }
+    return false;
+  }
+  catch (e) {
+    return false;
+  }
+}
+
 function getInfos(){
+  var gitActive = projectIsGitManaged();
   var gitRev = require('git-rev-sync');
   var moment = require('moment');
   var pkg = require('./package.json');
@@ -8,11 +27,11 @@ function getInfos(){
     pkg: pkg,
     today: moment(new Date()).format('DD/MM/YYYY'),
     year: new Date().toISOString().substr(0, 4),
-    gitRevisionShort: gitRev.short(),
-    gitRevisionLong: gitRev.long(),
+    gitRevisionShort: gitActive ? gitRev.short() : null,
+    gitRevisionLong: gitActive ? gitRev.long() : null,
     urlToCommit: null
   };
-  infos.urlToCommit = _getUrlToCommit(pkg, infos.gitRevisionLong);
+  infos.urlToCommit = gitActive ? _getUrlToCommit(pkg, infos.gitRevisionLong) : null;
   return infos;
 }
 
@@ -31,7 +50,7 @@ function getBanner(mode){
     '<%= pkg.description %>',
     '',
     '@version v<%= pkg.version %> - <%= today %>',
-    '@revision #<%= gitRevisionShort %><% if (urlToCommit !== null) { %> - <%= urlToCommit %><% } %>',
+    '<% if(gitRevisionShort !== null) { %>@revision #<%= gitRevisionShort %><% if (urlToCommit !== null) { %> - <%= urlToCommit %><% } %><% } %>',
     '@author <%= (pkg.author && pkg.author.name) ? pkg.author.name : pkg.author %>',
     '@copyright <%= year %>(c) <%= (pkg.author && pkg.author.name) ? pkg.author.name : pkg.author %>',
     '@license <%= pkg.license %>',
