@@ -10,7 +10,8 @@ var footer = require('gulp-footer');
 
 var common = require('./common');
 
-if(process.env.PROD){
+var env = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
+if(env === 'prod'){
   console.log('PRODUCTION mode');
 }
 else{
@@ -41,7 +42,7 @@ function getTagFromFilepath(filepath){
 }
 
 gulp.task('compile', function() {
-  var hash = process.env.PROD ? '-'+getWebpackHash() : '';
+  var hash = env === 'prod' ? '-'+getWebpackHash() : '';
   return gulp.src('./public/index.html')
     .pipe(inject( gulp.src('./build/assets/js/bundle'+hash+'.js', {read: false}), {
       starttag: '<!-- inject:js -->',
@@ -52,7 +53,7 @@ gulp.task('compile', function() {
       transform: getTagFromFilepath
     }))
     .pipe(processhtml())
-    .pipe(gulpif(process.env.PROD ? true : false, minifyHtml({empty: true}))) //only minify html in production
+    .pipe(gulpif(env === 'prod' ? true : false, minifyHtml({empty: true}))) //only minify html in production
     .pipe(footer(common.getBannerHtml()))
     .pipe(gulp.dest('./build'));
 });
