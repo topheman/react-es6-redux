@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Router, IndexLink, Link } from 'react-router';
+import { IndexLink, Link } from 'react-router';
 
 export default class Header extends React.Component {
   constructor(props){
