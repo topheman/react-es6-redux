@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
-    "dev-mock": "NODE_ENV=MOCK ./node_modules/.bin/webpack-dev-server --progress --colors",
+    "dev": "echo 'deprecated, use npm run webpack-dev' && npm run webpack-dev",
+    "dev-mock": "echo 'deprecated, use npm run webpack-mock' && npm run webpack-mock",
     "build": "./node_modules/.bin/webpack --progress && ./node_modules/.bin/gulp build",
     "build-prod": "NODE_ENV=PROD ./node_modules/.bin/webpack --progress && NODE_ENV=PROD ./node_modules/.bin/gulp build",
-    "serve-build": "cd build && ../node_modules/.bin/serve --port 9001"
+    "serve-build": "cd build && ../node_modules/.bin/serve --port 9001",
+    "webpack-dev": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
+    "webpack-mock": "NODE_ENV=MOCK ./node_modules/.bin/webpack-dev-server --progress --colors --hot"
   },
   "repository": {
     "type": "git",
