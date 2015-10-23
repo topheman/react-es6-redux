@@ -17,6 +17,7 @@ export default class TwitterButton extends React.Component {
         height="28px"
         title="Twitter Tweet Button"
         style={{border: 0, overflow: "hidden"}}
+        scrolling="no"
         ref="iframe" src="https://platform.twitter.com/widgets/tweet_button.html?count=none&dnt=false&lang=en&original_referer=http%3A%2F%2Ftopheman.github.io%2Freact-es6%2F%23%2F&size=l&text=Simple%20%23reactjs%20%23es6%20project%20using%20Github%20API&type=share&url=https%3A%2F%2Ftopheman.github.io%2Freact-es6%2F&via=topheman" />
     );
   }
