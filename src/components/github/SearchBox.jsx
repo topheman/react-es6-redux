@@ -22,13 +22,13 @@ export default class SearchBox extends React.Component {
     this.state = this._getInitialState();
 
     //if results are cached in storage, recache for X mins
-    localStorageWrapper.extend('github.search.userName');
+    localStorageWrapper.extend('github.search.username');
     localStorageWrapper.extend('github.search.results');
 
   }
   _getInitialState(){
     return {
-      userName : localStorageWrapper.get('github.search.userName'),
+      username : localStorageWrapper.get('github.search.username') || '',
       results : localStorageWrapper.get('github.search.results') || null,
       fetching: false
     };
@@ -43,14 +43,14 @@ export default class SearchBox extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     document.getElementById('user-name').blur();
-    var currentUser = this.state.userName;
+    var currentUser = this.state.username;
     //prevent submiting empty user
     if (currentUser !== "") {
       this.setState({fetching: true});
       github.searchUser(currentUser)
         .then((result) => {
           localStorageWrapper.set('github.search.results',result.data);
-          localStorageWrapper.set('github.search.userName',currentUser);
+          localStorageWrapper.set('github.search.username',currentUser);
           this.setState({
             results: result.data,
             fetching: false
@@ -67,12 +67,12 @@ export default class SearchBox extends React.Component {
     }
   }
   handleChange(e){
-    //not sure it's the best way because it will trigger a render on something handled by the browser
-    //but have to keep track of this value anyway ...
-    this.setState({userName:e.target.value});
+    const node = this.refs.input;
+    const username = node.value.trim();
+    this.setState({username:username});
   }
   render() {
-    var userName = this.state.userName;
+    var username = this.state.username;
     var results = this.state.results;
     var fetching = this.state.fetching;
     return (
@@ -81,7 +81,7 @@ export default class SearchBox extends React.Component {
           <div className="form-group">
             <label htmlFor="user-name" className="col-sm-2">Search for a Github User</label>
             <div className="col-sm-10">
-              <input type="search" name="user-name" className="form-control" id="user-name" placeholder="Enter username" value={userName} onChange={this.handleChange} onFocus={this.handleFocus}/>
+              <input ref="input" type="search" name="user-name" className="form-control" id="user-name" placeholder="Enter username" value={username} onChange={this.handleChange} onFocus={this.handleFocus}/>
             </div>
           </div>
           <div className="form-group">
