@@ -18,10 +18,22 @@ const reducer = combineReducers({
 const store = compose(
   reduxReactRouter({
     createHistory: () => {
-      return createHashHistory({queryKey:false});
+      return createHashHistory({queryKey: module.hot ? true : false});
   } }),
   devTools()
 )(createStore)(reducer);
+
+function getDebugPanel(){
+  if(module.hot){
+    return (
+      <DebugPanel top right bottom>
+        <DevTools store={store} monitor={LogMonitor} />
+      </DebugPanel>
+    );
+  }
+  return(<div/>);
+}
+
 
 export default class Root extends React.Component {
   render() {
@@ -32,9 +44,7 @@ export default class Root extends React.Component {
             {routes}
           </ReduxRouter>
         </Provider>
-        <DebugPanel top right bottom>
-          <DevTools store={store} monitor={LogMonitor} />
-        </DebugPanel>
+        {getDebugPanel()}
       </div>
     );
   }
