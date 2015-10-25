@@ -7,33 +7,25 @@ import { connect } from 'react-redux';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 
-//@connect(state => ({ routerState: state.router })) - bellow the ES6 version without using decorators
-var App = (function(){
+@connect(state => ({ routerState: state.router }))
+class App extends React.Component {
 
-  class App extends React.Component {
-
-    render() {
-      return (
-        <div>
-          <Header title="react-es6"/>
-          <div className="container">
-            {this.props.children}
-          </div>
-          <Footer/>
-        </div>
-      );
-    }
-
+  static propTypes = {
+    children: PropTypes.node
   }
 
-  App.propTypes = {
-    children: PropTypes.node
-  };
+  render() {
+    return (
+      <div>
+        <Header title="react-es6"/>
+        <div className="container">
+          {this.props.children}
+        </div>
+        <Footer/>
+      </div>
+    );
+  }
 
-  App = connect(state => ({ routerState: state.router }))(App);
-
-  return App;
-
-})();
+}
 
 export default App;

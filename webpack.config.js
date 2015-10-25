@@ -102,7 +102,7 @@ var config = {
       {
         test: /\.js(x?)$/,
         exclude: /node_modules/,
-        loader: 'react-hot!babel-loader'
+        loader: 'react-hot!babel-loader?stage=0'
       },
       {
         test: /\.json$/,
