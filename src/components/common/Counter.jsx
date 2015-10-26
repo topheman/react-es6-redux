@@ -29,7 +29,7 @@ class Counter extends React.Component {
     console.log('render counter');
     const { counter, increment } = this.props;
     return(
-      <button className="btn btn-default" onClick={increment}>Clicked ! : {counter}</button>
+      <button className="btn btn-default" onClick={increment}>Clicked : {counter}</button>
     );
   }
 }
