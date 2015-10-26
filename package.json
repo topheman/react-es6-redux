@@ -67,6 +67,7 @@
     "react-router": "^1.0.0-rc3",
     "redux": "^3.0.4",
     "redux-router": "^1.0.0-beta3",
+    "redux-thunk": "^1.0.0",
     "superagent": "^1.4.0"
   },
   "private": true

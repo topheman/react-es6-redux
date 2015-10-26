@@ -3,8 +3,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import Counter from './common/Counter.jsx';
+
 const Home = () => (
   <div>
+    <p>The following button is a redux test : <Counter/> (ctrl+H to hide the debug panel).</p>
     <p>This project is a POC based on <strong>React</strong>, coded in <strong>ES6</strong>, relying on <a href="https://github.com/topheman/topheman-apis-proxy" title="topheman-apis-proxy on github">topheman-apis-proxy</a> as a backend (providing the github API).</p>
     <p>This is the front-only part, you can see an isomorphic (universal if you will) version of this project at <a href="https://github.com/topheman/react-es6-isomorphic" title="topheman/react-es6-isomorphic on github">topheman/react-es6-isomorphic</a>.</p>
     <p>It's running on <strong>react v0.14.0</strong> - read the <a href="http://dev.topheman.com/upgraded-to-react-v0-14/" title="Upgraded to react v0.14">blog post about the upgrade</a>.</p>

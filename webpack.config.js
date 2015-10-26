@@ -49,6 +49,9 @@ plugins.push(new ExtractTextPlugin('css/main' + hash + '.css',{
     allChunks: true
 }));
 plugins.push(new webpack.BannerPlugin(common.getBanner()));
+plugins.push(new webpack.DefinePlugin({
+  '__DEVTOOLS__': env === 'prod' ? false : true
+}));
 
 if(env === 'prod'){
   plugins.push(new webpack.optimize.UglifyJsPlugin({
