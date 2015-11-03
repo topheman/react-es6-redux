@@ -46,6 +46,7 @@ export default class Header extends React.Component {
             <div className={collapsedMenuClassName} id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li><Link to="/github">Search Github Users</Link></li>
+                <li><Link to="/redux">About Redux</Link></li>
               </ul>
             </div>
           </div>

@@ -18,7 +18,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-class Counter extends React.Component {
+class CounterButton extends React.Component {
 
   static propTypes = {
     increment: PropTypes.func.isRequired,
@@ -29,9 +29,11 @@ class Counter extends React.Component {
     console.log('render counter');
     const { counter, increment } = this.props;
     return(
-      <button className="btn btn-default" onClick={increment}>Clicked : {counter}</button>
+      <button className="btn btn-primary" type="button" onClick={increment}>
+        Click to increment <span className="badge">{counter}</span>
+      </button>
     );
   }
 }
 
-export default Counter;
+export default CounterButton;
