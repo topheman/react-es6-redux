@@ -1,1 +1,1 @@
-export const INCREMENT = 'INCREMENT';
+export const COUNTER_INCREMENT = 'COUNTER_INCREMENT';

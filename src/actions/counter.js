@@ -4,6 +4,6 @@ import * as constants from '../constants.js';
 
 export function increment (){
   return {
-    type: constants.INCREMENT
+    type: constants.COUNTER_INCREMENT
   }
 }
