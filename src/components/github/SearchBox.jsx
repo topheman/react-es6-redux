@@ -4,11 +4,12 @@ import React from 'react';
 import ProfileList from './ProfileList.jsx';
 import Spinner from '../common/Spinner.jsx';
 
-import github from '../../services/github.js';
+/**
+ * This component doesn't have state nor it has to know about connect or redux.
+ * Everything it needs is passed down via props (and lets it update the state of its parent)
+ */
 
-import localStorageWrapper from '../../services/localStorageWrapper.js';
-
-export default class SearchBox extends React.Component {
+class SearchBox extends React.Component {
   constructor(props){
 
     super(props);
@@ -16,22 +17,7 @@ export default class SearchBox extends React.Component {
     //init context bindings - due to diff between React.createClass and ES6 class
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this._getInitialState = this._getInitialState.bind(this);
 
-    //init state
-    this.state = this._getInitialState();
-
-    //if results are cached in storage, recache for X mins
-    localStorageWrapper.extend('github.search.username');
-    localStorageWrapper.extend('github.search.results');
-
-  }
-  _getInitialState(){
-    return {
-      username : localStorageWrapper.get('github.search.username') || '',
-      results : localStorageWrapper.get('github.search.results') || null,
-      fetching: false
-    };
   }
   handleFocus(e) {
     var target = e.target;
@@ -43,38 +29,19 @@ export default class SearchBox extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     document.getElementById('user-name').blur();
-    var currentUser = this.state.username;
+    let currentUser = this.props.username;
     //prevent submiting empty user
-    if (currentUser !== "") {
-      this.setState({fetching: true});
-      github.searchUser(currentUser)
-        .then((result) => {
-          localStorageWrapper.set('github.search.results',result.data);
-          localStorageWrapper.set('github.search.username',currentUser);
-          this.setState({
-            results: result.data,
-            fetching: false
-          });
-        })
-        .catch((error) => {
-          this.setState({
-            results: {
-              error: error.humanMessage
-            },
-            fetching: false
-          });
-        });
+    if(currentUser !== ''){
+      this.props.searchUsers(currentUser);
     }
   }
   handleChange(e){
     const node = this.refs.input;
     const username = node.value.trim();
-    this.setState({username:username});
+    this.props.changeSearchUser(username);
   }
   render() {
-    var username = this.state.username;
-    var results = this.state.results;
-    var fetching = this.state.fetching;
+    const { username, results, fetching } = this.props;
     return (
       <div>
         <form onSubmit={this.handleSubmit} className="form-horizontal" action=".">
@@ -96,3 +63,5 @@ export default class SearchBox extends React.Component {
     )
   }
 }
+
+export default SearchBox;
