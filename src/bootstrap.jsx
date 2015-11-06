@@ -11,5 +11,5 @@ httpService.getInstance(httpServiceConfiguration);//will keep config in singleto
 //this way, instead of using resolve.alias of webpack (and having the require of module messed up by webpack when they'll be executed server-side)
 //I use dependency injection, in the one place that won't be executed in node : the client side bootstrap
 
-const history = createHashHistory({queryKey:false});
+const history = createHashHistory({queryKey:'hash'});
 ReactDOM.render(<Router history={history}>{routes}</Router>, document.getElementById('app-container'))

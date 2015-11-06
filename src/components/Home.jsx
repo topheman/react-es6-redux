@@ -11,6 +11,7 @@ const Home = () => (
     <p>Please check out the <a href="https://github.com/topheman/react-es6" title="react-es6 on github">github repo</a> or read <a href="http://dev.topheman.com/playing-with-es6-and-react/" title="Playing with React and ES6">the original blog post</a> for further informations.</p>
     <p><strong>TL;DR</strong> : click on the button to try it !</p>
     <p className="text-center"><Link className="btn btn-default btn-primary btn-lg" to="/github">TRY the DAMN thing !</Link></p>
+    <small>Annoyed by the query parameter in the url ? Since this project is hosted on Github pages, I can't use .htaccess or server-side script to redirect all requests to <code>index.html</code>, so, it's a tradeoff, so that urls could be shared/reloaded.</small>
   </div>
 );
 
