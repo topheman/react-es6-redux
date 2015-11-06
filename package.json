@@ -37,6 +37,7 @@
     "git-rev-sync": "^1.4.0",
     "gulp": "^3.9.0",
     "gulp-footer": "^1.0.5",
+    "gulp-if": "^2.0.0",
     "gulp-inject": "^3.0.0",
     "gulp-minify-html": "^1.0.4",
     "gulp-processhtml": "^1.1.0",
