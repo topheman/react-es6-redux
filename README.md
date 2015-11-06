@@ -3,7 +3,10 @@ react-es6
 
 ![image](http://dev.topheman.com/wp-content/uploads/2015/04/logo-reactjs.png)
 
-*UPDATE*: Facebook released [react@0.14.0](https://facebook.github.io/react/blog/2015/10/07/react-v0.14.html), this project is now up to date with the new version of react. See the wiki for [more infos about the upgrade](https://github.com/topheman/react-es6/wiki).
+**You are on the v1 branch** of this project, which holds its original version (previously name *react-es6* and now renamed *react-es6-redux*).
+
+* A version with a redux implementation is now available on [master branch](https://github.com/topheman/react-es6-redux)
+* The isomorphic version version of the v1 is available at [topheman/react-es6-isomorphic](https://github.com/topheman/react-es6-isomorphic/).
 
 This project is a POC based on React framework, coded in ES6, relying on [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) as a backend (providing the github API).
 
@@ -13,6 +16,8 @@ The main constraint was to produce code that could be reused for server-side ren
 
 If you want to go further, read the [blog post](http://dev.topheman.com/playing-with-es6-and-react/) about this project.
 
+It was updated to [react@0.14.0](https://facebook.github.io/react/blog/2015/10/07/react-v0.14.html) at the release of the framework - [read more about the upgrade on the wiki](https://github.com/topheman/react-es6/wiki).
+
 ###Basic features :
 
 * `/` : Home page : Display a short description of the project with a try button to :
@@ -21,13 +26,17 @@ If you want to go further, read the [blog post](http://dev.topheman.com/playing-
 
 ###Setup
 
+**For the setup with redux, please refer to the master branch**
+
 ####Install
 
 The react-es6 part :
 
 ```shell
-git clone https://github.com/topheman/react-es6.git
-cd react-es6
+git clone https://github.com/topheman/react-es6-redux.git
+cd react-es6-redux
+git checkout v1.x
+git pull origin v1.x
 npm install
 ```
 
@@ -60,13 +69,7 @@ You can run it with `npm run serve-build`
 
 ###Steps :
 
-Checkout the [releases sections](https://github.com/topheman/react-es6/releases).
-
-If I got time, some implementations would be worth it on projects on the side :
-
-* Extract the http / Github isomorphic network layer to a node module, so that it could be used in standalone.
-* Implement a localstorage cache middleware for superagent.
-* [Add Flux to manage states](https://github.com/topheman/react-es6/issues/2) (choose an implementation)
+Further development will likely be done on the redux version on master branch.
 
 ###License
 
