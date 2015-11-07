@@ -15,10 +15,8 @@ import * as reducers from '../reducers';
 
 import { devTools } from 'redux-devtools';
 
-// Don't use queryKey when HMR is on
-// @todo setup the without hash for the other project
 const createHistory = () => {
-  return createHashHistory({queryKey: module.hot ? true : false});
+  return createHashHistory({queryKey: 'hash'});
 };
 
 let combinedCreateStore;
