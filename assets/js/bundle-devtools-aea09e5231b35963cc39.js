@@ -4,7 +4,7 @@
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
  * @version v1.0.0 - 08/11/2015
- * @revision #1251f23 - https://github.com/topheman/react-es6-redux/tree/1251f2347ebf2329d2e881927e01f7be949f86a4
+ * @revision #1249c3d - https://github.com/topheman/react-es6-redux/tree/1249c3de805e9e295712ef6df8863b94decdb78d
  * @author Christophe Rosset
  * @copyright 2015(c) Christophe Rosset
  * @license MIT
@@ -25951,7 +25951,7 @@
 	            { className: 'github' },
 	            _react2['default'].createElement(
 	              'a',
-	              { href: 'https://github.com/topheman/react-es6', title: 'Fork on github' },
+	              { href: 'https://github.com/topheman/react-es6-redux', title: 'Fork on github' },
 	              _react2['default'].createElement('span', { className: 'icon' }),
 	              _react2['default'].createElement(
 	                'span',
@@ -26072,7 +26072,7 @@
 	        title: 'Twitter Tweet Button',
 	        style: { border: 0, overflow: "hidden" },
 	        scrolling: 'no',
-	        ref: 'iframe', src: 'https://platform.twitter.com/widgets/tweet_button.html?count=none&dnt=false&lang=en&original_referer=http%3A%2F%2Ftopheman.github.io%2Freact-es6%2F%23%2F&size=l&text=Simple%20%23reactjs%20%23es6%20project%20using%20Github%20API&type=share&url=https%3A%2F%2Ftopheman.github.io%2Freact-es6%2F&via=topheman' });
+	        ref: 'iframe', src: 'https://platform.twitter.com/widgets/tweet_button.html?count=none&dnt=false&lang=en&original_referer=http%3A%2F%2Ftopheman.github.io%2Freact-es6%2F%23%2F&size=l&text=Simple%20%23reactjs%20%23es6%20%23redux%20project%20using%20Github%20API&type=share&url=https%3A%2F%2Ftopheman.github.io%2Freact-es6-redux%2F&via=topheman' });
 	    }
 	  }]);
 	
@@ -26136,6 +26136,15 @@
 	      'li',
 	      null,
 	      'redux devtools'
+	    )
+	  ),
+	  _react2['default'].createElement(
+	    'p',
+	    { className: 'text-center' },
+	    _react2['default'].createElement(
+	      'a',
+	      { href: './devtools.html', title: 'Test with devtools & sourcemaps', className: 'btn btn-default btn-primary btn-lg' },
+	      'I\'m a developer, I want to see what\'s under the hood!'
 	    )
 	  )
 	);
@@ -26211,7 +26220,13 @@
 	        { href: 'https://github.com/topheman/topheman-apis-proxy', title: 'topheman-apis-proxy on github' },
 	        'topheman-apis-proxy'
 	      ),
-	      ' as a backend (providing the github API).'
+	      ' as a backend (providing the github API) and using ',
+	      _react2['default'].createElement(
+	        _reactRouter.Link,
+	        { to: '/redux', style: { fontWeight: "bold" } },
+	        'redux'
+	      ),
+	      ' for state management.'
 	    ),
 	    _react2['default'].createElement(
 	      'p',
@@ -26223,46 +26238,6 @@
 	        'topheman/react-es6-isomorphic'
 	      ),
 	      '.'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'It\'s running on ',
-	      _react2['default'].createElement(
-	        'strong',
-	        null,
-	        'react v0.14.0'
-	      ),
-	      ' - read the ',
-	      _react2['default'].createElement(
-	        'a',
-	        { href: 'http://dev.topheman.com/upgraded-to-react-v0-14/', title: 'Upgraded to react v0.14' },
-	        'blog post about the upgrade'
-	      ),
-	      '. I\'ve just added ',
-	      _react2['default'].createElement(
-	        _reactRouter.Link,
-	        { to: '/redux' },
-	        'redux'
-	      ),
-	      '.'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'Please check out the ',
-	      _react2['default'].createElement(
-	        'a',
-	        { href: 'https://github.com/topheman/react-es6', title: 'react-es6 on github' },
-	        'github repo'
-	      ),
-	      ' or read ',
-	      _react2['default'].createElement(
-	        'a',
-	        { href: 'http://dev.topheman.com/playing-with-es6-and-react/', title: 'Playing with React and ES6' },
-	        'the original blog post'
-	      ),
-	      ' for further informations.'
 	    ),
 	    _react2['default'].createElement(
 	      'p',
@@ -28031,7 +28006,7 @@
 	        _react2['default'].createElement(
 	          'p',
 	          null,
-	          'This count is updated via through the actions: ',
+	          'This count is updated through the actions: ',
 	          _react2['default'].createElement(
 	            'strong',
 	            null,
@@ -28046,13 +28021,7 @@
 	            null,
 	            'All actions modifying state'
 	          ),
-	          ' on this site are connected to redux ',
-	          _react2['default'].createElement(
-	            'em',
-	            null,
-	            '(well, this part is still in progress)'
-	          ),
-	          '.'
+	          ' on this site are connected to redux.'
 	        ),
 	        _react2['default'].createElement(
 	          'p',
@@ -49177,4 +49146,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-ea04cb7fa2458378e7ab.js.map
+//# sourceMappingURL=bundle-devtools-aea09e5231b35963cc39.js.map
