@@ -28,8 +28,8 @@ class Counter extends React.Component {
         <p>If you clone the project and launch it in local, you'll have access to the redux devtools (hot reloading / state history ...).{__DEVTOOLS__ === true ? '' : <span> In fact, <a href="./devtools.html" title="Test with devtools & sourcemaps" style={{fontWeight:"bold"}}>you can test them right now here</a>!</span>}</p>
         <p>The button bellow is connected to a redux store:</p>
         <p><CounterButton/>{__DEVTOOLS__ ? ' (ctrl+H to hide the debug panel).' : '.'}</p>
-        <p>This count is updated via through the actions: <strong>{counter}</strong></p>
-        <p><strong>All actions modifying state</strong> on this site are connected to redux <em>(well, this part is still in progress)</em>.</p>
+        <p>This count is updated through the actions: <strong>{counter}</strong></p>
+        <p><strong>All actions modifying state</strong> on this site are connected to redux.</p>
         <p className="text-center"><Link to="/">Back Home page</Link></p>
       </div>
     );

@@ -21,7 +21,7 @@ To read further about this project and its evolution:
 * `/github` : Provide a search form that displays a list of github users (with their avatars) - a request to the Github API is made.
 * `/github/user/:username` : Display a user profile with his repositories, with pagination.
 
-All state management is done via redux. In development mode, you have access to the [redux-devtools](https://github.com/gaearon/redux-devtools) (you can also [test them on the online version](https://github.com/topheman/react-es6-redux/devtools.html)).
+All state management is done via redux. In development mode, you have access to the [redux-devtools](https://github.com/gaearon/redux-devtools) (you can also [test them on the online version](https://topheman.github.io/react-es6-redux/devtools.html)).
 
 * react-router connected to redux-stores
 * hot reload everything!
