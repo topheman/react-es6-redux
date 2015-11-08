@@ -12,7 +12,7 @@
     "build-prod-all": "npm run build-prod && DEVTOOLS=true npm run build-prod",
     "serve-build": "cd build && ../node_modules/.bin/serve --port 9001",
     "webpack-dev": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
-    "webpack-mock": "NODE_ENV=MOCK ./node_modules/.bin/webpack-dev-server --progress --colors --hot"
+    "webpack-mock": "DEVTOOLS=true NODE_ENV=MOCK ./node_modules/.bin/webpack-dev-server --progress --colors --hot"
   },
   "repository": {
     "type": "git",
