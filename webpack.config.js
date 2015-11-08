@@ -12,6 +12,7 @@ console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode
 /** environment setup */
 
 var env = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
+var devtools = process.env.DEVTOOLS ? true : false;
 if(env === 'prod'){
   console.log('PRODUCTION mode');
 }
@@ -25,14 +26,18 @@ else if(env === 'mock'){
 }
 else{
   console.log('DEVELOPMENT mode');
+  devtools = true;
+}
+if(devtools){
+  console.log('DEVTOOLS active');
 }
 
 /** before build */
 
-var hash = env === 'prod' ? '-[hash]' : '';
+var hash = (env === 'prod' && devtools ? '-devtools' : '') + (env === 'prod' ? '-[hash]' : '');
 
-//in build mode, cleanup build folder before
-if(MODE_DEV_SERVER === false){
+//in build mode, cleanup build folder before - since we can build two versions (production & devtools) in a row, skip delete for the devtools
+if(MODE_DEV_SERVER === false && devtools === false){
   console.log('Cleaning ...');
   var deleted = require('del').sync(['build/*','build/**/*',"!.git/**/*"]);
   deleted.forEach(function(e){
@@ -50,10 +55,10 @@ plugins.push(new ExtractTextPlugin('css/main' + hash + '.css',{
 }));
 plugins.push(new webpack.BannerPlugin(common.getBanner()));
 plugins.push(new webpack.DefinePlugin({
-  '__DEVTOOLS__': env === 'prod' ? false : true
+  '__DEVTOOLS__': devtools
 }));
 
-if(env === 'prod'){
+if(env === 'prod' && devtools !== true){
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: true
@@ -95,7 +100,7 @@ var config = {
   },
   cache: true,
   debug: env === 'prod' ? false : true,
-  devtool: env === 'prod' ? false : "sourcemap",
+  devtool: devtools ? "sourcemap" : false,
   devServer: {
     contentBase: './public',
     inline: true

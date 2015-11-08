@@ -9,6 +9,7 @@
     "dev-mock": "echo 'deprecated, use npm run webpack-mock' && npm run webpack-mock",
     "build": "./node_modules/.bin/webpack --progress && ./node_modules/.bin/gulp build",
     "build-prod": "NODE_ENV=PROD ./node_modules/.bin/webpack --progress && NODE_ENV=PROD ./node_modules/.bin/gulp build",
+    "build-prod-all": "npm run build-prod && DEVTOOLS=true npm run build-prod",
     "serve-build": "cd build && ../node_modules/.bin/serve --port 9001",
     "webpack-dev": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
     "webpack-mock": "NODE_ENV=MOCK ./node_modules/.bin/webpack-dev-server --progress --colors --hot"
@@ -41,6 +42,7 @@
     "gulp-inject": "^3.0.0",
     "gulp-minify-html": "^1.0.4",
     "gulp-processhtml": "^1.1.0",
+    "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.6",
     "json-loader": "^0.5.3",
     "load-grunt-tasks": "^3.3.0",
