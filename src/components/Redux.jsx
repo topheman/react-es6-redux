@@ -25,7 +25,7 @@ class Counter extends React.Component {
     return (
       <div>
         <p>I added <a href="http://redux.js.org/" title="About redux">redux</a> to manage state (a flux-like implementation if you will).</p>
-        <p>If you clone the project and launch it in local, you'll have access to the redux devtools (hot reloading / state history ...).</p>
+        <p>If you clone the project and launch it in local, you'll have access to the redux devtools (hot reloading / state history ...).{__DEVTOOLS__ === true ? '' : <span> In fact, <a href="./devtools.html" title="Test with devtools & sourcemaps" style={{fontWeight:"bold"}}>you can test them right now here</a>!</span>}</p>
         <p>The button bellow is connected to a redux store:</p>
         <p><CounterButton/>{__DEVTOOLS__ ? ' (ctrl+H to hide the debug panel).' : '.'}</p>
         <p>This count is updated via through the actions: <strong>{counter}</strong></p>
