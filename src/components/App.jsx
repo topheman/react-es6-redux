@@ -17,7 +17,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header title="react-es6"/>
+        <Header title="react-es6-redux"/>
         <div className="container">
           {this.props.children}
         </div>
