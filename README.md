@@ -66,9 +66,15 @@ A `/build` folder will be created with your project built in it.
 
 You can run it with `npm run serve-build`
 
-#####Specific build
+####Specific commands
 
-To provide a version with both production version and devtools version (with redux devtools & sourcemaps, I tweaked a little my build routine), you just have to `npm run build-prod-all`
+You may want some granularity, the `DEVTOOLS` and `NODE_ENV` variables are at your disposal:
+
+* `npm run build-prod-all`: will build a production version **AND** a devtools version (with redux devtools & sourcemaps) ready to work online side by side
+* `DEVTOOLS=true npm run build`: will build a debug version with the devtools
+* `DEVTOOLS=false npm run webpack`: will launch a webpack dev server without the devtools (if you find it annoying)
+* `DEVTOOLS=false NODE_ENV=MOCK npm run webpack` will launch a webpack dev server in mock mode without the devtools
+* ... you can mix and match ;-)
 
 ###Steps :
 

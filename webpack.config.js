@@ -12,7 +12,7 @@ console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode
 /** environment setup */
 
 var env = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
-var devtools = process.env.DEVTOOLS ? true : false;
+var devtools = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
 if(env === 'prod'){
   console.log('PRODUCTION mode');
 }
@@ -26,7 +26,6 @@ else if(env === 'mock'){
 }
 else{
   console.log('DEVELOPMENT mode');
-  devtools = true;
 }
 if(devtools){
   console.log('DEVTOOLS active');

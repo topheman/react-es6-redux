@@ -11,8 +11,9 @@
     "build-prod": "NODE_ENV=PROD ./node_modules/.bin/webpack --progress && NODE_ENV=PROD ./node_modules/.bin/gulp build",
     "build-prod-all": "npm run build-prod && DEVTOOLS=true npm run build-prod",
     "serve-build": "cd build && ../node_modules/.bin/serve --port 9001",
-    "webpack-dev": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
-    "webpack-mock": "DEVTOOLS=true NODE_ENV=MOCK ./node_modules/.bin/webpack-dev-server --progress --colors --hot"
+    "webpack": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
+    "webpack-dev": "DEVTOOLS=true npm run webpack",
+    "webpack-mock": "DEVTOOLS=true NODE_ENV=MOCK npm run webpack"
   },
   "repository": {
     "type": "git",
