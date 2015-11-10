@@ -10,10 +10,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { reduxReactRouter, routerStateReducer } from 'redux-router';
 import createHashHistory from 'history/lib/createHashHistory';
 import thunk from 'redux-thunk';
-import logger from '../middleware/logger';
 import * as reducers from '../reducers';
-
-import { devTools } from 'redux-devtools';
 
 const createHistory = () => {
   return createHashHistory({queryKey: 'hash'});
@@ -29,20 +26,29 @@ let combinedCreateStore;
 const storeEnhancers = [
   reduxReactRouter({ createHistory })
 ];
+//see in Root.jsx about this patters with __DEVTOOLS__ and require over import
 if (__DEVTOOLS__) {
+  const { devTools } = require('redux-devtools');
   storeEnhancers.push(devTools());
 }
 
 /**
  * storeEnhancers contained in the array are composed in one which alters the original createStore function from redux
+ * You can see it as : combinedCreateStore = storeEnhancers[0](storeEnhancers[1](createStore))
  */
 combinedCreateStore = compose(...storeEnhancers)(createStore)
+
+let middlewares = [thunk];
+
+if (__DEVTOOLS__){
+  middlewares.push(require('../middleware/logger'));
+}
 
 /**
  * The applyMiddleware allows us to add the following middlewares to the previously altered version of createStore.
  * The redux middlewares have the signature : ({ getState, dispatch }) => next => action
  */
-const finalCreateStore = applyMiddleware(thunk, logger)(combinedCreateStore)
+const finalCreateStore = applyMiddleware(...middlewares)(combinedCreateStore)
 
 /**
  * http://redux.js.org/docs/api/combineReducers.html
