@@ -42,7 +42,7 @@ function getDebugPanel(){
     console.info('redux devtools not active, you can test them online at','https://topheman.github.io/react-es6-redux/devtools.html');
     console.info('if you\'re testing the project in local, please refer to the README to activate them');
   }
-  return(<div/>);
+  return null;
 }
 
 var ReduxDebugPanel = getDebugPanel();
