@@ -13,7 +13,7 @@ console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode
 
 var env = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
 var devtools = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
-if(env === 'prod'){
+if(env === 'production'){
   console.log('PRODUCTION mode');
 }
 else if(env === 'test'){
@@ -33,7 +33,7 @@ if(devtools){
 
 /** before build */
 
-var hash = (env === 'prod' && devtools ? '-devtools' : '') + (env === 'prod' ? '-[hash]' : '');
+var hash = (env === 'production' && devtools ? '-devtools' : '') + (env === 'production' ? '-[hash]' : '');
 
 //in build mode, cleanup build folder before - since we can build two versions (production & devtools) in a row, skip delete for the devtools
 if(MODE_DEV_SERVER === false && devtools === false){
@@ -42,6 +42,9 @@ if(MODE_DEV_SERVER === false && devtools === false){
   deleted.forEach(function(e){
     console.log(e);
   });
+}
+else if(MODE_DEV_SERVER === false && devtools === true){
+  console.log('[INFO] Not cleaning up build/ folder for this pass (not in devtools mode)');
 }
 
 /** plugins setup */
@@ -54,12 +57,19 @@ plugins.push(new ExtractTextPlugin('css/main' + hash + '.css',{
 }));
 plugins.push(new webpack.BannerPlugin(common.getBanner()));
 plugins.push(new webpack.DefinePlugin({
-  '__DEVTOOLS__': devtools
+  // I rely on the variable bellow to make a bundle with the redux devtools (or not)
+  '__DEVTOOLS__': devtools,
+  // React library code is based on process.env.NODE_ENV (all development related code is wrapped inside
+  // a conditional that can be dropped if equal to "production" - this way you get your own react.min.js build)
+  'process.env':{
+    'NODE_ENV': JSON.stringify(env)
+  }
 }));
 
-if(env === 'prod' && devtools !== true){
+if(env === 'production' && devtools !== true){
+  plugins.push(new webpack.optimize.DedupePlugin());
   plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compress: {
+    compress:{
       warnings: true
     }
   }));
@@ -82,7 +92,7 @@ var resolve = {
   alias : {}
 };
 //only used browser side
-resolve.alias['httpServiceConfiguration'] = path.resolve(__dirname, './src/services/httpService/config/environment/config' + (env === 'prod' ? '.build' : (env === 'mock' ? '.mock' : '.dev' ) ) + '.js');
+resolve.alias['httpServiceConfiguration'] = path.resolve(__dirname, './src/services/httpService/config/environment/config' + (env === 'production' ? '.build' : (env === 'mock' ? '.mock' : '.dev' ) ) + '.js');
 
 var config = {
   entry: {
@@ -98,7 +108,7 @@ var config = {
     path: "./build/assets"
   },
   cache: true,
-  debug: env === 'prod' ? false : true,
+  debug: env === 'production' ? false : true,
   devtool: devtools ? "sourcemap" : false,
   devServer: {
     contentBase: './public',
