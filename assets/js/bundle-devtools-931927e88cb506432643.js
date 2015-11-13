@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.1.1 - 11/11/2015
- * @revision #7a8b655 - https://github.com/topheman/react-es6-redux/tree/7a8b6554dd431cf2891380f8ad647d60dc55fe60
+ * @version v2.1.1 - 13/11/2015
+ * @revision #ca493d5 - https://github.com/topheman/react-es6-redux/tree/ca493d56a03df275220d57dca2319c4df537d2c7
  * @author Christophe Rosset
  * @copyright 2015(c) Christophe Rosset
  * @license MIT
@@ -19066,7 +19066,7 @@
 	exports.store = store;
 	/**
 	 * Thanks to webpack.DefinePlugin which lets you inject variables at transpile time,
-	 * everything inside the if statement will be dropped at minification if __DEVTOOLS__ is set to false.
+	 * everything inside the if statement will be dropped at minification if process.env.DEVTOOLS is set to false.
 	 * This is why I don't use static ES6 import but CommonJS import (so that it will only get required in that particular case)
 	 *
 	 * Cause: since the following are debug tools, they are not meant to be a part of the production bundle (which makes it lighter)
@@ -27516,8 +27516,6 @@
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 	
-	/* global __DEVTOOLS__ */
-	
 	/**
 	 * inspired by https://github.com/emmenko/redux-react-router-async-example
 	 *
@@ -27563,7 +27561,7 @@
 	 * Signature : (StoreCreator) => (StoreCreator)
 	 */
 	var storeEnhancers = [(0, _reduxRouter.reduxReactRouter)({ createHistory: createHistory })];
-	//see in Root.jsx about this patters with __DEVTOOLS__ and require over import
+	//see in Root.jsx about this patters with process.env.DEVTOOLS and require over import
 	if (true) {
 	  var _require = __webpack_require__(276);
 	
@@ -36091,4 +36089,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-868ba7ed810d3d614ec3.js.map
+//# sourceMappingURL=bundle-devtools-931927e88cb506432643.js.map
