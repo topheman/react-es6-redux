@@ -21,7 +21,7 @@ export const store = configureStore(initialState);
 
 /**
  * Thanks to webpack.DefinePlugin which lets you inject variables at transpile time,
- * everything inside the if statement will be dropped at minification if __DEVTOOLS__ is set to false.
+ * everything inside the if statement will be dropped at minification if process.env.DEVTOOLS is set to false.
  * This is why I don't use static ES6 import but CommonJS import (so that it will only get required in that particular case)
  *
  * Cause: since the following are debug tools, they are not meant to be a part of the production bundle (which makes it lighter)
@@ -29,7 +29,7 @@ export const store = configureStore(initialState);
  * https://webpack.github.io/docs/list-of-plugins.html#defineplugin
  */
 function getDebugPanel(){
-  if(__DEVTOOLS__){
+  if(process.env.DEVTOOLS){
     console.info('redux devtools active, to hide the panel : ctrl+H - for more infos', 'https://github.com/gaearon/redux-devtools');
     const { DevTools, DebugPanel, LogMonitor } = require('redux-devtools/lib/react');
     return (

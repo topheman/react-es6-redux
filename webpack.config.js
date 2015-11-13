@@ -57,12 +57,11 @@ plugins.push(new ExtractTextPlugin('css/main' + hash + '.css',{
 }));
 plugins.push(new webpack.BannerPlugin(common.getBanner()));
 plugins.push(new webpack.DefinePlugin({
-  // I rely on the variable bellow to make a bundle with the redux devtools (or not)
-  '__DEVTOOLS__': devtools,
   // React library code is based on process.env.NODE_ENV (all development related code is wrapped inside
   // a conditional that can be dropped if equal to "production" - this way you get your own react.min.js build)
   'process.env':{
-    'NODE_ENV': JSON.stringify(env)
+    'NODE_ENV': JSON.stringify(env),
+    'DEVTOOLS': devtools // I rely on the variable bellow to make a bundle with the redux devtools (or not)
   }
 }));
 

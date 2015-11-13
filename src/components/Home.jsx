@@ -28,7 +28,7 @@ const Home = () => {
       <p>This is the front-only part, you can see an isomorphic (universal if you will) version of this project at <a href="https://github.com/topheman/react-es6-isomorphic" title="topheman/react-es6-isomorphic on github">topheman/react-es6-isomorphic</a>.</p>
       <p><strong>TL;DR</strong> : click on the button to try it !</p>
       <p className="text-center"><Link className="btn btn-default btn-primary btn-lg" to="/github">TRY the DAMN thing !</Link></p>
-      {__DEVTOOLS__ ? devtoolsMessage : prodMessage }
+      {process.env.DEVTOOLS ? devtoolsMessage : prodMessage }
     </div>
   );
 }

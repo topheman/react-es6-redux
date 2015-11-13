@@ -1,5 +1,3 @@
-/* global __DEVTOOLS__ */
-
 /**
  * inspired by https://github.com/emmenko/redux-react-router-async-example
  *
@@ -26,8 +24,8 @@ let combinedCreateStore;
 const storeEnhancers = [
   reduxReactRouter({ createHistory })
 ];
-//see in Root.jsx about this patters with __DEVTOOLS__ and require over import
-if (__DEVTOOLS__) {
+//see in Root.jsx about this patters with process.env.DEVTOOLS and require over import
+if (process.env.DEVTOOLS) {
   const { devTools } = require('redux-devtools');
   storeEnhancers.push(devTools());
 }
@@ -40,7 +38,7 @@ combinedCreateStore = compose(...storeEnhancers)(createStore)
 
 let middlewares = [thunk];
 
-if (__DEVTOOLS__){
+if (process.env.DEVTOOLS){
   middlewares.push(require('../middleware/logger'));
 }
 
