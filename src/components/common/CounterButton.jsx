@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as CounterActions from '../../actions/counter.js';
 
-class CounterButton extends React.Component {
+export class CounterButton extends React.Component {
 
   static propTypes = {
     increment: PropTypes.func.isRequired,
