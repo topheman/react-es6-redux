@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import update from 'react-addons-update';
 
 import github from '../services/github.js';
 import Spinner from './common/Spinner.jsx';
