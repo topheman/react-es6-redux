@@ -72,7 +72,9 @@ export default function configureStore (initialState) {
   // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
       console.log('reloading reducer');
-      const nextRootReducer = require('../reducers/index')
+      const nextRootReducer = combineReducers(Object.assign({
+        router: routerStateReducer
+      }, require('../reducers/index')));
       store.replaceReducer(nextRootReducer)
     });
 
