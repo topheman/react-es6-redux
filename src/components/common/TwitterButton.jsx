@@ -13,7 +13,7 @@ export default class TwitterButton extends React.Component {
   render(){
     return (
       <iframe
-        width="76px"
+        width="78px"
         height="28px"
         title="Twitter Tweet Button"
         style={{border: 0, overflow: "hidden"}}
