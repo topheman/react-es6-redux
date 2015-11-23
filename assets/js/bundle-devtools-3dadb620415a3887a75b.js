@@ -4,7 +4,7 @@
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
  * @version v2.1.1 - 23/11/2015
- * @revision #50677a5 - https://github.com/topheman/react-es6-redux/tree/50677a55b00a0afab1f717a8301319b05d06985f
+ * @revision #a474079 - https://github.com/topheman/react-es6-redux/tree/a47407967a1ef54b4ece7d1dfcf94f9bc3e9222d
  * @author Christophe Rosset
  * @copyright 2015(c) Christophe Rosset
  * @license MIT
@@ -27183,8 +27183,6 @@
 	  var _Counter = Counter;
 	  Counter = _reactRedux.connect(function (state) {
 	    return { counter: state.counter };
-	  }, function (state) {
-	    return _redux.bindActionCreators(CounterActions, state);
 	  })(Counter) || Counter;
 	  return Counter;
 	})(_react2['default'].Component);
@@ -27415,7 +27413,9 @@
 	    // Enable Webpack hot module replacement for reducers
 	    module.hot.accept('../reducers', function () {
 	      console.log('reloading reducer');
-	      var nextRootReducer = require('../reducers/index');
+	      var nextRootReducer = _redux.combineReducers(Object.assign({
+	        router: _reduxRouter.routerStateReducer
+	      }, require('../reducers/index')));
 	      store.replaceReducer(nextRootReducer);
 	    });
 	
@@ -35876,4 +35876,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-a7346c521c0b0fc0735a.js.map
+//# sourceMappingURL=bundle-devtools-3dadb620415a3887a75b.js.map
