@@ -12,7 +12,7 @@ import * as CounterActions from '../actions/counter.js';
 
 @connect(
     state => ({counter: state.counter}),
-    state => bindActionCreators(CounterActions, state)
+    dispatch => bindActionCreators(CounterActions, dispatch)
 )
 class Counter extends React.Component {
 
