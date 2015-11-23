@@ -1,6 +1,8 @@
 react-es6-redux
 ===============
 
+[![Build Status](https://travis-ci.org/topheman/react-es6-redux.svg?branch=master)](https://travis-ci.org/topheman/react-es6-redux)
+
 ![image](http://dev.topheman.com/wp-content/uploads/2015/04/logo-reactjs.png)
 
 This project is a POC based on **React** framework, coded in **ES6**, relying on [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) as a backend (providing the github API) and using **redux** for state management.
@@ -65,6 +67,14 @@ At the root of the project :
 A `/build` folder will be created with your project built in it.
 
 You can run it with `npm run serve-build`
+
+####Test
+
+*This part is still in progress, but you can launch tests with the following command:*
+
+```shell
+npm test
+```
 
 ####Specific commands
 
