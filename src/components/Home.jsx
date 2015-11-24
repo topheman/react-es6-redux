@@ -9,7 +9,7 @@ const prodMessage = (<div>
     <li>sourcemaps for css/js</li>
     <li>redux devtools</li>
   </ul>
-  <p className="text-center"><a href="./devtools.html" title="Test with devtools & sourcemaps" className="btn btn-default btn-primary btn-lg">I'm a developer, I want to see what's under the hood!</a></p>
+  <p className="text-center"><a href="./devtools.html" title="Test with devtools & sourcemaps" className="btn btn-default btn-primary btn-lg" style={{whiteSpace:"pre-wrap"}}>I'm a developer, I want to see what's under the hood!</a></p>
 </div>);
 
 const devtoolsMessage = (<div>
