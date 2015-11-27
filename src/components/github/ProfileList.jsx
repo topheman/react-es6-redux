@@ -30,7 +30,7 @@ const ProfileList = ({results}) => {
   else {
     return (
       <div className="panel panel-default">
-        <div className="panel-heading">Total result : {results.total_count} / showing : {results.items.length}</div>
+        <div className="panel-heading">Total result{results.total_count > 1 ? 's' : ''} : {results.total_count} / showing : {results.items.length}</div>
         <div className="list-group">
           {results.items.map(function (user) {
             user.$avatar_url = user.avatar_url+"&s=40";
