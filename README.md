@@ -16,6 +16,7 @@ To read further about this project and its evolution:
 
 * [Blog post about the original version](http://dev.topheman.com/playing-with-es6-and-react/)
 * [Blog post about the upgrade to react v0.14](http://dev.topheman.com/upgraded-to-react-v0-14/)
+* [The slides on the talk I made at the ReactJsParis meetup about this project](http://slides.com/topheman/react-es6-redux)
 
 ###Basic features :
 
