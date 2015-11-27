@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.1.1 - 24/11/2015
- * @revision #a474079 - https://github.com/topheman/react-es6-redux/tree/a47407967a1ef54b4ece7d1dfcf94f9bc3e9222d
+ * @version v2.2.0 - 27/11/2015
+ * @revision #debd8db - https://github.com/topheman/react-es6-redux/tree/debd8dbff5b5a281170ba1a66a0a9e8ece4b4177
  * @author Christophe Rosset
  * @copyright 2015(c) Christophe Rosset
  * @license MIT
@@ -25924,7 +25924,9 @@
 	      _react2['default'].createElement(
 	        'div',
 	        { className: 'panel-heading' },
-	        'Total result : ',
+	        'Total result',
+	        results.total_count > 1 ? 's' : '',
+	        ' : ',
 	        results.total_count,
 	        ' / showing : ',
 	        results.items.length
@@ -26236,6 +26238,12 @@
 	        throw new Error("First time you instantiate the httpService singleton, you must pass the configuration");
 	      }
 	      instance = new HttpService(configuration);
+	      // in production, the backend is on a heroku VM,
+	      // a simple ping will get it awake before the user really uses the github api
+	      // it will avoid 6secs startup (for the first user)
+	      if (true) {
+	        instance.get('/?format=json');
+	      }
 	    }
 	    return instance;
 	  }
@@ -27138,7 +27146,7 @@
 	        'p',
 	        null,
 	        _react2['default'].createElement(_commonCounterButtonJsx2['default'], null),
-	         true ? ' (ctrl+H to hide the debug panel).' : '.'
+	         true ? ' (ctrl+H to hide the debug panel).' : ''
 	      ),
 	      _react2['default'].createElement(
 	        'p',
@@ -27148,7 +27156,8 @@
 	          'strong',
 	          null,
 	          counter
-	        )
+	        ),
+	        '.'
 	      ),
 	      _react2['default'].createElement(
 	        'p',
@@ -35876,4 +35885,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-ccb80bd0be9c1ca48b48.js.map
+//# sourceMappingURL=bundle-devtools-c0e5a1e47e8f4e2e388a.js.map
