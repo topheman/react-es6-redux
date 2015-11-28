@@ -9,11 +9,11 @@ import Repos from './githubUser/Repos.jsx';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as SingleUserActions from '../actions/singleUser.js';
+import { getRepositories, getProfile, initUsername } from '../redux/modules/singleUser.js';//import action creators
 
 @connect(
-  (state) => ({state: state.singleUser}),
-  (dispatch) => bindActionCreators(SingleUserActions, dispatch)
+  (state) => ({ singleUser: state.singleUser }),
+  (dispatch) => bindActionCreators({ getRepositories, getProfile, initUsername }, dispatch)
 )
 class GithubUser extends React.Component {
   constructor(props){
@@ -24,18 +24,18 @@ class GithubUser extends React.Component {
     this.componentWillMount = this.componentWillMount.bind(this);
   }
   componentWillMount(){
-    this.props.initUserProfile(this.props.params.username);
-    this.props.getUser(this.props.params.username);
-    this.props.getUserRepos(this.props.params.username);
+    this.props.initUsername(this.props.params.username);
+    this.props.getProfile(this.props.params.username);
+    this.props.getRepositories(this.props.params.username);
   }
   reposGotoPage(pageNum){
-    this.props.getUserRepos(this.props.params.username,{
+    this.props.getRepositories(this.props.params.username,{
       page: pageNum
     });
   }
   render(){
-    var profile = this.props.state.profile;
-    var repositories = this.props.state.repositories;
+    const { profile } = this.props.singleUser;
+    const { repositories } = this.props.singleUser;
     return (
       <div>
         <Profile profile={profile}/>

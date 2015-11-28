@@ -32,13 +32,13 @@ class SearchBox extends React.Component {
     let currentUser = this.props.username;
     //prevent submiting empty user
     if(currentUser !== ''){
-      this.props.searchUsers(currentUser);
+      this.props.findUsers(currentUser);
     }
   }
   handleChange(e){
     const node = this.refs.input;
     const username = node.value.trim();
-    this.props.changeSearchUser(username);
+    this.props.changeUsername(username);
   }
   render() {
     const { username, results, fetching } = this.props;

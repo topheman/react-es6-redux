@@ -4,11 +4,8 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import CounterButton from './common/CounterButton.jsx';
-import * as CounterActions from '../actions/counter.js';
-
 
 @connect(
     state => ({counter: state.counter})

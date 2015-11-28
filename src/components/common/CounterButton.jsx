@@ -4,7 +4,8 @@ import React, { PropTypes } from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as CounterActions from '../../actions/counter.js';
+
+import { increment } from '../../redux/modules/counter.js';//import action creators
 
 export class CounterButton extends React.Component {
 
@@ -33,7 +34,7 @@ export class CounterButton extends React.Component {
  */
 export default connect(
   (state) => ({counter: state.counter}),//mapStateToProps - signature : (state) => props
-  (dispatch) => bindActionCreators(CounterActions, dispatch)//mapDispatchToProps (using bindActionCreators helper) - http://rackt.org/redux/docs/api/bindActionCreators.html
+  (dispatch) => bindActionCreators({ increment }, dispatch)//mapDispatchToProps (using bindActionCreators helper) - http://rackt.org/redux/docs/api/bindActionCreators.html
   // The bindActionCreators results to the following - dispatch in param - wraps the actions in dispatch in a key value object
   //(dispatch) => ({
   //  increment: function(){
