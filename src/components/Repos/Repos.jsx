@@ -5,7 +5,7 @@ import React from 'react';
 import Panel from '../common/Panel.jsx';
 import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 import DisplayStars from '../common/DisplayStars.jsx';
-import ReposPaginator from './ReposPaginator.jsx';
+import ReposPaginator from '../ReposPaginator/ReposPaginator.jsx';
 
 //@todo cache the last 10 profiles accessed
 

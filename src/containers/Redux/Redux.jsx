@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 import { connect } from 'react-redux';
 
-import CounterButton from '../../components/common/CounterButton.jsx';
+import CounterButton from '../../components/CounterButton/CounterButton.jsx';
 
 @connect(
     state => ({counter: state.counter})

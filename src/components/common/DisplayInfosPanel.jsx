@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import Panel from '../common/Panel.jsx';
-import Spinner from '../common/Spinner.jsx';
+import Panel from './Panel.jsx';
+import Spinner from './Spinner.jsx';
 
 const DisplayInfosPanel = ({infos, originalTitle}) => {
   var fetching = infos ? infos.fetching : false;

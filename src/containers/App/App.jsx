@@ -4,8 +4,8 @@ import React, { PropTypes } from 'react';
 
 import { connect } from 'react-redux';
 
-import Header from '../../components/Header.jsx';
-import Footer from '../../components/Footer.jsx';
+import Header from '../../components/Header/Header.jsx';
+import Footer from '../../components/Footer/Footer.jsx';
 
 @connect(state => ({ routerState: state.router }))
 class App extends React.Component {

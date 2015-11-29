@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import IntroBox from '../../components/github/IntroBox.jsx';
-import SearchBox from '../../components/github/SearchBox.jsx';
+import IntroBox from '../../components/IntroBox/IntroBox.jsx';
+import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

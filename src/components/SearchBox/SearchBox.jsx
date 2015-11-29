@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import ProfileList from './ProfileList.jsx';
+import ProfileList from './../ProfileList/ProfileList.jsx';
 import Spinner from '../common/Spinner.jsx';
 
 /**
