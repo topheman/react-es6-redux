@@ -7,26 +7,21 @@ import { connect } from 'react-redux';
 import Header from '../../components/Header/Header.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 
-@connect(state => ({ routerState: state.router }))
-class App extends React.Component {
-
-  static propTypes = {
-    routerState: React.PropTypes.object.isRequired,
-    children: React.PropTypes.node.isRequired
-  }
-
-  render() {
-    return (
-      <div>
-        <Header title="react-es6-redux"/>
-        <div className="container">
-          {this.props.children}
-        </div>
-        <Footer/>
+const App = ({ children }) => {
+  return (
+    <div>
+      <Header title="react-es6-redux"/>
+      <div className="container">
+        {children}
       </div>
-    );
-  }
+      <Footer/>
+    </div>
+  );
+};
 
+App.propTypes = {
+  routerState: React.PropTypes.object.isRequired,
+  children: React.PropTypes.node.isRequired
 }
 
-export default App;
+export default connect(state => ({ routerState: state.router }))(App);

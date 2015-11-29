@@ -10,23 +10,22 @@ import { bindActionCreators } from 'redux';
 
 import { changeUsername, findUsers } from '../../redux/modules/multipleUsers.js';//import action creators
 
-@connect(
+const Github = ({ multipleUsers, changeUsername, findUsers }) => {
+  return (
+    <div>
+      <IntroBox/>
+      <SearchBox changeUsername={changeUsername} findUsers={findUsers} {...multipleUsers} />
+    </div>
+  );
+};
+
+Github.propTypes = {
+  multipleUsers: React.PropTypes.object.isRequired,
+  changeUsername: React.PropTypes.func.isRequired,
+  findUsers: React.PropTypes.func.isRequired
+};
+
+export default connect(
   (state) => ({multipleUsers: state.multipleUsers}),
   (dispatch) => bindActionCreators({ changeUsername, findUsers }, dispatch)
-)
-class Github extends React.Component {
-  render(){
-    //retrieve the actions now available in props thanks to connect and bindActionCreators, to pass it down to dumb components
-    const { changeUsername, findUsers } = this.props;
-    //retrieving the state of the store passed via connect from the redux store - to pass it down to the dumb components
-    const { multipleUsers } = this.props;
-    return (
-      <div>
-        <IntroBox/>
-        <SearchBox changeUsername={changeUsername} findUsers={findUsers} {...multipleUsers} />
-      </div>
-    );
-  }
-}
-
-export default Github;
+)(Github);
