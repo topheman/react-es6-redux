@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import github from '../services/github.js';
-import Spinner from './common/Spinner.jsx';
-import Profile from './githubUser/Profile.jsx';
-import Repos from './githubUser/Repos.jsx';
+import github from '../../services/github.js';
+import Spinner from '../../components/common/Spinner.jsx';
+import Profile from '../../components/githubUser/Profile.jsx';
+import Repos from '../../components/githubUser/Repos.jsx';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getRepositories, getProfile, initUsername } from '../redux/modules/singleUser.js';//import action creators
+import { getRepositories, getProfile, initUsername } from '../../redux/modules/singleUser.js';//import action creators
 
 @connect(
   (state) => ({ singleUser: state.singleUser }),

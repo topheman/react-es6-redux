@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import IntroBox from './github/IntroBox.jsx';
-import SearchBox from './github/SearchBox.jsx';
+import IntroBox from '../../components/github/IntroBox.jsx';
+import SearchBox from '../../components/github/SearchBox.jsx';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { changeUsername, findUsers } from '../redux/modules/multipleUsers.js';//import action creators
+import { changeUsername, findUsers } from '../../redux/modules/multipleUsers.js';//import action creators
 
 /**
  * This component holds the state, the component bellow only use props
