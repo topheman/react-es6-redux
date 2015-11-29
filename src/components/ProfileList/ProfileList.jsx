@@ -40,6 +40,10 @@ const ProfileList = ({results}) => {
       </div>
     )
   }
-}
+};
+
+ProfileList.propTypes = {
+  user: React.PropTypes.object
+};
 
 export default ProfileList;

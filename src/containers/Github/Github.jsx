@@ -10,10 +10,6 @@ import { bindActionCreators } from 'redux';
 
 import { changeUsername, findUsers } from '../../redux/modules/multipleUsers.js';//import action creators
 
-/**
- * This component holds the state, the component bellow only use props
- */
-
 @connect(
   (state) => ({multipleUsers: state.multipleUsers}),
   (dispatch) => bindActionCreators({ changeUsername, findUsers }, dispatch)

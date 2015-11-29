@@ -10,6 +10,15 @@ import Spinner from '../common/Spinner.jsx';
  */
 
 class SearchBox extends React.Component {
+
+  static propTypes = {
+    changeUsername: React.PropTypes.func.isRequired,
+    findUsers: React.PropTypes.func.isRequired,
+    username: React.PropTypes.string.isRequired,
+    fetching: React.PropTypes.bool.isRequired,
+    results: React.PropTypes.object
+  }
+
   constructor(props){
 
     super(props);

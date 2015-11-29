@@ -19,4 +19,8 @@ const Spinner = ({fetching}) => {
   }
 }
 
+Spinner.propTypes = {
+  fetching: React.PropTypes.bool
+};
+
 export default Spinner;

@@ -5,6 +5,13 @@ import React from 'react';
 import Spinner from '../common/Spinner.jsx';
 
 export default class ReposPaginator extends React.Component {
+
+  static propTypes = {
+    infos: React.PropTypes.object.isRequired,
+    reposGotoPage: React.PropTypes.func.isRequired,
+    fetching: React.PropTypes.bool.isRequired
+  }
+
   constructor(props) {
     super(props);
     this.gotoPage = this.gotoPage.bind(this);

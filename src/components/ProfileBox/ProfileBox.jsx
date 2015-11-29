@@ -11,6 +11,10 @@ const ProfileBox = ({user}) => {
       <img src={user.$avatar_url} width="40"/> <strong>{user.login}</strong>
     </Link>
   )
-}
+};
+
+ProfileBox.propTypes = {
+  user: React.PropTypes.object.isRequired
+};
 
 export default ProfileBox;

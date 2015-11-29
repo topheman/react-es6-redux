@@ -47,4 +47,8 @@ const Profile = ({profile}) => {
   }
 };
 
+Profile.propTypes = {
+  profile: React.PropTypes.object.isRequired
+};
+
 export default Profile;

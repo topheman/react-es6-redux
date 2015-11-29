@@ -16,6 +16,11 @@ import { getRepositories, getProfile, initUsername } from '../../redux/modules/s
   (dispatch) => bindActionCreators({ getRepositories, getProfile, initUsername }, dispatch)
 )
 class GithubUser extends React.Component {
+
+  static propTypes = {
+    singleUser: React.PropTypes.object.isRequired
+  }
+
   constructor(props){
     super(props);
 

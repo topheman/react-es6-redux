@@ -15,4 +15,8 @@ const DisplayStars = ({number}) => {
   }
 };
 
+DisplayStars.propTypes = {
+  number: React.PropTypes.number
+};
+
 export default DisplayStars;

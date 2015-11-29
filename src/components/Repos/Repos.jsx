@@ -7,9 +7,13 @@ import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 import DisplayStars from '../common/DisplayStars.jsx';
 import ReposPaginator from '../ReposPaginator/ReposPaginator.jsx';
 
-//@todo cache the last 10 profiles accessed
-
 export default class Repos extends React.Component {
+
+  static propTypes = {
+    repositories: React.PropTypes.object.isRequired,
+    reposGotoPage: React.PropTypes.func.isRequired
+  }
+
   constructor(props){
 
     super(props);

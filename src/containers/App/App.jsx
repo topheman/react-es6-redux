@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 import { connect } from 'react-redux';
 
@@ -11,7 +11,8 @@ import Footer from '../../components/Footer/Footer.jsx';
 class App extends React.Component {
 
   static propTypes = {
-    children: PropTypes.node
+    routerState: React.PropTypes.object.isRequired,
+    children: React.PropTypes.node.isRequired
   }
 
   render() {

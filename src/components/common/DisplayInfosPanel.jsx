@@ -36,4 +36,9 @@ const DisplayInfosPanel = ({infos, originalTitle}) => {
   }
 };
 
+DisplayInfosPanel.propTypes = {
+  infos: React.PropTypes.object,
+  originalTitle: React.PropTypes.string
+};
+
 export default DisplayInfosPanel;

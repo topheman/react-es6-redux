@@ -13,4 +13,9 @@ const Panel = ({title, children}) => (
   </div>
 );
 
+Panel.propTypes = {
+  title: React.PropTypes.string.isRequired,
+  children: React.PropTypes.element.isRequired,
+};
+
 export default Panel;
