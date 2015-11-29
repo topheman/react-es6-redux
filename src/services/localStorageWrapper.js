@@ -11,7 +11,7 @@ export default{
   },
   //extend of cacheLimit mins
   extend: function(key){
-    var value = lscache.get(key);
+    const value = lscache.get(key);
     if(typeof value !== 'undefined'){
       this.set(key,value);
     }

@@ -4,14 +4,14 @@ import request from 'superagent';
 
 export default {
   get(relativeUrl,params){
-    var promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
 
-      var url = this.configuration.backendBaseUrl+relativeUrl;
+      let url = this.configuration.backendBaseUrl+relativeUrl;
 
       //add query params
       if(typeof params === 'object' && params !== null){
         if(Object.keys(params).length > 0){
-          var query = '';
+          let query = '';
           for(let name in params){
             if(typeof params[name] !== 'object') {
               query += query === '' ? '' : '&';
@@ -46,7 +46,7 @@ export default {
               });
             }
           }
-          var objectToResolve = {
+          let objectToResolve = {
             data: res.body,
             status: res.status,
             type: res.type,
@@ -64,8 +64,8 @@ export default {
           }
           //adding metas infos
           if(res.headers['link']){
-            let result = {};
-            var toProcess = res.headers['link'].split(' ');
+            const result = {};
+            const toProcess = res.headers['link'].split(' ');
             for(let i=0; i<toProcess.length; i++){
               if(i%2 === 0) {
                 result[toProcess[i+1].replace('rel="','').replace(/\"\,?/,'')] = toProcess[i].replace('<','').replace('>;','');//@todo cleaner way with one regexp ?
@@ -73,13 +73,13 @@ export default {
             }
             objectToResolve.infos.link = result;
             if(result.last) {
-              let totalPages = result.last.match(/page=([0-9]+)/);
+              const totalPages = result.last.match(/page=([0-9]+)/);
               if(totalPages[1]){
                 objectToResolve.infos.totalPages = parseInt(totalPages[1]);
               }
             }
             else{
-              let totalPages = result.prev.match(/page=([0-9]+)/);
+              const totalPages = result.prev.match(/page=([0-9]+)/);
               if(totalPages[1]){
                 objectToResolve.infos.totalPages = parseInt(totalPages[1])+1;
               }

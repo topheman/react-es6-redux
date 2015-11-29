@@ -7,9 +7,9 @@ import Tr from '../common/Tr.jsx';
 import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 
 const Profile = ({profile}) => {
-  var fetching = profile.fetching;
+  const fetching = profile.fetching;
   if (profile && profile.data){
-    var user = profile.data;
+    const user = profile.data;
     user.$githubProfileHref = user.html_url;
     user.$githubProfileHrefTitle = "Visit " + user.login + " profile on Github";
     user.$avatar_url = user.avatar_url+"&s=130";

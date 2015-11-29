@@ -37,7 +37,7 @@ if (process.env.DEVTOOLS) {
  */
 combinedCreateStore = compose(...storeEnhancers)(createStore)
 
-let middlewares = [thunk];
+const middlewares = [thunk];
 
 if (process.env.DEVTOOLS){
   middlewares.push(require('./middleware/logger'));

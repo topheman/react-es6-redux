@@ -22,11 +22,11 @@ export default class Repos extends React.Component {
     this.props.reposGotoPage(pageNum);
   }
   render(){
-    var repositories = this.props.repositories;
-    var fetching = repositories.fetching;
-    var originalTitle = repositories.pristineLogin + "'s repositories";
+    const { repositories } = this.props;
+    const fetching = repositories.fetching;
+    const originalTitle = repositories.pristineLogin + "'s repositories";
     if (repositories && repositories.data){
-      var repos = repositories.data;
+      const repos = repositories.data;
       return (
         <Panel title={originalTitle}>
           <div className="panel-body repos-list">

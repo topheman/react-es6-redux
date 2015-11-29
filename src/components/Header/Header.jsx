@@ -9,23 +9,21 @@ export default class Header extends React.Component {
     super(props);
 
     //init context bindings - due to diff between React.createClass and ES6 class
-    this._getInitialState = this._getInitialState.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
     //init state
-    this.state = this._getInitialState();
+    this.state = {
+      collapsed: true
+    };
 
   }
-  _getInitialState(){
-    return {collapsed: true};
-  }
   handleClick(e){
-    var collapsed = this.state.collapsed;
+    const { collapsed } = this.state;
     this.setState({collapsed:!collapsed});
   }
   render() {
 
-    var collapsedMenuClassName = "collapse navbar-collapse" + (this.state.collapsed === true ? "" : " in");
+    const collapsedMenuClassName = "collapse navbar-collapse" + (this.state.collapsed === true ? "" : " in");
 
     return (
       <div>

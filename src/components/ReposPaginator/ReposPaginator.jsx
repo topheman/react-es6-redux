@@ -43,11 +43,9 @@ export default class ReposPaginator extends React.Component {
   }
 
   render() {
-    var infos = this.props.infos;
-    var fetching = this.props.fetching;
+    const { infos, fetching } = this.props;
     if (infos.totalPages > 1) {
-      var pages, currentPage;
-      var firstPage,
+      let firstPage,
         previousPage,
         nextPage,
         lastPage;

@@ -21,8 +21,8 @@ const mockJsonFiles = {
 
 export default {
   get(relativeUrl){
-    var promise = new Promise((resolve, reject) => {
-      var result = null;
+    const promise = new Promise((resolve, reject) => {
+      let result = null;
       for(let endpoint in mockJsonFiles){
         if(endpoint.indexOf('*') === -1 && relativeUrl.indexOf(endpoint) > -1){
           result = mockJsonFiles[endpoint];
@@ -37,7 +37,7 @@ export default {
         }
       }
       if(result !== null){
-        var resolvedData = {
+        let resolvedData = {
           data: result,
           status: 200,
           type: 2,
@@ -58,7 +58,7 @@ export default {
         }
       }
       else{
-        var resolvedData = {
+        let resolvedData = {
           kind: "error",
           message: "No endpoint matched in available mocks",
           humanMessage: "An error occured, please try again."

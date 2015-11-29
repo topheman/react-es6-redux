@@ -23,7 +23,7 @@ class Github extends React.Component {
     //retrieve the actions now available in props thanks to connect and bindActionCreators, to pass it down to dumb components
     const { changeUsername, findUsers } = this.props;
     //retrieving the state of the store passed via connect from the redux store - to pass it down to the dumb components
-    let { multipleUsers } = this.props;
+    const { multipleUsers } = this.props;
     return (
       <div>
         <IntroBox/>

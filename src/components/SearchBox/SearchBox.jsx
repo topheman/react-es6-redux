@@ -20,7 +20,7 @@ class SearchBox extends React.Component {
 
   }
   handleFocus(e) {
-    var target = e.target;
+    const target = e.target;
     //dirty but curiously in React this is a known bug and workaround ...
     setTimeout(function() {
       target.select();
@@ -29,7 +29,7 @@ class SearchBox extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     document.getElementById('user-name').blur();
-    let currentUser = this.props.username;
+    const currentUser = this.props.username;
     //prevent submiting empty user
     if(currentUser !== ''){
       this.props.findUsers(currentUser);

@@ -17,7 +17,7 @@ class Counter extends React.Component {
   }
 
   render(){
-    let { counter } = this.props;
+    const { counter } = this.props;
     return (
       <div>
         <p>I added <a href="http://redux.js.org/" title="About redux">redux</a> to manage state (a flux-like implementation if you will).</p>

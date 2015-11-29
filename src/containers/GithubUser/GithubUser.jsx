@@ -34,8 +34,7 @@ class GithubUser extends React.Component {
     });
   }
   render(){
-    const { profile } = this.props.singleUser;
-    const { repositories } = this.props.singleUser;
+    const { profile, repositories } = this.props.singleUser;
     return (
       <div>
         <Profile profile={profile}/>

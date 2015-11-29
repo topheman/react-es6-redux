@@ -6,9 +6,9 @@ import Panel from './Panel.jsx';
 import Spinner from './Spinner.jsx';
 
 const DisplayInfosPanel = ({infos, originalTitle}) => {
-  var fetching = infos ? infos.fetching : false;
+  const fetching = infos ? infos.fetching : false;
   if(infos && infos.error){
-    var error = infos.error;
+    const { error } = infos;
     return (
       <Panel title="OOups!">
         <div className="panel-body">
