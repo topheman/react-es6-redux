@@ -40,25 +40,29 @@ const initialState = {
 export default function reducer(state = initialState, action = {}){
   switch(action.type){
     case CHANGE_USERNAME:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         username: action.username
-      });
+      };
     case FETCH_USERS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         fetching: true
-      });
+      };
     case FETCH_USERS_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         fetching: false,
         results: action.json.data
-      });
+      };
     case FETCH_USERS_ERROR:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         fetching: false,
         results: {
           error: action.error.humanMessage
         }
-      });
+      };
     default:
       return state;
   }

@@ -46,26 +46,27 @@ const initialState = {
 function profile(state = initialState.profile, action = {}) {
   switch(action.type) {
     case INIT:
-      return Object.assign({},state,{
-        pristineLogin: action.username,
-        data: null,
-        fetching: false,
-        error: null
-      });
+      return {
+        ...initialState.profile,
+        pristineLogin: action.username
+      };
     case FETCH_PROFILE:
-      return Object.assign({},state,{
+      return {
+        ...state,
         fetching: true
-      });
+      };
     case FETCH_PROFILE_SUCCESS:
-      return Object.assign({},state,{
+      return {
+        ...state,
         fetching: false,
         data: action.json.data
-      });
+      };
     case FETCH_PROFILE_ERROR:
-      return Object.assign({},state,{
+      return {
+        ...state,
         fetching: false,
         error : action.error.humanMessage
-      });
+      };
     default:
       return state;
   }
@@ -80,28 +81,28 @@ function profile(state = initialState.profile, action = {}) {
 function repositories(state = initialState.repositories, action = {}) {
   switch(action.type) {
     case INIT:
-      return Object.assign({},state,{
-        pristineLogin: action.username,
-        data: null,
-        fetching: false,
-        infos: null,
-        error: null
-      });
+      return {
+        ...initialState.repositories,
+        pristineLogin: action.username
+      };
     case FETCH_REPOSITORIES:
-      return Object.assign({},state,{
+      return {
+        ...state,
         fetching: true
-      });
+      };
     case FETCH_REPOSITORIES_SUCCESS:
-      return Object.assign({},state,{
+      return {
+        ...state,
         fetching: false,
         data: action.json.data,
         infos: action.json.infos
-      });
+      };
     case FETCH_REPOSITORIES_ERROR:
-      return Object.assign({},state,{
+      return {
+        ...state,
         fetching: false,
         error : action.error.humanMessage
-      });
+      };
     default:
       return state;
   }
