@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "bootstrap-sass": "^3.3.5",
+    "es6-promise": "^3.0.2",
     "history": "^1.12.4",
     "lscache": "^1.0.5",
     "react": "^0.14.3",

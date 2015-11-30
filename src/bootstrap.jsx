@@ -1,3 +1,5 @@
+global.Promise = global.Promise || require('es6-promise').Promise;
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
