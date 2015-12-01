@@ -4,7 +4,9 @@
  * This module is here to replace http.js for test purposes (or offline development)
  * to provide data from the json files referenced bellow which are snapshots of results from the github API
  *
- * In /src/config.mock.js you can configure the timeOut (to emulate network traffic)
+ * You can configure the latency of the response that way:
+ * `STUB_MOCK_TIMEOUT=500 npm run webpack-mock` the response will have latency of 500ms (to emulate network traffic)
+ * `STUB_MOCK_TIMEOUT=false npm run webpack-mock` immediate
  */
 
 import _mockGithubUser from './http.mocks/user.json';
@@ -13,11 +15,13 @@ import _mockGithubFollowers from './http.mocks/followers.json';
 import _mockGithubUsersSearch from './http.mocks/users.search.json';
 
 const mockJsonFiles = {
-  '/github/users/*/repos': _mockGithubRepos,
-  '/github/users/*/followers': _mockGithubFollowers,
-  '/github/users/': _mockGithubUser,
-  '/github/search/users?': _mockGithubUsersSearch
+  '/users/*/repos': _mockGithubRepos,
+  '/users/*/followers': _mockGithubFollowers,
+  '/users/': _mockGithubUser,
+  '/search/users?': _mockGithubUsersSearch
 };
+
+const STUB_MOCK_TIMEOUT = process.env.STUB_MOCK_TIMEOUT;
 
 export default {
   get(relativeUrl){
@@ -46,11 +50,11 @@ export default {
             etag: (new Date()).getTime().toString()//@todo mock it ?
           }
         };
-        if(typeof this.configuration.timeOut === 'number'){
+        if(typeof STUB_MOCK_TIMEOUT === 'number'){
           setTimeout(function(){
             console.info('http.stub.js',relativeUrl,resolvedData);
             return resolve(resolvedData);
-          },this.configuration.timeOut);
+          },STUB_MOCK_TIMEOUT);
         }
         else{
           console.info('http.stub.js',relativeUrl,resolvedData);
@@ -63,11 +67,11 @@ export default {
           message: "No endpoint matched in available mocks",
           humanMessage: "An error occured, please try again."
         }
-        if(typeof this.configuration.timeOut === 'number'){
+        if(typeof STUB_MOCK_TIMEOUT === 'number'){
           setTimeout(function(){
             console.error('http.stub.js',relativeUrl,resolvedData);
             return reject(resolvedData);
-          },this.configuration.timeOut);
+          },STUB_MOCK_TIMEOUT);
         }
         else{
           console.error('http.stub.js',relativeUrl,resolvedData);

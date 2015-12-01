@@ -6,7 +6,7 @@ export default {
   get(relativeUrl,params){
     const promise = new Promise((resolve, reject) => {
 
-      let url = this.configuration.backendBaseUrl+relativeUrl;
+      let url = process.env.API_ROOT_URL + relativeUrl;
 
       //add query params
       if(typeof params === 'object' && params !== null){

@@ -9,13 +9,11 @@ var instance = null;
 
 class HttpService{
   constructor(configuration){
-    this.service = configuration.injectHttp;
-    this.service.configuration = {};
-    //expose rest of the config to the service (usefull for backendBaseUrl, timeOut ...)
-    for(let name in configuration){
-      if(name !== 'injectHttp'){
-        this.service.configuration[name] = configuration[name];
-      }
+    if(process.env.NODE_ENV === 'mock'){
+      this.service = require('./httpService/http.stub');
+    }
+    else{
+      this.service = require('./httpService/http');
     }
   }
   get(relativeUrl,params){
@@ -24,12 +22,9 @@ class HttpService{
 }
 
 export default {
-  getInstance(configuration){
+  getInstance(){
     if(instance === null){
-      if(typeof configuration === 'undefined'){
-        throw new Error("First time you instantiate the httpService singleton, you must pass the configuration");
-      }
-      instance = new HttpService(configuration);
+      instance = new HttpService();
       // in production, the backend is on a heroku VM,
       // a simple ping will get it awake before the user really uses the github api
       // it will avoid 6secs startup (for the first user)

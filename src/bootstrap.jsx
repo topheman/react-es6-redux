@@ -10,12 +10,9 @@ import routes from './routes.jsx';
 
 import configureStore from './redux/configure-store.js';
 
-//init httpService config
-import httpServiceConfiguration from 'httpServiceConfiguration';
+//init httpService
 import httpService from './services/httpService.js';
-httpService.getInstance(httpServiceConfiguration);//will keep config in singleton
-//this way, instead of using resolve.alias of webpack (and having the require of module messed up by webpack when they'll be executed server-side)
-//I use dependency injection, in the one place that won't be executed in node : the client side bootstrap
+httpService.getInstance();
 
 /** Redux initialization */
 
@@ -66,6 +63,11 @@ else {
       {component}
     </Provider>
   )
+}
+
+if(process.env.NODE_ENV === 'mock') {
+  console.info('MOCK mode');
+  console.info('STUB_MOCK_TIMEOUT', process.env.STUB_MOCK_TIMEOUT);
 }
 
 ReactDOM.render(rootElement, document.getElementById('app-container'))
