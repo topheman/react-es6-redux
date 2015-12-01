@@ -20,9 +20,9 @@ To read further about this project and its evolution:
 
 ###Basic features :
 
-* `/` : Home page : Display a short description of the project with a try button to :
-* `/github` : Provide a search form that displays a list of github users (with their avatars) - a request to the Github API is made.
-* `/github/user/:username` : Display a user profile with his repositories, with pagination.
+* `/` : Home page : Displays a short description of the project with a try button to :
+* `/github` : Provides a search form that displays a list of github users (with their avatars) - a request to the Github API is made.
+* `/github/user/:username` : Displays a user profile with his repositories, with pagination.
 
 All state management is done via redux. In development mode, you have access to the [redux-devtools](https://github.com/gaearon/redux-devtools) (you can also [test them on the online version](https://topheman.github.io/react-es6-redux/devtools.html)).
 
@@ -34,36 +34,38 @@ All state management is done via redux. In development mode, you have access to 
 
 ####Install
 
-The react-es6-redux part :
-
 ```shell
 git clone https://github.com/topheman/react-es6-redux.git
 cd react-es6-redux
 npm install
 ```
 
-You'll have to install the [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) backend, follow the [installation steps](https://github.com/topheman/topheman-apis-proxy#installation) README section.
+*Note:* Installing the [topheman-apis-proxy](#with-topheman-apis-proxy) backend is **no longer mandatory** (I changed the code so that you could do unauthenticated request to the github API - you will be [rate limited to 10 requests per minute](https://developer.github.com/v3/search/#rate-limit) though).
 
 ####Run
 
-* Open a terminal in the react-es6-redux folder and `npm run webpack-dev`
-* Open a terminal in the topheman-apis-proxy folder and `grunt serve` (see more in the [run in local](https://github.com/topheman/topheman-apis-proxy#run-in-local) README section)
-* Go to [http://localhost:8080/](http://localhost:8080/)
+#####Dev mode
 
-You can also run the app in mock mode (without any backend - the http request are mocked), usefull for :
+* `npm run webpack-dev-simple`
+* Open [http://localhost:8080/](http://localhost:8080/)
 
-* working offline
-* create unit tests without changing code
- 
-Just run : `npm run webpack-mock`
+You're good to go with hot-reload / redux-devtools / time-travel / sourcemaps ...!
+
+#####Mock mode
+
+You can also run the app in mock mode (useful for unit-tests):
+
+* `npm run webpack-mock`
+* Open [http://localhost:8080/](http://localhost:8080/)
 
 
 ####Build
 
 At the root of the project :
 
-* for production (minified/optimized ...) : `npm run build-prod`
-* for debug (like in dev - with sourceMaps and all) : `npm run build`
+* `npm run build`: for debug (like in dev - with sourceMaps and all)
+* `npm run build-prod`: for production (minified/optimized ...)
+* `npm run build-prod-all`: both at once in the same build (with redux devtools & sourcemaps on dev version)
 
 A `/build` folder will be created with your project built in it.
 
@@ -81,13 +83,24 @@ npm test
 
 You may want some granularity, the `DEVTOOLS` and `NODE_ENV` variables are at your disposal:
 
-* `npm run build-prod-all`: will build a production version **AND** a devtools version (with redux devtools & sourcemaps) ready to work online side by side
 * `DEVTOOLS=true npm run build`: will build a debug version with the devtools
 * `DEVTOOLS=false npm run webpack`: will launch a webpack dev server without the devtools (if you find it annoying)
 * `DEVTOOLS=false NODE_ENV=MOCK npm run webpack` will launch a webpack dev server in mock mode without the devtools
 * ... you can mix and match ;-)
 
-###Steps :
+####With topheman-apis-proxy
+
+**This part is optional**
+
+[topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) is a proxy that lets you do authenticated requests to github / twitter APIs (that way you have a much higher rate limit). For the install, please follow the [installation steps](https://github.com/topheman/topheman-apis-proxy#installation) README section.
+
+Then your workflow will be:
+
+* Open a terminal in the react-es6-redux folder and `npm run webpack-dev`
+* Open a terminal in the topheman-apis-proxy folder and `grunt serve` (see more in the [run in local](https://github.com/topheman/topheman-apis-proxy#run-in-local) README section)
+* Go to [http://localhost:8080/](http://localhost:8080/)
+
+###Steps
 
 Checkout the [releases sections](https://github.com/topheman/react-es6-redux/releases).
 
@@ -95,6 +108,10 @@ You'll see the releases for both versions:
 
 * original one (redux free) which is hold on [v1.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x)
 * the version with the redux implementation which is on [master branch](https://github.com/topheman/react-es6-redux)
+
+###Notes
+
+* `build-prod-all-owner`: build task for [topheman.github.io/react-es6-redux](https://topheman.github.io/react-es6-redux)
 
 ###License
 
