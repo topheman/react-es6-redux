@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.3.0 - 30/11/2015
- * @revision #30c846e - https://github.com/topheman/react-es6-redux/tree/30c846eda35eb7b0ad6398cb3cde77c4d47cdae5
+ * @version v2.3.0 - 02/12/2015
+ * @revision #5557a39 - https://github.com/topheman/react-es6-redux/tree/5557a39fcce06a6613bc3940cfaf1743d8c8dfdb
  * @author Christophe Rosset
  * @copyright 2015(c) Christophe Rosset
  * @license MIT
@@ -85,25 +85,19 @@
 	
 	var _routesJsx2 = _interopRequireDefault(_routesJsx);
 	
-	var _reduxConfigureStoreJs = __webpack_require__(268);
+	var _reduxConfigureStoreJs = __webpack_require__(272);
 	
 	var _reduxConfigureStoreJs2 = _interopRequireDefault(_reduxConfigureStoreJs);
 	
-	//init httpService config
-	
-	var _httpServiceConfiguration = __webpack_require__(275);
-	
-	var _httpServiceConfiguration2 = _interopRequireDefault(_httpServiceConfiguration);
+	//init httpService
 	
 	var _servicesHttpServiceJs = __webpack_require__(254);
 	
 	var _servicesHttpServiceJs2 = _interopRequireDefault(_servicesHttpServiceJs);
 	
-	global.Promise = global.Promise || __webpack_require__(280).Promise;
+	global.Promise = global.Promise || __webpack_require__(279).Promise;
 	
-	_servicesHttpServiceJs2['default'].getInstance(_httpServiceConfiguration2['default']); //will keep config in singleton
-	//this way, instead of using resolve.alias of webpack (and having the require of module messed up by webpack when they'll be executed server-side)
-	//I use dependency injection, in the one place that won't be executed in node : the client side bootstrap
+	_servicesHttpServiceJs2['default'].getInstance();
 	
 	/** Redux initialization */
 	
@@ -135,7 +129,7 @@
 	if (true) {
 	  console.info('redux devtools active, to hide the panel : ctrl+H - for more infos', 'https://github.com/gaearon/redux-devtools');
 	
-	  var _require = __webpack_require__(285);
+	  var _require = __webpack_require__(284);
 	
 	  var DevTools = _require.DevTools;
 	  var DebugPanel = _require.DebugPanel;
@@ -163,6 +157,11 @@
 	    { store: store },
 	    component
 	  );
+	}
+	
+	if (false) {
+	  console.info('MOCK mode');
+	  console.info('STUB_MOCK_TIMEOUT', process.env.STUB_MOCK_TIMEOUT);
 	}
 	
 	_reactDom2['default'].render(rootElement, document.getElementById('app-container'));
@@ -25942,15 +25941,15 @@
 	
 	exports.Github = _interopRequire(_GithubGithubJsx);
 	
-	var _GithubUserGithubUserJsx = __webpack_require__(255);
+	var _GithubUserGithubUserJsx = __webpack_require__(259);
 	
 	exports.GithubUser = _interopRequire(_GithubUserGithubUserJsx);
 	
-	var _HomeHomeJsx = __webpack_require__(264);
+	var _HomeHomeJsx = __webpack_require__(268);
 	
 	exports.Home = _interopRequire(_HomeHomeJsx);
 	
-	var _ReduxReduxJsx = __webpack_require__(265);
+	var _ReduxReduxJsx = __webpack_require__(269);
 	
 	exports.Redux = _interopRequire(_ReduxReduxJsx);
 	
@@ -26835,24 +26834,17 @@
 	
 	var _httpServiceJs2 = _interopRequireDefault(_httpServiceJs);
 	
-	//the following var keeps the httpService singleton which has been first instanciated in the bootstrap
-	//don't make the getInstance here, webpack will require it before the bootstrap (since it's deeper in the modules)
-	var http;
-	
 	exports['default'] = {
 	  searchUser: function searchUser(userName) {
-	    http = _httpServiceJs2['default'].getInstance(); //the config is not passed here, it was passed in the bootstrap
-	    return http.get('/github/search/users', { q: userName });
+	    return _httpServiceJs2['default'].getInstance().get('/search/users', { q: userName });
 	  },
 	  getUser: function getUser(userName) {
-	    http = _httpServiceJs2['default'].getInstance(); //the config is not passed here, it was passed in the bootstrap
-	    return http.get('/github/users/' + userName);
+	    return _httpServiceJs2['default'].getInstance().get('/users/' + userName);
 	  },
 	  getUserRepos: function getUserRepos(userName) {
 	    var options = arguments.length <= 1 || arguments[1] === undefined ? { per_page: 30, page: 1, sort: "updated" } : arguments[1];
 	
-	    http = _httpServiceJs2['default'].getInstance(); //the config is not passed here, it was passed in the bootstrap
-	    return http.get('/github/users/' + userName + '/repos', {
+	    return _httpServiceJs2['default'].getInstance().get('/users/' + userName + '/repos', {
 	      page: options.page,
 	      per_page: options.per_page,
 	      sort: options.sort
@@ -26886,13 +26878,10 @@
 	  function HttpService(configuration) {
 	    _classCallCheck(this, HttpService);
 	
-	    this.service = configuration.injectHttp;
-	    this.service.configuration = {};
-	    //expose rest of the config to the service (usefull for backendBaseUrl, timeOut ...)
-	    for (var _name in configuration) {
-	      if (_name !== 'injectHttp') {
-	        this.service.configuration[_name] = configuration[_name];
-	      }
+	    if (false) {
+	      this.service = require('./httpService/http.stub');
+	    } else {
+	      this.service = __webpack_require__(255);
 	    }
 	  }
 	
@@ -26904,12 +26893,9 @@
 	})();
 	
 	exports['default'] = {
-	  getInstance: function getInstance(configuration) {
+	  getInstance: function getInstance() {
 	    if (instance === null) {
-	      if (typeof configuration === 'undefined') {
-	        throw new Error("First time you instantiate the httpService singleton, you must pass the configuration");
-	      }
-	      instance = new HttpService(configuration);
+	      instance = new HttpService();
 	      // in production, the backend is on a heroku VM,
 	      // a simple ping will get it awake before the user really uses the github api
 	      // it will avoid 6secs startup (for the first user)
@@ -26934,2071 +26920,17 @@
 	
 	exports.__esModule = true;
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _servicesGithubJs = __webpack_require__(253);
-	
-	var _servicesGithubJs2 = _interopRequireDefault(_servicesGithubJs);
-	
-	var _componentsCommonSpinnerJsx = __webpack_require__(251);
-	
-	var _componentsCommonSpinnerJsx2 = _interopRequireDefault(_componentsCommonSpinnerJsx);
-	
-	var _componentsProfileProfileJsx = __webpack_require__(256);
-	
-	var _componentsProfileProfileJsx2 = _interopRequireDefault(_componentsProfileProfileJsx);
-	
-	var _componentsReposReposJsx = __webpack_require__(260);
-	
-	var _componentsReposReposJsx2 = _interopRequireDefault(_componentsReposReposJsx);
-	
-	var _reactRedux = __webpack_require__(159);
-	
-	var _redux = __webpack_require__(166);
-	
-	var _reduxModulesSingleUserJs = __webpack_require__(263);
-	
-	//import action creators
-	
-	var GithubUser = (function (_React$Component) {
-	  _inherits(GithubUser, _React$Component);
-	
-	  _createClass(GithubUser, null, [{
-	    key: 'propTypes',
-	    value: {
-	      singleUser: _react2['default'].PropTypes.object.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  function GithubUser(props) {
-	    _classCallCheck(this, _GithubUser);
-	
-	    _React$Component.call(this, props);
-	
-	    //init context bindings - due to diff between React.createClass and ES6 class
-	    this.reposGotoPage = this.reposGotoPage.bind(this);
-	    this.componentWillMount = this.componentWillMount.bind(this);
-	  }
-	
-	  GithubUser.prototype.componentWillMount = function componentWillMount() {
-	    this.props.initUsername(this.props.params.username);
-	    this.props.getProfile(this.props.params.username);
-	    this.props.getRepositories(this.props.params.username);
-	  };
-	
-	  GithubUser.prototype.reposGotoPage = function reposGotoPage(pageNum) {
-	    this.props.getRepositories(this.props.params.username, {
-	      page: pageNum
-	    });
-	  };
-	
-	  GithubUser.prototype.render = function render() {
-	    var _props$singleUser = this.props.singleUser;
-	    var profile = _props$singleUser.profile;
-	    var repositories = _props$singleUser.repositories;
-	
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(_componentsProfileProfileJsx2['default'], { profile: profile }),
-	      _react2['default'].createElement(_componentsReposReposJsx2['default'], { repositories: repositories, reposGotoPage: this.reposGotoPage })
-	    );
-	  };
-	
-	  var _GithubUser = GithubUser;
-	  GithubUser = _reactRedux.connect(function (state) {
-	    return { singleUser: state.singleUser };
-	  }, function (dispatch) {
-	    return _redux.bindActionCreators({ getRepositories: _reduxModulesSingleUserJs.getRepositories, getProfile: _reduxModulesSingleUserJs.getProfile, initUsername: _reduxModulesSingleUserJs.initUsername }, dispatch);
-	  })(GithubUser) || GithubUser;
-	  return GithubUser;
-	})(_react2['default'].Component);
-	
-	exports['default'] = GithubUser;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "GithubUser.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _commonPanelJsx = __webpack_require__(257);
-	
-	var _commonPanelJsx2 = _interopRequireDefault(_commonPanelJsx);
-	
-	var _commonTrJsx = __webpack_require__(258);
-	
-	var _commonTrJsx2 = _interopRequireDefault(_commonTrJsx);
-	
-	var _commonDisplayInfosPanelJsx = __webpack_require__(259);
-	
-	var _commonDisplayInfosPanelJsx2 = _interopRequireDefault(_commonDisplayInfosPanelJsx);
-	
-	var Profile = function Profile(_ref) {
-	  var profile = _ref.profile;
-	
-	  var fetching = profile.fetching;
-	  if (profile && profile.data) {
-	    var user = profile.data;
-	    user.$githubProfileHref = user.html_url;
-	    user.$githubProfileHrefTitle = "Visit " + user.login + " profile on Github";
-	    user.$avatar_url = user.avatar_url + "&s=130";
-	    return _react2['default'].createElement(
-	      _commonPanelJsx2['default'],
-	      { title: user.login },
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'panel-body' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'row' },
-	          _react2['default'].createElement(
-	            'div',
-	            { className: 'col-md-3 col-lg-3 text-center' },
-	            _react2['default'].createElement(
-	              'a',
-	              { href: user.$githubProfileHref, title: user.$githubProfileHrefTitle },
-	              _react2['default'].createElement('img', { alt: 'User Pic', src: user.$avatar_url, className: '', width: '130', height: '130' })
-	            )
-	          ),
-	          _react2['default'].createElement(
-	            'div',
-	            { className: ' col-md-9 col-lg-9 ' },
-	            _react2['default'].createElement(
-	              'table',
-	              { className: 'table table-user-information' },
-	              _react2['default'].createElement(
-	                'tbody',
-	                null,
-	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Full Name', value: user.name }),
-	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Location', value: user.location }),
-	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Joined', value: new Date(user.created_at) }),
-	                _react2['default'].createElement(_commonTrJsx2['default'], { type: 'link', display: 'colspan', value: user.blog }),
-	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Followers', value: user.followers }),
-	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Following', value: user.following }),
-	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'About', value: user.bio })
-	              )
-	            )
-	          )
-	        )
-	      )
-	    );
-	  } else {
-	    return _react2['default'].createElement(_commonDisplayInfosPanelJsx2['default'], { infos: profile, originalTitle: profile.pristineLogin });
-	  }
-	};
-	
-	Profile.propTypes = {
-	  profile: _react2['default'].PropTypes.object.isRequired
-	};
-	
-	exports['default'] = Profile;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Profile.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var Panel = function Panel(_ref) {
-	  var title = _ref.title;
-	  var children = _ref.children;
-	  return _react2['default'].createElement(
-	    'div',
-	    { className: 'col-xs-12 col-sm-12 col-md-6 col-lg-6' },
-	    _react2['default'].createElement(
-	      'div',
-	      { className: 'panel panel-default' },
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'panel-heading' },
-	        _react2['default'].createElement(
-	          'h3',
-	          { className: 'panel-title' },
-	          title
-	        )
-	      ),
-	      children
-	    )
-	  );
-	};
-	
-	Panel.propTypes = {
-	  title: _react2['default'].PropTypes.string.isRequired,
-	  children: _react2['default'].PropTypes.element.isRequired
-	};
-	
-	exports['default'] = Panel;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Panel.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var Tr = function Tr(_ref) {
-	  var label = _ref.label;
-	  var value = _ref.value;
-	  var type = _ref.type;
-	  var display = _ref.display;
-	
-	  if (typeof value !== 'undefined' && !!value) {
-	    if (value instanceof Date) {
-	      value = value.toString().split(' ').slice(0, 4).join(' '); //ok I took a very simple way ;-)
-	    }
-	    if (type === 'link') {
-	      value = _react2['default'].createElement(
-	        'a',
-	        { href: value },
-	        value
-	      );
-	    }
-	
-	    if (display !== 'colspan') {
-	      return _react2['default'].createElement(
-	        'tr',
-	        null,
-	        _react2['default'].createElement(
-	          'td',
-	          null,
-	          label
-	        ),
-	        _react2['default'].createElement(
-	          'td',
-	          null,
-	          value
-	        )
-	      );
-	    } else {
-	      return _react2['default'].createElement(
-	        'tr',
-	        null,
-	        _react2['default'].createElement(
-	          'td',
-	          { colSpan: '2' },
-	          value
-	        )
-	      );
-	    }
-	  } else {
-	    //won't return <noscript/> if so, getting following : Warning: validateDOMNesting(...): <noscript> cannot appear as a child of <tbody>. See Profile > tbody > Tr > noscript.
-	    return _react2['default'].createElement('tr', null);
-	  }
-	};
-	
-	exports['default'] = Tr;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Tr.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _PanelJsx = __webpack_require__(257);
-	
-	var _PanelJsx2 = _interopRequireDefault(_PanelJsx);
-	
-	var _SpinnerJsx = __webpack_require__(251);
-	
-	var _SpinnerJsx2 = _interopRequireDefault(_SpinnerJsx);
-	
-	var DisplayInfosPanel = function DisplayInfosPanel(_ref) {
-	  var infos = _ref.infos;
-	  var originalTitle = _ref.originalTitle;
-	
-	  var fetching = infos ? infos.fetching : false;
-	  if (infos && infos.error) {
-	    var error = infos.error;
-	
-	    return _react2['default'].createElement(
-	      _PanelJsx2['default'],
-	      { title: 'OOups!' },
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'panel-body' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'row' },
-	          _react2['default'].createElement(
-	            'div',
-	            { className: 'alert alert-danger col-xs-offset-1 col-xs-10', role: 'alert' },
-	            error
-	          )
-	        )
-	      )
-	    );
-	  } else {
-	    //initial case before xhr
-	    //better speed loading perception if username already present
-	    return _react2['default'].createElement(
-	      _PanelJsx2['default'],
-	      { title: originalTitle },
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'panel-body' },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'row' },
-	          _react2['default'].createElement(_SpinnerJsx2['default'], { fetching: fetching, className: 'center-block' })
-	        )
-	      )
-	    );
-	  }
-	};
-	
-	DisplayInfosPanel.propTypes = {
-	  infos: _react2['default'].PropTypes.object,
-	  originalTitle: _react2['default'].PropTypes.string
-	};
-	
-	exports['default'] = DisplayInfosPanel;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "DisplayInfosPanel.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _commonPanelJsx = __webpack_require__(257);
-	
-	var _commonPanelJsx2 = _interopRequireDefault(_commonPanelJsx);
-	
-	var _commonDisplayInfosPanelJsx = __webpack_require__(259);
-	
-	var _commonDisplayInfosPanelJsx2 = _interopRequireDefault(_commonDisplayInfosPanelJsx);
-	
-	var _commonDisplayStarsJsx = __webpack_require__(261);
-	
-	var _commonDisplayStarsJsx2 = _interopRequireDefault(_commonDisplayStarsJsx);
-	
-	var _ReposPaginatorReposPaginatorJsx = __webpack_require__(262);
-	
-	var _ReposPaginatorReposPaginatorJsx2 = _interopRequireDefault(_ReposPaginatorReposPaginatorJsx);
-	
-	var Repos = (function (_React$Component) {
-	  _inherits(Repos, _React$Component);
-	
-	  _createClass(Repos, null, [{
-	    key: 'propTypes',
-	    value: {
-	      repositories: _react2['default'].PropTypes.object.isRequired,
-	      reposGotoPage: _react2['default'].PropTypes.func.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  function Repos(props) {
-	    _classCallCheck(this, Repos);
-	
-	    _React$Component.call(this, props);
-	
-	    //init context bindings - due to diff between React.createClass and ES6 class
-	    this.reposGotoPage = this.reposGotoPage.bind(this);
-	  }
-	
-	  Repos.prototype.reposGotoPage = function reposGotoPage(pageNum) {
-	    this.props.reposGotoPage(pageNum);
-	  };
-	
-	  Repos.prototype.render = function render() {
-	    var repositories = this.props.repositories;
-	
-	    var fetching = repositories.fetching;
-	    var originalTitle = repositories.pristineLogin + "'s repositories";
-	    if (repositories && repositories.data) {
-	      var repos = repositories.data;
-	      return _react2['default'].createElement(
-	        _commonPanelJsx2['default'],
-	        { title: originalTitle },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'panel-body repos-list' },
-	          _react2['default'].createElement(_ReposPaginatorReposPaginatorJsx2['default'], { infos: repositories.infos, reposGotoPage: this.reposGotoPage, fetching: fetching }),
-	          _react2['default'].createElement(
-	            'div',
-	            { className: 'list-group' },
-	            repos.map(function (repo) {
-	              return _react2['default'].createElement(
-	                'a',
-	                { href: repo.html_url, key: repo.name, className: 'list-group-item', title: repo.full_name },
-	                repo.name,
-	                _react2['default'].createElement(
-	                  'div',
-	                  { className: 'pull-right' },
-	                  _react2['default'].createElement(_commonDisplayStarsJsx2['default'], { number: repo.stargazers_count })
-	                )
-	              );
-	            })
-	          ),
-	          _react2['default'].createElement(_ReposPaginatorReposPaginatorJsx2['default'], { infos: repositories.infos, reposGotoPage: this.reposGotoPage, fetching: fetching })
-	        )
-	      );
-	    } else {
-	      return _react2['default'].createElement(_commonDisplayInfosPanelJsx2['default'], { infos: repositories, originalTitle: originalTitle });
-	    }
-	  };
-	
-	  return Repos;
-	})(_react2['default'].Component);
-	
-	exports['default'] = Repos;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Repos.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 261 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var DisplayStars = function DisplayStars(_ref) {
-	  var number = _ref.number;
-	
-	  if (number > 0) {
-	    return _react2['default'].createElement(
-	      'span',
-	      null,
-	      number,
-	      ' ',
-	      _react2['default'].createElement('span', { className: 'glyphicon glyphicon-star' })
-	    );
-	  } else {
-	    return _react2['default'].createElement('noscript', null);
-	  }
-	};
-	
-	DisplayStars.propTypes = {
-	  number: _react2['default'].PropTypes.number
-	};
-	
-	exports['default'] = DisplayStars;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "DisplayStars.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 262 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _commonSpinnerJsx = __webpack_require__(251);
-	
-	var _commonSpinnerJsx2 = _interopRequireDefault(_commonSpinnerJsx);
-	
-	var ReposPaginator = (function (_React$Component) {
-	  _inherits(ReposPaginator, _React$Component);
-	
-	  _createClass(ReposPaginator, null, [{
-	    key: 'propTypes',
-	    value: {
-	      infos: _react2['default'].PropTypes.object.isRequired,
-	      reposGotoPage: _react2['default'].PropTypes.func.isRequired,
-	      fetching: _react2['default'].PropTypes.bool.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  function ReposPaginator(props) {
-	    _classCallCheck(this, ReposPaginator);
-	
-	    _React$Component.call(this, props);
-	    this.gotoPage = this.gotoPage.bind(this);
-	    this.gotoNextPage = this.gotoNextPage.bind(this);
-	    this.gotoPreviousPage = this.gotoPreviousPage.bind(this);
-	    this.gotoFirstPage = this.gotoFirstPage.bind(this);
-	    this.gotoLastPage = this.gotoLastPage.bind(this);
-	    this.getClickGotoPageHandler = this.getClickGotoPageHandler.bind(this);
-	  }
-	
-	  ReposPaginator.prototype.gotoPage = function gotoPage(pageNum) {
-	    this.props.reposGotoPage(pageNum);
-	  };
-	
-	  ReposPaginator.prototype.gotoNextPage = function gotoNextPage() {
-	    this.gotoPage(this.props.infos.page + 1);
-	  };
-	
-	  ReposPaginator.prototype.gotoPreviousPage = function gotoPreviousPage() {
-	    this.gotoPage(this.props.infos.page - 1);
-	  };
-	
-	  ReposPaginator.prototype.gotoFirstPage = function gotoFirstPage() {
-	    this.gotoPage(1);
-	  };
-	
-	  ReposPaginator.prototype.gotoLastPage = function gotoLastPage() {
-	    this.gotoPage(this.props.infos.totalPages);
-	  };
-	
-	  ReposPaginator.prototype.getClickGotoPageHandler = function getClickGotoPageHandler(methodName) {
-	    return (function (e) {
-	      e.preventDefault();
-	      this[methodName]();
-	    }).bind(this);
-	  };
-	
-	  ReposPaginator.prototype.render = function render() {
-	    var _props = this.props;
-	    var infos = _props.infos;
-	    var fetching = _props.fetching;
-	
-	    if (infos.totalPages > 1) {
-	      var firstPage = undefined,
-	          previousPage = undefined,
-	          nextPage = undefined,
-	          lastPage = undefined;
-	      if (infos.page > 1) {
-	        firstPage = _react2['default'].createElement(
-	          'li',
-	          { className: 'previous' },
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', title: 'First page', onClick: this.getClickGotoPageHandler('gotoFirstPage') },
-	            _react2['default'].createElement(
-	              'span',
-	              { 'aria-hidden': 'true' },
-	              '←←'
-	            )
-	          )
-	        );
-	      }
-	      if (infos.page > 2) {
-	        previousPage = _react2['default'].createElement(
-	          'li',
-	          { className: 'previous' },
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', title: 'Previous page', onClick: this.getClickGotoPageHandler('gotoPreviousPage') },
-	            _react2['default'].createElement(
-	              'span',
-	              { 'aria-hidden': 'true' },
-	              '←'
-	            )
-	          )
-	        );
-	      }
-	      if (infos.page < infos.totalPages - 1) {
-	        nextPage = _react2['default'].createElement(
-	          'li',
-	          { className: 'next' },
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', title: 'Next page', onClick: this.getClickGotoPageHandler('gotoNextPage') },
-	            _react2['default'].createElement(
-	              'span',
-	              { 'aria-hidden': 'true' },
-	              '→'
-	            )
-	          )
-	        );
-	      }
-	      if (infos.page <= infos.totalPages - 1) {
-	        lastPage = _react2['default'].createElement(
-	          'li',
-	          { className: 'next' },
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', title: 'Last page', onClick: this.getClickGotoPageHandler('gotoLastPage') },
-	            _react2['default'].createElement(
-	              'span',
-	              { 'aria-hidden': 'true' },
-	              '→→'
-	            )
-	          )
-	        );
-	      }
-	      return _react2['default'].createElement(
-	        'div',
-	        { className: 'repos-paginator' },
-	        _react2['default'].createElement(_commonSpinnerJsx2['default'], { fetching: fetching }),
-	        _react2['default'].createElement(
-	          'nav',
-	          null,
-	          _react2['default'].createElement(
-	            'ul',
-	            { className: 'pager' },
-	            firstPage,
-	            previousPage,
-	            lastPage,
-	            nextPage
-	          )
-	        )
-	      );
-	    } else {
-	      return _react2['default'].createElement('p', null);
-	    }
-	  };
-	
-	  return ReposPaginator;
-	})(_react2['default'].Component);
-	
-	exports['default'] = ReposPaginator;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ReposPaginator.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	/**
-	 * For annotated version of a module managing action creators & reducers,
-	 * checkout src/redux/modules/multipleUsers.js
-	 */
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	exports.initUsername = initUsername;
-	exports.getProfile = getProfile;
-	exports.getRepositories = getRepositories;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _redux = __webpack_require__(166);
-	
-	var _servicesGithubJs = __webpack_require__(253);
-	
-	var _servicesGithubJs2 = _interopRequireDefault(_servicesGithubJs);
-	
-	var REPOS_PER_PAGE = 15;
-	
-	var INIT = 'singleUser/INIT';
-	
-	var FETCH_PROFILE = 'singleUser/FETCH_PROFILE';
-	var FETCH_PROFILE_SUCCESS = 'singleUser/FETCH_PROFILE_SUCCESS';
-	var FETCH_PROFILE_ERROR = 'singleUser/FETCH_PROFILE_ERROR';
-	
-	var FETCH_REPOSITORIES = 'singleUser/FETCH_REPOSITORIES';
-	var FETCH_REPOSITORIES_SUCCESS = 'singleUser/FETCH_REPOSITORIES_SUCCESS';
-	var FETCH_REPOSITORIES_ERROR = 'singleUser/FETCH_REPOSITORIES_ERROR';
-	
-	var initialState = {
-	  profile: {
-	    pristineLogin: '',
-	    data: null,
-	    fetching: false,
-	    error: null
-	  },
-	  repositories: {
-	    pristineLogin: '',
-	    data: null,
-	    fetching: false,
-	    infos: null,
-	    error: null
-	  }
-	};
-	
-	/************ Reducer (and sub-reducers) ************/
-	
-	/**
-	 * profile sub-reducer
-	 *
-	 * Receives and returns only a part of the state : state.profile, but doesn't have to know about it.
-	 * This reducer is not exported "as is", it will be combined with an other (which will be the one to be exported)
-	 */
-	function profile() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState.profile : arguments[0];
-	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	  switch (action.type) {
-	    case INIT:
-	      return _extends({}, initialState.profile, {
-	        pristineLogin: action.username
-	      });
-	    case FETCH_PROFILE:
-	      return _extends({}, state, {
-	        fetching: true
-	      });
-	    case FETCH_PROFILE_SUCCESS:
-	      return _extends({}, state, {
-	        fetching: false,
-	        data: action.json.data
-	      });
-	    case FETCH_PROFILE_ERROR:
-	      return _extends({}, state, {
-	        fetching: false,
-	        error: action.error.humanMessage
-	      });
-	    default:
-	      return state;
-	  }
-	}
-	
-	/**
-	 * repositories sub-reducer
-	 *
-	 * Receives and returns only a part of the state : state.repositories, but doesn't have to know about it.
-	 * This reducer is not exported "as is", it will be combined with an other (which will be the one to be exported)
-	 */
-	function repositories() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState.repositories : arguments[0];
-	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	  switch (action.type) {
-	    case INIT:
-	      return _extends({}, initialState.repositories, {
-	        pristineLogin: action.username
-	      });
-	    case FETCH_REPOSITORIES:
-	      return _extends({}, state, {
-	        fetching: true
-	      });
-	    case FETCH_REPOSITORIES_SUCCESS:
-	      return _extends({}, state, {
-	        fetching: false,
-	        data: action.json.data,
-	        infos: action.json.infos
-	      });
-	    case FETCH_REPOSITORIES_ERROR:
-	      return _extends({}, state, {
-	        fetching: false,
-	        error: action.error.humanMessage
-	      });
-	    default:
-	      return state;
-	  }
-	}
-	
-	/**
-	 * Previous reducers are combined together in a higher reducer that is at the level state.singleUser
-	 */
-	var reducer = _redux.combineReducers({
-	  profile: profile,
-	  repositories: repositories
-	});
-	
-	/**
-	 * The reducer is the default export (it's done here because you can't export directly an assignment like `export const foo = 'bar';`
-	 */
-	exports['default'] = reducer;
-	
-	/************ Action creators ************/
-	
-	/**
-	 * Called to init pristineLogin
-	 */
-	
-	function initUsername() {
-	  var username = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
-	
-	  return {
-	    type: INIT,
-	    username: username
-	  };
-	}
-	
-	/*** profile related action creators ***/
-	
-	/**
-	 * The following action creators are not exported, nor used outside this module.
-	 * To be more concise, they could be inlined in place as dipatch({type,payload})
-	 */
-	
-	function requestFetchProfile(username) {
-	  return {
-	    type: FETCH_PROFILE,
-	    username: username //username is not needed for state management, it helps loging/debug
-	  };
-	}
-	
-	function receiveFetchProfile(json) {
-	  return {
-	    type: FETCH_PROFILE_SUCCESS,
-	    json: json
-	  };
-	}
-	
-	function receiveFetchProfileError(error) {
-	  return {
-	    type: FETCH_PROFILE_ERROR,
-	    error: error
-	  };
-	}
-	
-	/**
-	 * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
-	 */
-	
-	function getProfile(username) {
-	  return function (dispatch) {
-	    dispatch(requestFetchProfile(username)); //request will start
-	    return _servicesGithubJs2['default'].getUser(username).then(function (json) {
-	      return dispatch(receiveFetchProfile(json));
-	    }) //request succeeded
-	    ['catch'](function (error) {
-	      return dispatch(receiveFetchProfileError(error));
-	    }); //request failed
-	  };
-	}
-	
-	/*** repositories related action creators ***/
-	
-	/**
-	 * The following action creators are not exported, nor used outside this module.
-	 * To be more concise, they could be inlined in place as dipatch({type,payload})
-	 */
-	
-	function requestFetchRepositories(username, options) {
-	  return {
-	    type: FETCH_REPOSITORIES,
-	    username: username, //username & options are not needed for state management, it helps loging/debug
-	    options: options
-	  };
-	}
-	
-	function receiveFetchRepositories(json) {
-	  return {
-	    type: FETCH_REPOSITORIES_SUCCESS,
-	    json: json
-	  };
-	}
-	
-	function receiveFetchRepositoriesError(error) {
-	  return {
-	    type: FETCH_REPOSITORIES_ERROR,
-	    error: error
-	  };
-	}
-	
-	/**
-	 * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
-	 */
-	
-	function getRepositories(username) {
-	  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	  var _ref$page = _ref.page;
-	  var page = _ref$page === undefined ? 1 : _ref$page;
-	  var _ref$sort = _ref.sort;
-	  var sort = _ref$sort === undefined ? 'stars' : _ref$sort;
-	  var _ref$per_page = _ref.per_page;
-	  var per_page = _ref$per_page === undefined ? REPOS_PER_PAGE : _ref$per_page;
-	
-	  return function (dispatch) {
-	    dispatch(requestFetchRepositories(username, { page: page, sort: sort, per_page: per_page })); //request will start
-	    _servicesGithubJs2['default'].getUserRepos(username, { page: page, sort: sort, per_page: per_page }).then(function (json) {
-	      return dispatch(receiveFetchRepositories(json));
-	    }) //request succeeded
-	    ['catch'](function (error) {
-	      return dispatch(receiveFetchRepositoriesError(error));
-	    }); //request failed
-	  };
-	}
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "singleUser.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(177);
-	
-	var prodMessage = _react2['default'].createElement(
-	  'div',
-	  null,
-	  _react2['default'].createElement(
-	    'p',
-	    null,
-	    'This is the ',
-	    _react2['default'].createElement(
-	      'strong',
-	      null,
-	      'production packaged'
-	    ),
-	    ' version (html/css/js uglified). You can ',
-	    _react2['default'].createElement(
-	      'a',
-	      { href: './devtools.html', title: 'Test with devtools & sourcemaps', style: { fontWeight: "bold" } },
-	      'test the site in debug mode here'
-	    ),
-	    ', where you\'ll have access to:'
-	  ),
-	  _react2['default'].createElement(
-	    'ul',
-	    null,
-	    _react2['default'].createElement(
-	      'li',
-	      null,
-	      'sourcemaps for css/js'
-	    ),
-	    _react2['default'].createElement(
-	      'li',
-	      null,
-	      'redux devtools'
-	    )
-	  ),
-	  _react2['default'].createElement(
-	    'p',
-	    { className: 'text-center' },
-	    _react2['default'].createElement(
-	      'a',
-	      { href: './devtools.html', title: 'Test with devtools & sourcemaps', className: 'btn btn-default btn-primary btn-lg', style: { whiteSpace: "pre-wrap" } },
-	      'I\'m a developer, I want to see what\'s under the hood!'
-	    )
-	  )
-	);
-	
-	var devtoolsMessage = _react2['default'].createElement(
-	  'div',
-	  null,
-	  _react2['default'].createElement(
-	    'p',
-	    null,
-	    'This is the ',
-	    _react2['default'].createElement(
-	      'strong',
-	      null,
-	      'development packaged'
-	    ),
-	    ' version (',
-	    _react2['default'].createElement(
-	      'a',
-	      { href: './', title: 'checkout in production mode' },
-	      'the production version is here'
-	    ),
-	    '). In the current mode, you have access to:'
-	  ),
-	  _react2['default'].createElement(
-	    'ul',
-	    null,
-	    _react2['default'].createElement(
-	      'li',
-	      null,
-	      'sourcemaps for css/js (open the sources tab of your developer tools)'
-	    ),
-	    _react2['default'].createElement(
-	      'li',
-	      null,
-	      _react2['default'].createElement(
-	        'a',
-	        { href: 'https://github.com/gaearon/redux-devtools', title: 'redux-devtools' },
-	        'redux devtools'
-	      ),
-	      ' (this is the tab you can see on the right - ctrl+H to toggle hide), it lets you play with history state of redux'
-	    )
-	  ),
-	  _react2['default'].createElement(
-	    'p',
-	    null,
-	    'Those features are meant to be used only in the development but I felt it would be a great way to let you discover them.'
-	  )
-	);
-	
-	var Home = function Home() {
-	  return _react2['default'].createElement(
-	    'div',
-	    null,
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'This project is a POC based on ',
-	      _react2['default'].createElement(
-	        'strong',
-	        null,
-	        'React'
-	      ),
-	      ', coded in ',
-	      _react2['default'].createElement(
-	        'strong',
-	        null,
-	        'ES6'
-	      ),
-	      ', relying on ',
-	      _react2['default'].createElement(
-	        'a',
-	        { href: 'https://github.com/topheman/topheman-apis-proxy', title: 'topheman-apis-proxy on github' },
-	        'topheman-apis-proxy'
-	      ),
-	      ' as a backend (providing the github API) and using ',
-	      _react2['default'].createElement(
-	        _reactRouter.Link,
-	        { to: '/redux', style: { fontWeight: "bold" } },
-	        'redux'
-	      ),
-	      ' for state management.'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'This is the front-only part, you can see an isomorphic (universal if you will) version of this project at ',
-	      _react2['default'].createElement(
-	        'a',
-	        { href: 'https://github.com/topheman/react-es6-isomorphic', title: 'topheman/react-es6-isomorphic on github' },
-	        'topheman/react-es6-isomorphic'
-	      ),
-	      '.'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      _react2['default'].createElement(
-	        'strong',
-	        null,
-	        'TL;DR'
-	      ),
-	      ' : click on the button to try it !'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      { className: 'text-center' },
-	      _react2['default'].createElement(
-	        _reactRouter.Link,
-	        { className: 'btn btn-default btn-primary btn-lg', to: '/github' },
-	        'TRY the DAMN thing !'
-	      )
-	    ),
-	     true ? devtoolsMessage : prodMessage
-	  );
-	};
-	
-	exports['default'] = Home;
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Home.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(177);
-	
-	var _reactRedux = __webpack_require__(159);
-	
-	var _componentsCounterButtonCounterButtonJsx = __webpack_require__(266);
-	
-	var _componentsCounterButtonCounterButtonJsx2 = _interopRequireDefault(_componentsCounterButtonCounterButtonJsx);
-	
-	var Redux = function Redux(_ref) {
-	  var counter = _ref.counter;
-	
-	  return _react2['default'].createElement(
-	    'div',
-	    null,
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'I added ',
-	      _react2['default'].createElement(
-	        'a',
-	        { href: 'http://redux.js.org/', title: 'About redux' },
-	        'redux'
-	      ),
-	      ' to manage state (a flux-like implementation if you will).'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'If you clone the project and launch it in local, you\'ll have access to the redux devtools (hot reloading / state history ...).',
-	       true ? '' : _react2['default'].createElement(
-	        'span',
-	        null,
-	        ' In fact, ',
-	        _react2['default'].createElement(
-	          'a',
-	          { href: './devtools.html', title: 'Test with devtools & sourcemaps', style: { fontWeight: "bold" } },
-	          'you can test them right now here'
-	        ),
-	        '!'
-	      )
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'The button bellow is connected to a redux store:'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      _react2['default'].createElement(_componentsCounterButtonCounterButtonJsx2['default'], null),
-	       true ? ' (ctrl+H to hide the debug panel).' : ''
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'This count is updated through the actions: ',
-	      _react2['default'].createElement(
-	        'strong',
-	        null,
-	        counter
-	      ),
-	      '.'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      _react2['default'].createElement(
-	        'strong',
-	        null,
-	        'All actions modifying state'
-	      ),
-	      ' on this site are connected to redux.'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      { className: 'text-center' },
-	      _react2['default'].createElement(
-	        _reactRouter.Link,
-	        { to: '/' },
-	        'Back Home page'
-	      )
-	    )
-	  );
-	};
-	
-	Redux.propTypes = {
-	  counter: _react.PropTypes.number.isRequired
-	};
-	
-	exports['default'] = _reactRedux.connect(function (state) {
-	  return { counter: state.counter };
-	})(Redux);
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Redux.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 266 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _redux = __webpack_require__(166);
-	
-	var _reactRedux = __webpack_require__(159);
-	
-	var _reduxModulesCounterJs = __webpack_require__(267);
-	
-	//import action creators
-	
-	var CounterButton = (function (_React$Component) {
-	  _inherits(CounterButton, _React$Component);
-	
-	  function CounterButton() {
-	    _classCallCheck(this, CounterButton);
-	
-	    _React$Component.apply(this, arguments);
-	  }
-	
-	  /**
-	   * The connect from react-redux can also be used as an ES7 decorator (babel stage 0)
-	   * 1rst argument: mapStateToProps - (state) => props
-	   * 2nd argument: mapDispatchToProps - (dispatch, [ownProps]) => dispatchProps
-	   *
-	   * Using bindActionCreators : Turns an object whose values are action creators, into an object with the same keys,
-	   * but with every action creator wrapped into a dispatch call so they may be invoked directly.
-	   */
-	
-	  CounterButton.prototype.render = function render() {
-	    var _props = this.props;
-	    var counter = _props.counter;
-	    var increment = _props.increment;
-	
-	    return _react2['default'].createElement(
-	      'button',
-	      { className: 'btn btn-primary', type: 'button', onClick: increment },
-	      'Click to increment ',
-	      _react2['default'].createElement(
-	        'span',
-	        { className: 'badge' },
-	        counter
-	      )
-	    );
-	  };
-	
-	  _createClass(CounterButton, null, [{
-	    key: 'propTypes',
-	    value: {
-	      increment: _react.PropTypes.func.isRequired,
-	      counter: _react.PropTypes.number.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return CounterButton;
-	})(_react2['default'].Component);
-	
-	exports.CounterButton = CounterButton;
-	exports['default'] = _reactRedux.connect(function (state) {
-	  return { counter: state.counter };
-	}, //mapStateToProps - signature : (state) => props
-	function (dispatch) {
-	  return _redux.bindActionCreators({ increment: _reduxModulesCounterJs.increment }, dispatch);
-	} //mapDispatchToProps (using bindActionCreators helper) - http://rackt.org/redux/docs/api/bindActionCreators.html
-	// The bindActionCreators results to the following - dispatch in param - wraps the actions in dispatch in a key value object
-	//(dispatch) => ({
-	//  increment: function(){
-	//    return dispatch(CounterActions.increment());
-	//  }
-	//})
-	)(CounterButton);
-	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "CounterButton.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	/**
-	 * For annotated version of a module managing action creators & reducers,
-	 * checkout src/redux/modules/multipleUsers.js
-	 */
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	exports['default'] = reducer;
-	exports.increment = increment;
-	var INCREMENT = 'counter/INCREMENT';
-	
-	/************ Reducer ************/
-	
-	function reducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	  switch (action.type) {
-	    case INCREMENT:
-	      return state + 1;
-	    default:
-	      return state;
-	  }
-	}
-	
-	/************ Action creators ************/
-	
-	function increment() {
-	  return {
-	    type: INCREMENT
-	  };
-	}
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "counter.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 268 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	/**
-	 * inspired by https://github.com/emmenko/redux-react-router-async-example
-	 *
-	 * I added some comments to help understand the code
-	 */
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	exports['default'] = configureStore;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _redux = __webpack_require__(166);
-	
-	var _reduxRouter = __webpack_require__(155);
-	
-	var _historyLibCreateHashHistory = __webpack_require__(180);
-	
-	var _historyLibCreateHashHistory2 = _interopRequireDefault(_historyLibCreateHashHistory);
-	
-	var _reduxThunk = __webpack_require__(269);
-	
-	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
-	
-	var createHistory = function createHistory() {
-	  return _historyLibCreateHashHistory2['default']({ queryKey: 'hash' });
-	};
-	
-	var combinedCreateStore = undefined;
-	
-	/**
-	 * https://github.com/rackt/redux/blob/master/docs/Glossary.md#store-enhancer
-	 * Higher order function that compose a store creator and returns a new one: (StoreCreator) => (StoreCreator)
-	 */
-	var storeEnhancers = [_reduxRouter.reduxReactRouter({ createHistory: createHistory })];
-	
-	/**
-	 * Only require then add devtools to the store-enhancer when needed
-	 */
-	if (true) {
-	  var _require = __webpack_require__(270);
-	
-	  var devTools = _require.devTools;
-	
-	  storeEnhancers.push(devTools());
-	}
-	
-	/**
-	 * Compose the store-enhancers with the original createStore function to create a new composed one.
-	 * Same as: combinedCreateStore = storeEnhancers[0](storeEnhancers[1](createStore))
-	 */
-	combinedCreateStore = _redux.compose.apply(undefined, storeEnhancers)(_redux.createStore);
-	
-	var middlewares = [_reduxThunk2['default']];
-	
-	if (true) {
-	  middlewares.push(__webpack_require__(273));
-	}
-	
-	/**
-	 * Compose the middlewares with the previously composed createStore function
-	 *
-	 * The applyMiddleware allows us to add the following middlewares to the previously altered version of createStore.
-	 * The redux middlewares have the signature : ({ getState, dispatch }) => next => action
-	 */
-	var finalCreateStore = _redux.applyMiddleware.apply(undefined, middlewares)(combinedCreateStore);
-	
-	/**
-	 * Importing the rootReducer which combines all the other ones, including the reducer of the routerStateReducer
-	 * This work is done in ./modules/reducer.js
-	 */
-	var rootReducer = __webpack_require__(274);
-	
-	function configureStore(initialState) {
-	
-	  /**
-	   * The store can finally be created based on the rootReducer and finalCreateStore function,
-	   * as we would have done createStore(reducers), but with composed versions of each ones,
-	   * thanks to functional programming
-	   */
-	  var store = finalCreateStore(rootReducer, initialState);
-	
-	  if (false)
-	    // Enable Webpack hot module replacement for reducers
-	    module.hot.accept('./modules/reducer', function () {
-	      console.log('reloading reducer');
-	      var nextRootReducer = require('./modules/reducer');
-	      store.replaceReducer(nextRootReducer);
-	    });
-	
-	  return store;
-	}
-	
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "configure-store.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 269 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	exports['default'] = thunkMiddleware;
-	
-	function thunkMiddleware(_ref) {
-	  var dispatch = _ref.dispatch;
-	  var getState = _ref.getState;
-	
-	  return function (next) {
-	    return function (action) {
-	      return typeof action === 'function' ? action(dispatch, getState) : next(action);
-	    };
-	  };
-	}
-	
-	module.exports = exports['default'];
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-	
-	var _devTools = __webpack_require__(271);
-	
-	exports.devTools = _interopRequire(_devTools);
-	
-	var _persistState = __webpack_require__(272);
-	
-	exports.persistState = _interopRequire(_persistState);
-
-/***/ },
-/* 271 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	exports['default'] = devTools;
-	var ActionTypes = {
-	  PERFORM_ACTION: 'PERFORM_ACTION',
-	  RESET: 'RESET',
-	  ROLLBACK: 'ROLLBACK',
-	  COMMIT: 'COMMIT',
-	  SWEEP: 'SWEEP',
-	  TOGGLE_ACTION: 'TOGGLE_ACTION',
-	  JUMP_TO_STATE: 'JUMP_TO_STATE',
-	  SET_MONITOR_STATE: 'SET_MONITOR_STATE',
-	  RECOMPUTE_STATES: 'RECOMPUTE_STATES'
-	};
-	
-	var INIT_ACTION = {
-	  type: '@@INIT'
-	};
-	
-	function toggle(obj, key) {
-	  var clone = _extends({}, obj);
-	  if (clone[key]) {
-	    delete clone[key];
-	  } else {
-	    clone[key] = true;
-	  }
-	  return clone;
-	}
-	
-	/**
-	 * Computes the next entry in the log by applying an action.
-	 */
-	function computeNextEntry(reducer, action, state, error) {
-	  if (error) {
-	    return {
-	      state: state,
-	      error: 'Interrupted by an error up the chain'
-	    };
-	  }
-	
-	  var nextState = state;
-	  var nextError = undefined;
-	  try {
-	    nextState = reducer(state, action);
-	  } catch (err) {
-	    nextError = err.toString();
-	    console.error(err.stack || err);
-	  }
-	
-	  return {
-	    state: nextState,
-	    error: nextError
-	  };
-	}
-	
-	/**
-	 * Runs the reducer on all actions to get a fresh computation log.
-	 * It's probably a good idea to do this only if the code has changed,
-	 * but until we have some tests we'll just do it every time an action fires.
-	 */
-	function recomputeStates(reducer, committedState, stagedActions, skippedActions) {
-	  var computedStates = [];
-	
-	  for (var i = 0; i < stagedActions.length; i++) {
-	    var action = stagedActions[i];
-	
-	    var previousEntry = computedStates[i - 1];
-	    var previousState = previousEntry ? previousEntry.state : committedState;
-	    var previousError = previousEntry ? previousEntry.error : undefined;
-	
-	    var shouldSkip = Boolean(skippedActions[i]);
-	    var entry = shouldSkip ? previousEntry : computeNextEntry(reducer, action, previousState, previousError);
-	
-	    computedStates.push(entry);
-	  }
-	
-	  return computedStates;
-	}
-	
-	/**
-	 * Lifts the app state reducer into a DevTools state reducer.
-	 */
-	function liftReducer(reducer, initialState) {
-	  var initialLiftedState = {
-	    committedState: initialState,
-	    stagedActions: [INIT_ACTION],
-	    skippedActions: {},
-	    currentStateIndex: 0,
-	    monitorState: {
-	      isVisible: true
-	    },
-	    timestamps: [Date.now()]
-	  };
-	
-	  /**
-	   * Manages how the DevTools actions modify the DevTools state.
-	   */
-	  return function liftedReducer(liftedState, liftedAction) {
-	    if (liftedState === undefined) liftedState = initialLiftedState;
-	
-	    var shouldRecomputeStates = true;
-	    var committedState = liftedState.committedState;
-	    var stagedActions = liftedState.stagedActions;
-	    var skippedActions = liftedState.skippedActions;
-	    var computedStates = liftedState.computedStates;
-	    var currentStateIndex = liftedState.currentStateIndex;
-	    var monitorState = liftedState.monitorState;
-	    var timestamps = liftedState.timestamps;
-	
-	    switch (liftedAction.type) {
-	      case ActionTypes.RESET:
-	        committedState = initialState;
-	        stagedActions = [INIT_ACTION];
-	        skippedActions = {};
-	        currentStateIndex = 0;
-	        timestamps = [liftedAction.timestamp];
-	        break;
-	      case ActionTypes.COMMIT:
-	        committedState = computedStates[currentStateIndex].state;
-	        stagedActions = [INIT_ACTION];
-	        skippedActions = {};
-	        currentStateIndex = 0;
-	        timestamps = [liftedAction.timestamp];
-	        break;
-	      case ActionTypes.ROLLBACK:
-	        stagedActions = [INIT_ACTION];
-	        skippedActions = {};
-	        currentStateIndex = 0;
-	        timestamps = [liftedAction.timestamp];
-	        break;
-	      case ActionTypes.TOGGLE_ACTION:
-	        skippedActions = toggle(skippedActions, liftedAction.index);
-	        break;
-	      case ActionTypes.JUMP_TO_STATE:
-	        currentStateIndex = liftedAction.index;
-	        // Optimization: we know the history has not changed.
-	        shouldRecomputeStates = false;
-	        break;
-	      case ActionTypes.SWEEP:
-	        stagedActions = stagedActions.filter(function (_, i) {
-	          return !skippedActions[i];
-	        });
-	        timestamps = timestamps.filter(function (_, i) {
-	          return !skippedActions[i];
-	        });
-	        skippedActions = {};
-	        currentStateIndex = Math.min(currentStateIndex, stagedActions.length - 1);
-	        break;
-	      case ActionTypes.PERFORM_ACTION:
-	        if (currentStateIndex === stagedActions.length - 1) {
-	          currentStateIndex++;
-	        }
-	
-	        stagedActions = [].concat(stagedActions, [liftedAction.action]);
-	        timestamps = [].concat(timestamps, [liftedAction.timestamp]);
-	
-	        // Optimization: we know that the past has not changed.
-	        shouldRecomputeStates = false;
-	        // Instead of recomputing the states, append the next one.
-	        var previousEntry = computedStates[computedStates.length - 1];
-	        var nextEntry = computeNextEntry(reducer, liftedAction.action, previousEntry.state, previousEntry.error);
-	        computedStates = [].concat(computedStates, [nextEntry]);
-	        break;
-	      case ActionTypes.SET_MONITOR_STATE:
-	        monitorState = liftedAction.monitorState;
-	        break;
-	      case ActionTypes.RECOMPUTE_STATES:
-	        stagedActions = liftedAction.stagedActions;
-	        timestamps = liftedAction.timestamps;
-	        committedState = liftedAction.committedState;
-	        currentStateIndex = stagedActions.length - 1;
-	        skippedActions = {};
-	        break;
-	      default:
-	        break;
-	    }
-	
-	    if (shouldRecomputeStates) {
-	      computedStates = recomputeStates(reducer, committedState, stagedActions, skippedActions);
-	    }
-	
-	    return {
-	      committedState: committedState,
-	      stagedActions: stagedActions,
-	      skippedActions: skippedActions,
-	      computedStates: computedStates,
-	      currentStateIndex: currentStateIndex,
-	      monitorState: monitorState,
-	      timestamps: timestamps
-	    };
-	  };
-	}
-	
-	/**
-	 * Lifts an app action to a DevTools action.
-	 */
-	function liftAction(action) {
-	  var liftedAction = {
-	    type: ActionTypes.PERFORM_ACTION,
-	    action: action,
-	    timestamp: Date.now()
-	  };
-	  return liftedAction;
-	}
-	
-	/**
-	 * Unlifts the DevTools state to the app state.
-	 */
-	function unliftState(liftedState) {
-	  var computedStates = liftedState.computedStates;
-	  var currentStateIndex = liftedState.currentStateIndex;
-	  var state = computedStates[currentStateIndex].state;
-	
-	  return state;
-	}
-	
-	/**
-	 * Unlifts the DevTools store to act like the app's store.
-	 */
-	function unliftStore(liftedStore, reducer) {
-	  var lastDefinedState = undefined;
-	  return _extends({}, liftedStore, {
-	    devToolsStore: liftedStore,
-	    dispatch: function dispatch(action) {
-	      liftedStore.dispatch(liftAction(action));
-	      return action;
-	    },
-	    getState: function getState() {
-	      var state = unliftState(liftedStore.getState());
-	      if (state !== undefined) {
-	        lastDefinedState = state;
-	      }
-	      return lastDefinedState;
-	    },
-	    getReducer: function getReducer() {
-	      return reducer;
-	    },
-	    replaceReducer: function replaceReducer(nextReducer) {
-	      liftedStore.replaceReducer(liftReducer(nextReducer));
-	    }
-	  });
-	}
-	
-	/**
-	 * Action creators to change the DevTools state.
-	 */
-	var ActionCreators = {
-	  reset: function reset() {
-	    return { type: ActionTypes.RESET, timestamp: Date.now() };
-	  },
-	  rollback: function rollback() {
-	    return { type: ActionTypes.ROLLBACK, timestamp: Date.now() };
-	  },
-	  commit: function commit() {
-	    return { type: ActionTypes.COMMIT, timestamp: Date.now() };
-	  },
-	  sweep: function sweep() {
-	    return { type: ActionTypes.SWEEP };
-	  },
-	  toggleAction: function toggleAction(index) {
-	    return { type: ActionTypes.TOGGLE_ACTION, index: index };
-	  },
-	  jumpToState: function jumpToState(index) {
-	    return { type: ActionTypes.JUMP_TO_STATE, index: index };
-	  },
-	  setMonitorState: function setMonitorState(monitorState) {
-	    return { type: ActionTypes.SET_MONITOR_STATE, monitorState: monitorState };
-	  },
-	  recomputeStates: function recomputeStates(committedState, stagedActions) {
-	    return {
-	      type: ActionTypes.RECOMPUTE_STATES,
-	      committedState: committedState,
-	      stagedActions: stagedActions
-	    };
-	  }
-	};
-	
-	exports.ActionCreators = ActionCreators;
-	/**
-	 * Redux DevTools middleware.
-	 */
-	
-	function devTools() {
-	  return function (next) {
-	    return function (reducer, initialState) {
-	      var liftedReducer = liftReducer(reducer, initialState);
-	      var liftedStore = next(liftedReducer);
-	      var store = unliftStore(liftedStore, reducer);
-	      return store;
-	    };
-	  };
-	}
-
-/***/ },
-/* 272 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	exports['default'] = persistState;
-	
-	function persistState(sessionId) {
-	  var stateDeserializer = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	  var actionDeserializer = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
-	
-	  if (!sessionId) {
-	    return function (next) {
-	      return function () {
-	        return next.apply(undefined, arguments);
-	      };
-	    };
-	  }
-	
-	  function deserializeState(fullState) {
-	    return _extends({}, fullState, {
-	      committedState: stateDeserializer(fullState.committedState),
-	      computedStates: fullState.computedStates.map(function (computedState) {
-	        return _extends({}, computedState, {
-	          state: stateDeserializer(computedState.state)
-	        });
-	      })
-	    });
-	  }
-	
-	  function deserializeActions(fullState) {
-	    return _extends({}, fullState, {
-	      stagedActions: fullState.stagedActions.map(function (action) {
-	        return actionDeserializer(action);
-	      })
-	    });
-	  }
-	
-	  function deserialize(fullState) {
-	    if (!fullState) {
-	      return fullState;
-	    }
-	    var deserializedState = fullState;
-	    if (typeof stateDeserializer === 'function') {
-	      deserializedState = deserializeState(deserializedState);
-	    }
-	    if (typeof actionDeserializer === 'function') {
-	      deserializedState = deserializeActions(deserializedState);
-	    }
-	    return deserializedState;
-	  }
-	
-	  return function (next) {
-	    return function (reducer, initialState) {
-	      var key = 'redux-dev-session-' + sessionId;
-	
-	      var finalInitialState = undefined;
-	      try {
-	        finalInitialState = deserialize(JSON.parse(localStorage.getItem(key))) || initialState;
-	        next(reducer, initialState);
-	      } catch (e) {
-	        console.warn('Could not read debug session from localStorage:', e);
-	        try {
-	          localStorage.removeItem(key);
-	        } finally {
-	          finalInitialState = undefined;
-	        }
-	      }
-	
-	      var store = next(reducer, finalInitialState);
-	
-	      return _extends({}, store, {
-	        dispatch: function dispatch(action) {
-	          store.dispatch(action);
-	
-	          try {
-	            localStorage.setItem(key, JSON.stringify(store.getState()));
-	          } catch (e) {
-	            console.warn('Could not write debug session to localStorage:', e);
-	          }
-	
-	          return action;
-	        }
-	      });
-	    };
-	  };
-	}
-	
-	module.exports = exports['default'];
-
-/***/ },
-/* 273 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	/**
-	 * This goes through redux's applyMiddleware http://redux.js.org/docs/api/applyMiddleware.html
-	 * any middleware should have the following signature : ({ getState, dispatch }) => next => action
-	 */
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	exports['default'] = logger;
-	
-	function logger(_ref) {
-	  var getState = _ref.getState;
-	
-	  return function (next) {
-	    return function (action) {
-	      console.group(action.type);
-	      console.log('will dispatch', action);
-	      var result = next(action);
-	      console.log('state after dispatch', getState());
-	      console.groupEnd();
-	
-	      return result;
-	    };
-	  };
-	}
-	
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "logger.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _redux = __webpack_require__(166);
-	
-	var _reduxRouter = __webpack_require__(155);
-	
-	//reducers specific to app logic - to see an annotated reducer, open src/redux/modules/multipleUsers.js
-	
-	var _counterJs = __webpack_require__(267);
-	
-	var _counterJs2 = _interopRequireDefault(_counterJs);
-	
-	var _multipleUsersJs = __webpack_require__(252);
-	
-	var _multipleUsersJs2 = _interopRequireDefault(_multipleUsersJs);
-	
-	var _singleUserJs = __webpack_require__(263);
-	
-	var _singleUserJs2 = _interopRequireDefault(_singleUserJs);
-	
-	/**
-	 * Exporting a default root reducer combining all the other ones
-	 * (including the reducer of the router, since we use redux-router and so the state of the router is in the store)
-	 */
-	exports['default'] = _redux.combineReducers({
-	  router: _reduxRouter.routerStateReducer,
-	  counter: _counterJs2['default'],
-	  multipleUsers: _multipleUsersJs2['default'],
-	  singleUser: _singleUserJs2['default']
-	});
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "reducer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _httpJs = __webpack_require__(276);
-	
-	var _httpJs2 = _interopRequireDefault(_httpJs);
-	
-	exports['default'] = {
-	  backendBaseUrl: 'https://topheman-apis-proxy.herokuapp.com',
-	  injectHttp: _httpJs2['default']
-	};
-	module.exports = exports['default'];
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "config.build.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 276 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _superagent = __webpack_require__(277);
+	var _superagent = __webpack_require__(256);
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
 	exports['default'] = {
 	  get: function get(relativeUrl, params) {
-	    var _this = this;
-	
 	    var promise = new Promise(function (resolve, reject) {
 	
-	      var url = _this.configuration.backendBaseUrl + relativeUrl;
+	      var url = ("https://topheman-apis-proxy.herokuapp.com/github") + relativeUrl;
 	
 	      //add query params
 	      if (typeof params === 'object' && params !== null) {
@@ -29087,15 +27019,15 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "http.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 277 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 	
-	var Emitter = __webpack_require__(278);
-	var reduce = __webpack_require__(279);
+	var Emitter = __webpack_require__(257);
+	var reduce = __webpack_require__(258);
 	
 	/**
 	 * Root reference for iframes.
@@ -30250,7 +28182,7 @@
 
 
 /***/ },
-/* 278 */
+/* 257 */
 /***/ function(module, exports) {
 
 	
@@ -30420,7 +28352,7 @@
 
 
 /***/ },
-/* 279 */
+/* 258 */
 /***/ function(module, exports) {
 
 	
@@ -30449,7 +28381,2035 @@
 	};
 
 /***/ },
-/* 280 */
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _servicesGithubJs = __webpack_require__(253);
+	
+	var _servicesGithubJs2 = _interopRequireDefault(_servicesGithubJs);
+	
+	var _componentsCommonSpinnerJsx = __webpack_require__(251);
+	
+	var _componentsCommonSpinnerJsx2 = _interopRequireDefault(_componentsCommonSpinnerJsx);
+	
+	var _componentsProfileProfileJsx = __webpack_require__(260);
+	
+	var _componentsProfileProfileJsx2 = _interopRequireDefault(_componentsProfileProfileJsx);
+	
+	var _componentsReposReposJsx = __webpack_require__(264);
+	
+	var _componentsReposReposJsx2 = _interopRequireDefault(_componentsReposReposJsx);
+	
+	var _reactRedux = __webpack_require__(159);
+	
+	var _redux = __webpack_require__(166);
+	
+	var _reduxModulesSingleUserJs = __webpack_require__(267);
+	
+	//import action creators
+	
+	var GithubUser = (function (_React$Component) {
+	  _inherits(GithubUser, _React$Component);
+	
+	  _createClass(GithubUser, null, [{
+	    key: 'propTypes',
+	    value: {
+	      singleUser: _react2['default'].PropTypes.object.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function GithubUser(props) {
+	    _classCallCheck(this, _GithubUser);
+	
+	    _React$Component.call(this, props);
+	
+	    //init context bindings - due to diff between React.createClass and ES6 class
+	    this.reposGotoPage = this.reposGotoPage.bind(this);
+	    this.componentWillMount = this.componentWillMount.bind(this);
+	  }
+	
+	  GithubUser.prototype.componentWillMount = function componentWillMount() {
+	    this.props.initUsername(this.props.params.username);
+	    this.props.getProfile(this.props.params.username);
+	    this.props.getRepositories(this.props.params.username);
+	  };
+	
+	  GithubUser.prototype.reposGotoPage = function reposGotoPage(pageNum) {
+	    this.props.getRepositories(this.props.params.username, {
+	      page: pageNum
+	    });
+	  };
+	
+	  GithubUser.prototype.render = function render() {
+	    var _props$singleUser = this.props.singleUser;
+	    var profile = _props$singleUser.profile;
+	    var repositories = _props$singleUser.repositories;
+	
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      _react2['default'].createElement(_componentsProfileProfileJsx2['default'], { profile: profile }),
+	      _react2['default'].createElement(_componentsReposReposJsx2['default'], { repositories: repositories, reposGotoPage: this.reposGotoPage })
+	    );
+	  };
+	
+	  var _GithubUser = GithubUser;
+	  GithubUser = _reactRedux.connect(function (state) {
+	    return { singleUser: state.singleUser };
+	  }, function (dispatch) {
+	    return _redux.bindActionCreators({ getRepositories: _reduxModulesSingleUserJs.getRepositories, getProfile: _reduxModulesSingleUserJs.getProfile, initUsername: _reduxModulesSingleUserJs.initUsername }, dispatch);
+	  })(GithubUser) || GithubUser;
+	  return GithubUser;
+	})(_react2['default'].Component);
+	
+	exports['default'] = GithubUser;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "GithubUser.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _commonPanelJsx = __webpack_require__(261);
+	
+	var _commonPanelJsx2 = _interopRequireDefault(_commonPanelJsx);
+	
+	var _commonTrJsx = __webpack_require__(262);
+	
+	var _commonTrJsx2 = _interopRequireDefault(_commonTrJsx);
+	
+	var _commonDisplayInfosPanelJsx = __webpack_require__(263);
+	
+	var _commonDisplayInfosPanelJsx2 = _interopRequireDefault(_commonDisplayInfosPanelJsx);
+	
+	var Profile = function Profile(_ref) {
+	  var profile = _ref.profile;
+	
+	  var fetching = profile.fetching;
+	  if (profile && profile.data) {
+	    var user = profile.data;
+	    user.$githubProfileHref = user.html_url;
+	    user.$githubProfileHrefTitle = "Visit " + user.login + " profile on Github";
+	    user.$avatar_url = user.avatar_url + "&s=130";
+	    return _react2['default'].createElement(
+	      _commonPanelJsx2['default'],
+	      { title: user.login },
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'panel-body' },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2['default'].createElement(
+	            'div',
+	            { className: 'col-md-3 col-lg-3 text-center' },
+	            _react2['default'].createElement(
+	              'a',
+	              { href: user.$githubProfileHref, title: user.$githubProfileHrefTitle },
+	              _react2['default'].createElement('img', { alt: 'User Pic', src: user.$avatar_url, className: '', width: '130', height: '130' })
+	            )
+	          ),
+	          _react2['default'].createElement(
+	            'div',
+	            { className: ' col-md-9 col-lg-9 ' },
+	            _react2['default'].createElement(
+	              'table',
+	              { className: 'table table-user-information' },
+	              _react2['default'].createElement(
+	                'tbody',
+	                null,
+	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Full Name', value: user.name }),
+	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Location', value: user.location }),
+	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Joined', value: new Date(user.created_at) }),
+	                _react2['default'].createElement(_commonTrJsx2['default'], { type: 'link', display: 'colspan', value: user.blog }),
+	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Followers', value: user.followers }),
+	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'Following', value: user.following }),
+	                _react2['default'].createElement(_commonTrJsx2['default'], { label: 'About', value: user.bio })
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  } else {
+	    return _react2['default'].createElement(_commonDisplayInfosPanelJsx2['default'], { infos: profile, originalTitle: profile.pristineLogin });
+	  }
+	};
+	
+	Profile.propTypes = {
+	  profile: _react2['default'].PropTypes.object.isRequired
+	};
+	
+	exports['default'] = Profile;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Profile.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var Panel = function Panel(_ref) {
+	  var title = _ref.title;
+	  var children = _ref.children;
+	  return _react2['default'].createElement(
+	    'div',
+	    { className: 'col-xs-12 col-sm-12 col-md-6 col-lg-6' },
+	    _react2['default'].createElement(
+	      'div',
+	      { className: 'panel panel-default' },
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'panel-heading' },
+	        _react2['default'].createElement(
+	          'h3',
+	          { className: 'panel-title' },
+	          title
+	        )
+	      ),
+	      children
+	    )
+	  );
+	};
+	
+	Panel.propTypes = {
+	  title: _react2['default'].PropTypes.string.isRequired,
+	  children: _react2['default'].PropTypes.element.isRequired
+	};
+	
+	exports['default'] = Panel;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Panel.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var Tr = function Tr(_ref) {
+	  var label = _ref.label;
+	  var value = _ref.value;
+	  var type = _ref.type;
+	  var display = _ref.display;
+	
+	  if (typeof value !== 'undefined' && !!value) {
+	    if (value instanceof Date) {
+	      value = value.toString().split(' ').slice(0, 4).join(' '); //ok I took a very simple way ;-)
+	    }
+	    if (type === 'link') {
+	      value = _react2['default'].createElement(
+	        'a',
+	        { href: value },
+	        value
+	      );
+	    }
+	
+	    if (display !== 'colspan') {
+	      return _react2['default'].createElement(
+	        'tr',
+	        null,
+	        _react2['default'].createElement(
+	          'td',
+	          null,
+	          label
+	        ),
+	        _react2['default'].createElement(
+	          'td',
+	          null,
+	          value
+	        )
+	      );
+	    } else {
+	      return _react2['default'].createElement(
+	        'tr',
+	        null,
+	        _react2['default'].createElement(
+	          'td',
+	          { colSpan: '2' },
+	          value
+	        )
+	      );
+	    }
+	  } else {
+	    //won't return <noscript/> if so, getting following : Warning: validateDOMNesting(...): <noscript> cannot appear as a child of <tbody>. See Profile > tbody > Tr > noscript.
+	    return _react2['default'].createElement('tr', null);
+	  }
+	};
+	
+	exports['default'] = Tr;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Tr.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _PanelJsx = __webpack_require__(261);
+	
+	var _PanelJsx2 = _interopRequireDefault(_PanelJsx);
+	
+	var _SpinnerJsx = __webpack_require__(251);
+	
+	var _SpinnerJsx2 = _interopRequireDefault(_SpinnerJsx);
+	
+	var DisplayInfosPanel = function DisplayInfosPanel(_ref) {
+	  var infos = _ref.infos;
+	  var originalTitle = _ref.originalTitle;
+	
+	  var fetching = infos ? infos.fetching : false;
+	  if (infos && infos.error) {
+	    var error = infos.error;
+	
+	    return _react2['default'].createElement(
+	      _PanelJsx2['default'],
+	      { title: 'OOups!' },
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'panel-body' },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2['default'].createElement(
+	            'div',
+	            { className: 'alert alert-danger col-xs-offset-1 col-xs-10', role: 'alert' },
+	            error
+	          )
+	        )
+	      )
+	    );
+	  } else {
+	    //initial case before xhr
+	    //better speed loading perception if username already present
+	    return _react2['default'].createElement(
+	      _PanelJsx2['default'],
+	      { title: originalTitle },
+	      _react2['default'].createElement(
+	        'div',
+	        { className: 'panel-body' },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2['default'].createElement(_SpinnerJsx2['default'], { fetching: fetching, className: 'center-block' })
+	        )
+	      )
+	    );
+	  }
+	};
+	
+	DisplayInfosPanel.propTypes = {
+	  infos: _react2['default'].PropTypes.object,
+	  originalTitle: _react2['default'].PropTypes.string
+	};
+	
+	exports['default'] = DisplayInfosPanel;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "DisplayInfosPanel.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _commonPanelJsx = __webpack_require__(261);
+	
+	var _commonPanelJsx2 = _interopRequireDefault(_commonPanelJsx);
+	
+	var _commonDisplayInfosPanelJsx = __webpack_require__(263);
+	
+	var _commonDisplayInfosPanelJsx2 = _interopRequireDefault(_commonDisplayInfosPanelJsx);
+	
+	var _commonDisplayStarsJsx = __webpack_require__(265);
+	
+	var _commonDisplayStarsJsx2 = _interopRequireDefault(_commonDisplayStarsJsx);
+	
+	var _ReposPaginatorReposPaginatorJsx = __webpack_require__(266);
+	
+	var _ReposPaginatorReposPaginatorJsx2 = _interopRequireDefault(_ReposPaginatorReposPaginatorJsx);
+	
+	var Repos = (function (_React$Component) {
+	  _inherits(Repos, _React$Component);
+	
+	  _createClass(Repos, null, [{
+	    key: 'propTypes',
+	    value: {
+	      repositories: _react2['default'].PropTypes.object.isRequired,
+	      reposGotoPage: _react2['default'].PropTypes.func.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function Repos(props) {
+	    _classCallCheck(this, Repos);
+	
+	    _React$Component.call(this, props);
+	
+	    //init context bindings - due to diff between React.createClass and ES6 class
+	    this.reposGotoPage = this.reposGotoPage.bind(this);
+	  }
+	
+	  Repos.prototype.reposGotoPage = function reposGotoPage(pageNum) {
+	    this.props.reposGotoPage(pageNum);
+	  };
+	
+	  Repos.prototype.render = function render() {
+	    var repositories = this.props.repositories;
+	
+	    var fetching = repositories.fetching;
+	    var originalTitle = repositories.pristineLogin + "'s repositories";
+	    if (repositories && repositories.data) {
+	      var repos = repositories.data;
+	      return _react2['default'].createElement(
+	        _commonPanelJsx2['default'],
+	        { title: originalTitle },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'panel-body repos-list' },
+	          _react2['default'].createElement(_ReposPaginatorReposPaginatorJsx2['default'], { infos: repositories.infos, reposGotoPage: this.reposGotoPage, fetching: fetching }),
+	          _react2['default'].createElement(
+	            'div',
+	            { className: 'list-group' },
+	            repos.map(function (repo) {
+	              return _react2['default'].createElement(
+	                'a',
+	                { href: repo.html_url, key: repo.name, className: 'list-group-item', title: repo.full_name },
+	                repo.name,
+	                _react2['default'].createElement(
+	                  'div',
+	                  { className: 'pull-right' },
+	                  _react2['default'].createElement(_commonDisplayStarsJsx2['default'], { number: repo.stargazers_count })
+	                )
+	              );
+	            })
+	          ),
+	          _react2['default'].createElement(_ReposPaginatorReposPaginatorJsx2['default'], { infos: repositories.infos, reposGotoPage: this.reposGotoPage, fetching: fetching })
+	        )
+	      );
+	    } else {
+	      return _react2['default'].createElement(_commonDisplayInfosPanelJsx2['default'], { infos: repositories, originalTitle: originalTitle });
+	    }
+	  };
+	
+	  return Repos;
+	})(_react2['default'].Component);
+	
+	exports['default'] = Repos;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Repos.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var DisplayStars = function DisplayStars(_ref) {
+	  var number = _ref.number;
+	
+	  if (number > 0) {
+	    return _react2['default'].createElement(
+	      'span',
+	      null,
+	      number,
+	      ' ',
+	      _react2['default'].createElement('span', { className: 'glyphicon glyphicon-star' })
+	    );
+	  } else {
+	    return _react2['default'].createElement('noscript', null);
+	  }
+	};
+	
+	DisplayStars.propTypes = {
+	  number: _react2['default'].PropTypes.number
+	};
+	
+	exports['default'] = DisplayStars;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "DisplayStars.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _commonSpinnerJsx = __webpack_require__(251);
+	
+	var _commonSpinnerJsx2 = _interopRequireDefault(_commonSpinnerJsx);
+	
+	var ReposPaginator = (function (_React$Component) {
+	  _inherits(ReposPaginator, _React$Component);
+	
+	  _createClass(ReposPaginator, null, [{
+	    key: 'propTypes',
+	    value: {
+	      infos: _react2['default'].PropTypes.object.isRequired,
+	      reposGotoPage: _react2['default'].PropTypes.func.isRequired,
+	      fetching: _react2['default'].PropTypes.bool.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function ReposPaginator(props) {
+	    _classCallCheck(this, ReposPaginator);
+	
+	    _React$Component.call(this, props);
+	    this.gotoPage = this.gotoPage.bind(this);
+	    this.gotoNextPage = this.gotoNextPage.bind(this);
+	    this.gotoPreviousPage = this.gotoPreviousPage.bind(this);
+	    this.gotoFirstPage = this.gotoFirstPage.bind(this);
+	    this.gotoLastPage = this.gotoLastPage.bind(this);
+	    this.getClickGotoPageHandler = this.getClickGotoPageHandler.bind(this);
+	  }
+	
+	  ReposPaginator.prototype.gotoPage = function gotoPage(pageNum) {
+	    this.props.reposGotoPage(pageNum);
+	  };
+	
+	  ReposPaginator.prototype.gotoNextPage = function gotoNextPage() {
+	    this.gotoPage(this.props.infos.page + 1);
+	  };
+	
+	  ReposPaginator.prototype.gotoPreviousPage = function gotoPreviousPage() {
+	    this.gotoPage(this.props.infos.page - 1);
+	  };
+	
+	  ReposPaginator.prototype.gotoFirstPage = function gotoFirstPage() {
+	    this.gotoPage(1);
+	  };
+	
+	  ReposPaginator.prototype.gotoLastPage = function gotoLastPage() {
+	    this.gotoPage(this.props.infos.totalPages);
+	  };
+	
+	  ReposPaginator.prototype.getClickGotoPageHandler = function getClickGotoPageHandler(methodName) {
+	    return (function (e) {
+	      e.preventDefault();
+	      this[methodName]();
+	    }).bind(this);
+	  };
+	
+	  ReposPaginator.prototype.render = function render() {
+	    var _props = this.props;
+	    var infos = _props.infos;
+	    var fetching = _props.fetching;
+	
+	    if (infos.totalPages > 1) {
+	      var firstPage = undefined,
+	          previousPage = undefined,
+	          nextPage = undefined,
+	          lastPage = undefined;
+	      if (infos.page > 1) {
+	        firstPage = _react2['default'].createElement(
+	          'li',
+	          { className: 'previous' },
+	          _react2['default'].createElement(
+	            'a',
+	            { href: '#', title: 'First page', onClick: this.getClickGotoPageHandler('gotoFirstPage') },
+	            _react2['default'].createElement(
+	              'span',
+	              { 'aria-hidden': 'true' },
+	              '←←'
+	            )
+	          )
+	        );
+	      }
+	      if (infos.page > 2) {
+	        previousPage = _react2['default'].createElement(
+	          'li',
+	          { className: 'previous' },
+	          _react2['default'].createElement(
+	            'a',
+	            { href: '#', title: 'Previous page', onClick: this.getClickGotoPageHandler('gotoPreviousPage') },
+	            _react2['default'].createElement(
+	              'span',
+	              { 'aria-hidden': 'true' },
+	              '←'
+	            )
+	          )
+	        );
+	      }
+	      if (infos.page < infos.totalPages - 1) {
+	        nextPage = _react2['default'].createElement(
+	          'li',
+	          { className: 'next' },
+	          _react2['default'].createElement(
+	            'a',
+	            { href: '#', title: 'Next page', onClick: this.getClickGotoPageHandler('gotoNextPage') },
+	            _react2['default'].createElement(
+	              'span',
+	              { 'aria-hidden': 'true' },
+	              '→'
+	            )
+	          )
+	        );
+	      }
+	      if (infos.page <= infos.totalPages - 1) {
+	        lastPage = _react2['default'].createElement(
+	          'li',
+	          { className: 'next' },
+	          _react2['default'].createElement(
+	            'a',
+	            { href: '#', title: 'Last page', onClick: this.getClickGotoPageHandler('gotoLastPage') },
+	            _react2['default'].createElement(
+	              'span',
+	              { 'aria-hidden': 'true' },
+	              '→→'
+	            )
+	          )
+	        );
+	      }
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: 'repos-paginator' },
+	        _react2['default'].createElement(_commonSpinnerJsx2['default'], { fetching: fetching }),
+	        _react2['default'].createElement(
+	          'nav',
+	          null,
+	          _react2['default'].createElement(
+	            'ul',
+	            { className: 'pager' },
+	            firstPage,
+	            previousPage,
+	            lastPage,
+	            nextPage
+	          )
+	        )
+	      );
+	    } else {
+	      return _react2['default'].createElement('p', null);
+	    }
+	  };
+	
+	  return ReposPaginator;
+	})(_react2['default'].Component);
+	
+	exports['default'] = ReposPaginator;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ReposPaginator.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	/**
+	 * For annotated version of a module managing action creators & reducers,
+	 * checkout src/redux/modules/multipleUsers.js
+	 */
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports.initUsername = initUsername;
+	exports.getProfile = getProfile;
+	exports.getRepositories = getRepositories;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _redux = __webpack_require__(166);
+	
+	var _servicesGithubJs = __webpack_require__(253);
+	
+	var _servicesGithubJs2 = _interopRequireDefault(_servicesGithubJs);
+	
+	var REPOS_PER_PAGE = 15;
+	
+	var INIT = 'singleUser/INIT';
+	
+	var FETCH_PROFILE = 'singleUser/FETCH_PROFILE';
+	var FETCH_PROFILE_SUCCESS = 'singleUser/FETCH_PROFILE_SUCCESS';
+	var FETCH_PROFILE_ERROR = 'singleUser/FETCH_PROFILE_ERROR';
+	
+	var FETCH_REPOSITORIES = 'singleUser/FETCH_REPOSITORIES';
+	var FETCH_REPOSITORIES_SUCCESS = 'singleUser/FETCH_REPOSITORIES_SUCCESS';
+	var FETCH_REPOSITORIES_ERROR = 'singleUser/FETCH_REPOSITORIES_ERROR';
+	
+	var initialState = {
+	  profile: {
+	    pristineLogin: '',
+	    data: null,
+	    fetching: false,
+	    error: null
+	  },
+	  repositories: {
+	    pristineLogin: '',
+	    data: null,
+	    fetching: false,
+	    infos: null,
+	    error: null
+	  }
+	};
+	
+	/************ Reducer (and sub-reducers) ************/
+	
+	/**
+	 * profile sub-reducer
+	 *
+	 * Receives and returns only a part of the state : state.profile, but doesn't have to know about it.
+	 * This reducer is not exported "as is", it will be combined with an other (which will be the one to be exported)
+	 */
+	function profile() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState.profile : arguments[0];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  switch (action.type) {
+	    case INIT:
+	      return _extends({}, initialState.profile, {
+	        pristineLogin: action.username
+	      });
+	    case FETCH_PROFILE:
+	      return _extends({}, state, {
+	        fetching: true
+	      });
+	    case FETCH_PROFILE_SUCCESS:
+	      return _extends({}, state, {
+	        fetching: false,
+	        data: action.json.data
+	      });
+	    case FETCH_PROFILE_ERROR:
+	      return _extends({}, state, {
+	        fetching: false,
+	        error: action.error.humanMessage
+	      });
+	    default:
+	      return state;
+	  }
+	}
+	
+	/**
+	 * repositories sub-reducer
+	 *
+	 * Receives and returns only a part of the state : state.repositories, but doesn't have to know about it.
+	 * This reducer is not exported "as is", it will be combined with an other (which will be the one to be exported)
+	 */
+	function repositories() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState.repositories : arguments[0];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  switch (action.type) {
+	    case INIT:
+	      return _extends({}, initialState.repositories, {
+	        pristineLogin: action.username
+	      });
+	    case FETCH_REPOSITORIES:
+	      return _extends({}, state, {
+	        fetching: true
+	      });
+	    case FETCH_REPOSITORIES_SUCCESS:
+	      return _extends({}, state, {
+	        fetching: false,
+	        data: action.json.data,
+	        infos: action.json.infos
+	      });
+	    case FETCH_REPOSITORIES_ERROR:
+	      return _extends({}, state, {
+	        fetching: false,
+	        error: action.error.humanMessage
+	      });
+	    default:
+	      return state;
+	  }
+	}
+	
+	/**
+	 * Previous reducers are combined together in a higher reducer that is at the level state.singleUser
+	 */
+	var reducer = _redux.combineReducers({
+	  profile: profile,
+	  repositories: repositories
+	});
+	
+	/**
+	 * The reducer is the default export (it's done here because you can't export directly an assignment like `export const foo = 'bar';`
+	 */
+	exports['default'] = reducer;
+	
+	/************ Action creators ************/
+	
+	/**
+	 * Called to init pristineLogin
+	 */
+	
+	function initUsername() {
+	  var username = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+	
+	  return {
+	    type: INIT,
+	    username: username
+	  };
+	}
+	
+	/*** profile related action creators ***/
+	
+	/**
+	 * The following action creators are not exported, nor used outside this module.
+	 * To be more concise, they could be inlined in place as dipatch({type,payload})
+	 */
+	
+	function requestFetchProfile(username) {
+	  return {
+	    type: FETCH_PROFILE,
+	    username: username //username is not needed for state management, it helps loging/debug
+	  };
+	}
+	
+	function receiveFetchProfile(json) {
+	  return {
+	    type: FETCH_PROFILE_SUCCESS,
+	    json: json
+	  };
+	}
+	
+	function receiveFetchProfileError(error) {
+	  return {
+	    type: FETCH_PROFILE_ERROR,
+	    error: error
+	  };
+	}
+	
+	/**
+	 * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
+	 */
+	
+	function getProfile(username) {
+	  return function (dispatch) {
+	    dispatch(requestFetchProfile(username)); //request will start
+	    return _servicesGithubJs2['default'].getUser(username).then(function (json) {
+	      return dispatch(receiveFetchProfile(json));
+	    }) //request succeeded
+	    ['catch'](function (error) {
+	      return dispatch(receiveFetchProfileError(error));
+	    }); //request failed
+	  };
+	}
+	
+	/*** repositories related action creators ***/
+	
+	/**
+	 * The following action creators are not exported, nor used outside this module.
+	 * To be more concise, they could be inlined in place as dipatch({type,payload})
+	 */
+	
+	function requestFetchRepositories(username, options) {
+	  return {
+	    type: FETCH_REPOSITORIES,
+	    username: username, //username & options are not needed for state management, it helps loging/debug
+	    options: options
+	  };
+	}
+	
+	function receiveFetchRepositories(json) {
+	  return {
+	    type: FETCH_REPOSITORIES_SUCCESS,
+	    json: json
+	  };
+	}
+	
+	function receiveFetchRepositoriesError(error) {
+	  return {
+	    type: FETCH_REPOSITORIES_ERROR,
+	    error: error
+	  };
+	}
+	
+	/**
+	 * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
+	 */
+	
+	function getRepositories(username) {
+	  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  var _ref$page = _ref.page;
+	  var page = _ref$page === undefined ? 1 : _ref$page;
+	  var _ref$sort = _ref.sort;
+	  var sort = _ref$sort === undefined ? 'stars' : _ref$sort;
+	  var _ref$per_page = _ref.per_page;
+	  var per_page = _ref$per_page === undefined ? REPOS_PER_PAGE : _ref$per_page;
+	
+	  return function (dispatch) {
+	    dispatch(requestFetchRepositories(username, { page: page, sort: sort, per_page: per_page })); //request will start
+	    _servicesGithubJs2['default'].getUserRepos(username, { page: page, sort: sort, per_page: per_page }).then(function (json) {
+	      return dispatch(receiveFetchRepositories(json));
+	    }) //request succeeded
+	    ['catch'](function (error) {
+	      return dispatch(receiveFetchRepositoriesError(error));
+	    }); //request failed
+	  };
+	}
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "singleUser.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(177);
+	
+	var prodMessage = _react2['default'].createElement(
+	  'div',
+	  null,
+	  _react2['default'].createElement(
+	    'p',
+	    null,
+	    'This is the ',
+	    _react2['default'].createElement(
+	      'strong',
+	      null,
+	      'production packaged'
+	    ),
+	    ' version (html/css/js uglified). You can ',
+	    _react2['default'].createElement(
+	      'a',
+	      { href: './devtools.html', title: 'Test with devtools & sourcemaps', style: { fontWeight: "bold" } },
+	      'test the site in debug mode here'
+	    ),
+	    ', where you\'ll have access to:'
+	  ),
+	  _react2['default'].createElement(
+	    'ul',
+	    null,
+	    _react2['default'].createElement(
+	      'li',
+	      null,
+	      'sourcemaps for css/js'
+	    ),
+	    _react2['default'].createElement(
+	      'li',
+	      null,
+	      'redux devtools'
+	    )
+	  ),
+	  _react2['default'].createElement(
+	    'p',
+	    { className: 'text-center' },
+	    _react2['default'].createElement(
+	      'a',
+	      { href: './devtools.html', title: 'Test with devtools & sourcemaps', className: 'btn btn-default btn-primary btn-lg', style: { whiteSpace: "pre-wrap" } },
+	      'I\'m a developer, I want to see what\'s under the hood!'
+	    )
+	  )
+	);
+	
+	var devtoolsMessage = _react2['default'].createElement(
+	  'div',
+	  null,
+	  _react2['default'].createElement(
+	    'p',
+	    null,
+	    'This is the ',
+	    _react2['default'].createElement(
+	      'strong',
+	      null,
+	      'development packaged'
+	    ),
+	    ' version (',
+	    _react2['default'].createElement(
+	      'a',
+	      { href: './', title: 'checkout in production mode' },
+	      'the production version is here'
+	    ),
+	    '). In the current mode, you have access to:'
+	  ),
+	  _react2['default'].createElement(
+	    'ul',
+	    null,
+	    _react2['default'].createElement(
+	      'li',
+	      null,
+	      'sourcemaps for css/js (open the sources tab of your developer tools)'
+	    ),
+	    _react2['default'].createElement(
+	      'li',
+	      null,
+	      _react2['default'].createElement(
+	        'a',
+	        { href: 'https://github.com/gaearon/redux-devtools', title: 'redux-devtools' },
+	        'redux devtools'
+	      ),
+	      ' (this is the tab you can see on the right - ctrl+H to toggle hide), it lets you play with history state of redux'
+	    )
+	  ),
+	  _react2['default'].createElement(
+	    'p',
+	    null,
+	    'Those features are meant to be used only in the development but I felt it would be a great way to let you discover them.'
+	  )
+	);
+	
+	var Home = function Home() {
+	  return _react2['default'].createElement(
+	    'div',
+	    null,
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      'This project is a POC based on ',
+	      _react2['default'].createElement(
+	        'strong',
+	        null,
+	        'React'
+	      ),
+	      ', coded in ',
+	      _react2['default'].createElement(
+	        'strong',
+	        null,
+	        'ES6'
+	      ),
+	      ', relying on ',
+	      _react2['default'].createElement(
+	        'a',
+	        { href: 'https://github.com/topheman/topheman-apis-proxy', title: 'topheman-apis-proxy on github' },
+	        'topheman-apis-proxy'
+	      ),
+	      ' as a backend (providing the github API) and using ',
+	      _react2['default'].createElement(
+	        _reactRouter.Link,
+	        { to: '/redux', style: { fontWeight: "bold" } },
+	        'redux'
+	      ),
+	      ' for state management.'
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      'This is the front-only part, you can see an isomorphic (universal if you will) version of this project at ',
+	      _react2['default'].createElement(
+	        'a',
+	        { href: 'https://github.com/topheman/react-es6-isomorphic', title: 'topheman/react-es6-isomorphic on github' },
+	        'topheman/react-es6-isomorphic'
+	      ),
+	      '.'
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      _react2['default'].createElement(
+	        'strong',
+	        null,
+	        'TL;DR'
+	      ),
+	      ' : click on the button to try it !'
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      { className: 'text-center' },
+	      _react2['default'].createElement(
+	        _reactRouter.Link,
+	        { className: 'btn btn-default btn-primary btn-lg', to: '/github' },
+	        'TRY the DAMN thing !'
+	      )
+	    ),
+	     true ? devtoolsMessage : prodMessage
+	  );
+	};
+	
+	exports['default'] = Home;
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Home.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(177);
+	
+	var _reactRedux = __webpack_require__(159);
+	
+	var _componentsCounterButtonCounterButtonJsx = __webpack_require__(270);
+	
+	var _componentsCounterButtonCounterButtonJsx2 = _interopRequireDefault(_componentsCounterButtonCounterButtonJsx);
+	
+	var Redux = function Redux(_ref) {
+	  var counter = _ref.counter;
+	
+	  return _react2['default'].createElement(
+	    'div',
+	    null,
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      'I added ',
+	      _react2['default'].createElement(
+	        'a',
+	        { href: 'http://redux.js.org/', title: 'About redux' },
+	        'redux'
+	      ),
+	      ' to manage state (a flux-like implementation if you will).'
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      'If you clone the project and launch it in local, you\'ll have access to the redux devtools (hot reloading / state history ...).',
+	       true ? '' : _react2['default'].createElement(
+	        'span',
+	        null,
+	        ' In fact, ',
+	        _react2['default'].createElement(
+	          'a',
+	          { href: './devtools.html', title: 'Test with devtools & sourcemaps', style: { fontWeight: "bold" } },
+	          'you can test them right now here'
+	        ),
+	        '!'
+	      )
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      'The button bellow is connected to a redux store:'
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      _react2['default'].createElement(_componentsCounterButtonCounterButtonJsx2['default'], null),
+	       true ? ' (ctrl+H to hide the debug panel).' : ''
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      'This count is updated through the actions: ',
+	      _react2['default'].createElement(
+	        'strong',
+	        null,
+	        counter
+	      ),
+	      '.'
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      _react2['default'].createElement(
+	        'strong',
+	        null,
+	        'All actions modifying state'
+	      ),
+	      ' on this site are connected to redux.'
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      { className: 'text-center' },
+	      _react2['default'].createElement(
+	        _reactRouter.Link,
+	        { to: '/' },
+	        'Back Home page'
+	      )
+	    )
+	  );
+	};
+	
+	Redux.propTypes = {
+	  counter: _react.PropTypes.number.isRequired
+	};
+	
+	exports['default'] = _reactRedux.connect(function (state) {
+	  return { counter: state.counter };
+	})(Redux);
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Redux.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _redux = __webpack_require__(166);
+	
+	var _reactRedux = __webpack_require__(159);
+	
+	var _reduxModulesCounterJs = __webpack_require__(271);
+	
+	//import action creators
+	
+	var CounterButton = (function (_React$Component) {
+	  _inherits(CounterButton, _React$Component);
+	
+	  function CounterButton() {
+	    _classCallCheck(this, CounterButton);
+	
+	    _React$Component.apply(this, arguments);
+	  }
+	
+	  /**
+	   * The connect from react-redux can also be used as an ES7 decorator (babel stage 0)
+	   * 1rst argument: mapStateToProps - (state) => props
+	   * 2nd argument: mapDispatchToProps - (dispatch, [ownProps]) => dispatchProps
+	   *
+	   * Using bindActionCreators : Turns an object whose values are action creators, into an object with the same keys,
+	   * but with every action creator wrapped into a dispatch call so they may be invoked directly.
+	   */
+	
+	  CounterButton.prototype.render = function render() {
+	    var _props = this.props;
+	    var counter = _props.counter;
+	    var increment = _props.increment;
+	
+	    return _react2['default'].createElement(
+	      'button',
+	      { className: 'btn btn-primary', type: 'button', onClick: increment },
+	      'Click to increment ',
+	      _react2['default'].createElement(
+	        'span',
+	        { className: 'badge' },
+	        counter
+	      )
+	    );
+	  };
+	
+	  _createClass(CounterButton, null, [{
+	    key: 'propTypes',
+	    value: {
+	      increment: _react.PropTypes.func.isRequired,
+	      counter: _react.PropTypes.number.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return CounterButton;
+	})(_react2['default'].Component);
+	
+	exports.CounterButton = CounterButton;
+	exports['default'] = _reactRedux.connect(function (state) {
+	  return { counter: state.counter };
+	}, //mapStateToProps - signature : (state) => props
+	function (dispatch) {
+	  return _redux.bindActionCreators({ increment: _reduxModulesCounterJs.increment }, dispatch);
+	} //mapDispatchToProps (using bindActionCreators helper) - http://rackt.org/redux/docs/api/bindActionCreators.html
+	// The bindActionCreators results to the following - dispatch in param - wraps the actions in dispatch in a key value object
+	//(dispatch) => ({
+	//  increment: function(){
+	//    return dispatch(CounterActions.increment());
+	//  }
+	//})
+	)(CounterButton);
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "CounterButton.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	/**
+	 * For annotated version of a module managing action creators & reducers,
+	 * checkout src/redux/modules/multipleUsers.js
+	 */
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	exports['default'] = reducer;
+	exports.increment = increment;
+	var INCREMENT = 'counter/INCREMENT';
+	
+	/************ Reducer ************/
+	
+	function reducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  switch (action.type) {
+	    case INCREMENT:
+	      return state + 1;
+	    default:
+	      return state;
+	  }
+	}
+	
+	/************ Action creators ************/
+	
+	function increment() {
+	  return {
+	    type: INCREMENT
+	  };
+	}
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "counter.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	/**
+	 * inspired by https://github.com/emmenko/redux-react-router-async-example
+	 *
+	 * I added some comments to help understand the code
+	 */
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	exports['default'] = configureStore;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _redux = __webpack_require__(166);
+	
+	var _reduxRouter = __webpack_require__(155);
+	
+	var _historyLibCreateHashHistory = __webpack_require__(180);
+	
+	var _historyLibCreateHashHistory2 = _interopRequireDefault(_historyLibCreateHashHistory);
+	
+	var _reduxThunk = __webpack_require__(273);
+	
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+	
+	var createHistory = function createHistory() {
+	  return _historyLibCreateHashHistory2['default']({ queryKey: 'hash' });
+	};
+	
+	var combinedCreateStore = undefined;
+	
+	/**
+	 * https://github.com/rackt/redux/blob/master/docs/Glossary.md#store-enhancer
+	 * Higher order function that compose a store creator and returns a new one: (StoreCreator) => (StoreCreator)
+	 */
+	var storeEnhancers = [_reduxRouter.reduxReactRouter({ createHistory: createHistory })];
+	
+	/**
+	 * Only require then add devtools to the store-enhancer when needed
+	 */
+	if (true) {
+	  var _require = __webpack_require__(274);
+	
+	  var devTools = _require.devTools;
+	
+	  storeEnhancers.push(devTools());
+	}
+	
+	/**
+	 * Compose the store-enhancers with the original createStore function to create a new composed one.
+	 * Same as: combinedCreateStore = storeEnhancers[0](storeEnhancers[1](createStore))
+	 */
+	combinedCreateStore = _redux.compose.apply(undefined, storeEnhancers)(_redux.createStore);
+	
+	var middlewares = [_reduxThunk2['default']];
+	
+	if (true) {
+	  middlewares.push(__webpack_require__(277));
+	}
+	
+	/**
+	 * Compose the middlewares with the previously composed createStore function
+	 *
+	 * The applyMiddleware allows us to add the following middlewares to the previously altered version of createStore.
+	 * The redux middlewares have the signature : ({ getState, dispatch }) => next => action
+	 */
+	var finalCreateStore = _redux.applyMiddleware.apply(undefined, middlewares)(combinedCreateStore);
+	
+	/**
+	 * Importing the rootReducer which combines all the other ones, including the reducer of the routerStateReducer
+	 * This work is done in ./modules/reducer.js
+	 */
+	var rootReducer = __webpack_require__(278);
+	
+	function configureStore(initialState) {
+	
+	  /**
+	   * The store can finally be created based on the rootReducer and finalCreateStore function,
+	   * as we would have done createStore(reducers), but with composed versions of each ones,
+	   * thanks to functional programming
+	   */
+	  var store = finalCreateStore(rootReducer, initialState);
+	
+	  if (false)
+	    // Enable Webpack hot module replacement for reducers
+	    module.hot.accept('./modules/reducer', function () {
+	      console.log('reloading reducer');
+	      var nextRootReducer = require('./modules/reducer');
+	      store.replaceReducer(nextRootReducer);
+	    });
+	
+	  return store;
+	}
+	
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "configure-store.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 273 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports['default'] = thunkMiddleware;
+	
+	function thunkMiddleware(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var getState = _ref.getState;
+	
+	  return function (next) {
+	    return function (action) {
+	      return typeof action === 'function' ? action(dispatch, getState) : next(action);
+	    };
+	  };
+	}
+	
+	module.exports = exports['default'];
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+	
+	var _devTools = __webpack_require__(275);
+	
+	exports.devTools = _interopRequire(_devTools);
+	
+	var _persistState = __webpack_require__(276);
+	
+	exports.persistState = _interopRequire(_persistState);
+
+/***/ },
+/* 275 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports['default'] = devTools;
+	var ActionTypes = {
+	  PERFORM_ACTION: 'PERFORM_ACTION',
+	  RESET: 'RESET',
+	  ROLLBACK: 'ROLLBACK',
+	  COMMIT: 'COMMIT',
+	  SWEEP: 'SWEEP',
+	  TOGGLE_ACTION: 'TOGGLE_ACTION',
+	  JUMP_TO_STATE: 'JUMP_TO_STATE',
+	  SET_MONITOR_STATE: 'SET_MONITOR_STATE',
+	  RECOMPUTE_STATES: 'RECOMPUTE_STATES'
+	};
+	
+	var INIT_ACTION = {
+	  type: '@@INIT'
+	};
+	
+	function toggle(obj, key) {
+	  var clone = _extends({}, obj);
+	  if (clone[key]) {
+	    delete clone[key];
+	  } else {
+	    clone[key] = true;
+	  }
+	  return clone;
+	}
+	
+	/**
+	 * Computes the next entry in the log by applying an action.
+	 */
+	function computeNextEntry(reducer, action, state, error) {
+	  if (error) {
+	    return {
+	      state: state,
+	      error: 'Interrupted by an error up the chain'
+	    };
+	  }
+	
+	  var nextState = state;
+	  var nextError = undefined;
+	  try {
+	    nextState = reducer(state, action);
+	  } catch (err) {
+	    nextError = err.toString();
+	    console.error(err.stack || err);
+	  }
+	
+	  return {
+	    state: nextState,
+	    error: nextError
+	  };
+	}
+	
+	/**
+	 * Runs the reducer on all actions to get a fresh computation log.
+	 * It's probably a good idea to do this only if the code has changed,
+	 * but until we have some tests we'll just do it every time an action fires.
+	 */
+	function recomputeStates(reducer, committedState, stagedActions, skippedActions) {
+	  var computedStates = [];
+	
+	  for (var i = 0; i < stagedActions.length; i++) {
+	    var action = stagedActions[i];
+	
+	    var previousEntry = computedStates[i - 1];
+	    var previousState = previousEntry ? previousEntry.state : committedState;
+	    var previousError = previousEntry ? previousEntry.error : undefined;
+	
+	    var shouldSkip = Boolean(skippedActions[i]);
+	    var entry = shouldSkip ? previousEntry : computeNextEntry(reducer, action, previousState, previousError);
+	
+	    computedStates.push(entry);
+	  }
+	
+	  return computedStates;
+	}
+	
+	/**
+	 * Lifts the app state reducer into a DevTools state reducer.
+	 */
+	function liftReducer(reducer, initialState) {
+	  var initialLiftedState = {
+	    committedState: initialState,
+	    stagedActions: [INIT_ACTION],
+	    skippedActions: {},
+	    currentStateIndex: 0,
+	    monitorState: {
+	      isVisible: true
+	    },
+	    timestamps: [Date.now()]
+	  };
+	
+	  /**
+	   * Manages how the DevTools actions modify the DevTools state.
+	   */
+	  return function liftedReducer(liftedState, liftedAction) {
+	    if (liftedState === undefined) liftedState = initialLiftedState;
+	
+	    var shouldRecomputeStates = true;
+	    var committedState = liftedState.committedState;
+	    var stagedActions = liftedState.stagedActions;
+	    var skippedActions = liftedState.skippedActions;
+	    var computedStates = liftedState.computedStates;
+	    var currentStateIndex = liftedState.currentStateIndex;
+	    var monitorState = liftedState.monitorState;
+	    var timestamps = liftedState.timestamps;
+	
+	    switch (liftedAction.type) {
+	      case ActionTypes.RESET:
+	        committedState = initialState;
+	        stagedActions = [INIT_ACTION];
+	        skippedActions = {};
+	        currentStateIndex = 0;
+	        timestamps = [liftedAction.timestamp];
+	        break;
+	      case ActionTypes.COMMIT:
+	        committedState = computedStates[currentStateIndex].state;
+	        stagedActions = [INIT_ACTION];
+	        skippedActions = {};
+	        currentStateIndex = 0;
+	        timestamps = [liftedAction.timestamp];
+	        break;
+	      case ActionTypes.ROLLBACK:
+	        stagedActions = [INIT_ACTION];
+	        skippedActions = {};
+	        currentStateIndex = 0;
+	        timestamps = [liftedAction.timestamp];
+	        break;
+	      case ActionTypes.TOGGLE_ACTION:
+	        skippedActions = toggle(skippedActions, liftedAction.index);
+	        break;
+	      case ActionTypes.JUMP_TO_STATE:
+	        currentStateIndex = liftedAction.index;
+	        // Optimization: we know the history has not changed.
+	        shouldRecomputeStates = false;
+	        break;
+	      case ActionTypes.SWEEP:
+	        stagedActions = stagedActions.filter(function (_, i) {
+	          return !skippedActions[i];
+	        });
+	        timestamps = timestamps.filter(function (_, i) {
+	          return !skippedActions[i];
+	        });
+	        skippedActions = {};
+	        currentStateIndex = Math.min(currentStateIndex, stagedActions.length - 1);
+	        break;
+	      case ActionTypes.PERFORM_ACTION:
+	        if (currentStateIndex === stagedActions.length - 1) {
+	          currentStateIndex++;
+	        }
+	
+	        stagedActions = [].concat(stagedActions, [liftedAction.action]);
+	        timestamps = [].concat(timestamps, [liftedAction.timestamp]);
+	
+	        // Optimization: we know that the past has not changed.
+	        shouldRecomputeStates = false;
+	        // Instead of recomputing the states, append the next one.
+	        var previousEntry = computedStates[computedStates.length - 1];
+	        var nextEntry = computeNextEntry(reducer, liftedAction.action, previousEntry.state, previousEntry.error);
+	        computedStates = [].concat(computedStates, [nextEntry]);
+	        break;
+	      case ActionTypes.SET_MONITOR_STATE:
+	        monitorState = liftedAction.monitorState;
+	        break;
+	      case ActionTypes.RECOMPUTE_STATES:
+	        stagedActions = liftedAction.stagedActions;
+	        timestamps = liftedAction.timestamps;
+	        committedState = liftedAction.committedState;
+	        currentStateIndex = stagedActions.length - 1;
+	        skippedActions = {};
+	        break;
+	      default:
+	        break;
+	    }
+	
+	    if (shouldRecomputeStates) {
+	      computedStates = recomputeStates(reducer, committedState, stagedActions, skippedActions);
+	    }
+	
+	    return {
+	      committedState: committedState,
+	      stagedActions: stagedActions,
+	      skippedActions: skippedActions,
+	      computedStates: computedStates,
+	      currentStateIndex: currentStateIndex,
+	      monitorState: monitorState,
+	      timestamps: timestamps
+	    };
+	  };
+	}
+	
+	/**
+	 * Lifts an app action to a DevTools action.
+	 */
+	function liftAction(action) {
+	  var liftedAction = {
+	    type: ActionTypes.PERFORM_ACTION,
+	    action: action,
+	    timestamp: Date.now()
+	  };
+	  return liftedAction;
+	}
+	
+	/**
+	 * Unlifts the DevTools state to the app state.
+	 */
+	function unliftState(liftedState) {
+	  var computedStates = liftedState.computedStates;
+	  var currentStateIndex = liftedState.currentStateIndex;
+	  var state = computedStates[currentStateIndex].state;
+	
+	  return state;
+	}
+	
+	/**
+	 * Unlifts the DevTools store to act like the app's store.
+	 */
+	function unliftStore(liftedStore, reducer) {
+	  var lastDefinedState = undefined;
+	  return _extends({}, liftedStore, {
+	    devToolsStore: liftedStore,
+	    dispatch: function dispatch(action) {
+	      liftedStore.dispatch(liftAction(action));
+	      return action;
+	    },
+	    getState: function getState() {
+	      var state = unliftState(liftedStore.getState());
+	      if (state !== undefined) {
+	        lastDefinedState = state;
+	      }
+	      return lastDefinedState;
+	    },
+	    getReducer: function getReducer() {
+	      return reducer;
+	    },
+	    replaceReducer: function replaceReducer(nextReducer) {
+	      liftedStore.replaceReducer(liftReducer(nextReducer));
+	    }
+	  });
+	}
+	
+	/**
+	 * Action creators to change the DevTools state.
+	 */
+	var ActionCreators = {
+	  reset: function reset() {
+	    return { type: ActionTypes.RESET, timestamp: Date.now() };
+	  },
+	  rollback: function rollback() {
+	    return { type: ActionTypes.ROLLBACK, timestamp: Date.now() };
+	  },
+	  commit: function commit() {
+	    return { type: ActionTypes.COMMIT, timestamp: Date.now() };
+	  },
+	  sweep: function sweep() {
+	    return { type: ActionTypes.SWEEP };
+	  },
+	  toggleAction: function toggleAction(index) {
+	    return { type: ActionTypes.TOGGLE_ACTION, index: index };
+	  },
+	  jumpToState: function jumpToState(index) {
+	    return { type: ActionTypes.JUMP_TO_STATE, index: index };
+	  },
+	  setMonitorState: function setMonitorState(monitorState) {
+	    return { type: ActionTypes.SET_MONITOR_STATE, monitorState: monitorState };
+	  },
+	  recomputeStates: function recomputeStates(committedState, stagedActions) {
+	    return {
+	      type: ActionTypes.RECOMPUTE_STATES,
+	      committedState: committedState,
+	      stagedActions: stagedActions
+	    };
+	  }
+	};
+	
+	exports.ActionCreators = ActionCreators;
+	/**
+	 * Redux DevTools middleware.
+	 */
+	
+	function devTools() {
+	  return function (next) {
+	    return function (reducer, initialState) {
+	      var liftedReducer = liftReducer(reducer, initialState);
+	      var liftedStore = next(liftedReducer);
+	      var store = unliftStore(liftedStore, reducer);
+	      return store;
+	    };
+	  };
+	}
+
+/***/ },
+/* 276 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports['default'] = persistState;
+	
+	function persistState(sessionId) {
+	  var stateDeserializer = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+	  var actionDeserializer = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+	
+	  if (!sessionId) {
+	    return function (next) {
+	      return function () {
+	        return next.apply(undefined, arguments);
+	      };
+	    };
+	  }
+	
+	  function deserializeState(fullState) {
+	    return _extends({}, fullState, {
+	      committedState: stateDeserializer(fullState.committedState),
+	      computedStates: fullState.computedStates.map(function (computedState) {
+	        return _extends({}, computedState, {
+	          state: stateDeserializer(computedState.state)
+	        });
+	      })
+	    });
+	  }
+	
+	  function deserializeActions(fullState) {
+	    return _extends({}, fullState, {
+	      stagedActions: fullState.stagedActions.map(function (action) {
+	        return actionDeserializer(action);
+	      })
+	    });
+	  }
+	
+	  function deserialize(fullState) {
+	    if (!fullState) {
+	      return fullState;
+	    }
+	    var deserializedState = fullState;
+	    if (typeof stateDeserializer === 'function') {
+	      deserializedState = deserializeState(deserializedState);
+	    }
+	    if (typeof actionDeserializer === 'function') {
+	      deserializedState = deserializeActions(deserializedState);
+	    }
+	    return deserializedState;
+	  }
+	
+	  return function (next) {
+	    return function (reducer, initialState) {
+	      var key = 'redux-dev-session-' + sessionId;
+	
+	      var finalInitialState = undefined;
+	      try {
+	        finalInitialState = deserialize(JSON.parse(localStorage.getItem(key))) || initialState;
+	        next(reducer, initialState);
+	      } catch (e) {
+	        console.warn('Could not read debug session from localStorage:', e);
+	        try {
+	          localStorage.removeItem(key);
+	        } finally {
+	          finalInitialState = undefined;
+	        }
+	      }
+	
+	      var store = next(reducer, finalInitialState);
+	
+	      return _extends({}, store, {
+	        dispatch: function dispatch(action) {
+	          store.dispatch(action);
+	
+	          try {
+	            localStorage.setItem(key, JSON.stringify(store.getState()));
+	          } catch (e) {
+	            console.warn('Could not write debug session to localStorage:', e);
+	          }
+	
+	          return action;
+	        }
+	      });
+	    };
+	  };
+	}
+	
+	module.exports = exports['default'];
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	/**
+	 * This goes through redux's applyMiddleware http://redux.js.org/docs/api/applyMiddleware.html
+	 * any middleware should have the following signature : ({ getState, dispatch }) => next => action
+	 */
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	exports['default'] = logger;
+	
+	function logger(_ref) {
+	  var getState = _ref.getState;
+	
+	  return function (next) {
+	    return function (action) {
+	      console.group(action.type);
+	      console.log('will dispatch', action);
+	      var result = next(action);
+	      console.log('state after dispatch', getState());
+	      console.groupEnd();
+	
+	      return result;
+	    };
+	  };
+	}
+	
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "logger.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _redux = __webpack_require__(166);
+	
+	var _reduxRouter = __webpack_require__(155);
+	
+	//reducers specific to app logic - to see an annotated reducer, open src/redux/modules/multipleUsers.js
+	
+	var _counterJs = __webpack_require__(271);
+	
+	var _counterJs2 = _interopRequireDefault(_counterJs);
+	
+	var _multipleUsersJs = __webpack_require__(252);
+	
+	var _multipleUsersJs2 = _interopRequireDefault(_multipleUsersJs);
+	
+	var _singleUserJs = __webpack_require__(267);
+	
+	var _singleUserJs2 = _interopRequireDefault(_singleUserJs);
+	
+	/**
+	 * Exporting a default root reducer combining all the other ones
+	 * (including the reducer of the router, since we use redux-router and so the state of the router is in the store)
+	 */
+	exports['default'] = _redux.combineReducers({
+	  router: _reduxRouter.routerStateReducer,
+	  counter: _counterJs2['default'],
+	  multipleUsers: _multipleUsersJs2['default'],
+	  singleUser: _singleUserJs2['default']
+	});
+	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "reducer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
@@ -30583,7 +30543,7 @@
 	    function lib$es6$promise$asap$$attemptVertx() {
 	      try {
 	        var r = require;
-	        var vertx = __webpack_require__(283);
+	        var vertx = __webpack_require__(282);
 	        lib$es6$promise$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	        return lib$es6$promise$asap$$useVertxTimer();
 	      } catch(e) {
@@ -31408,7 +31368,7 @@
 	    };
 	
 	    /* global define:true module:true window: true */
-	    if ("function" === 'function' && __webpack_require__(284)['amd']) {
+	    if ("function" === 'function' && __webpack_require__(283)['amd']) {
 	      !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return lib$es6$promise$umd$$ES6Promise; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module !== 'undefined' && module['exports']) {
 	      module['exports'] = lib$es6$promise$umd$$ES6Promise;
@@ -31420,10 +31380,10 @@
 	}).call(this);
 	
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(281), (function() { return this; }()), __webpack_require__(282)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(280), (function() { return this; }()), __webpack_require__(281)(module)))
 
 /***/ },
-/* 281 */
+/* 280 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -31520,7 +31480,7 @@
 
 
 /***/ },
-/* 282 */
+/* 281 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -31536,20 +31496,20 @@
 
 
 /***/ },
-/* 283 */
+/* 282 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 284 */
+/* 283 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 285 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31564,23 +31524,23 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _createDevTools = __webpack_require__(286);
+	var _createDevTools = __webpack_require__(285);
 	
 	var _createDevTools2 = _interopRequireDefault(_createDevTools);
 	
 	var DevTools = _createDevTools2['default'](_react2['default']);
 	exports.DevTools = DevTools;
 	
-	var _LogMonitor = __webpack_require__(296);
+	var _LogMonitor = __webpack_require__(295);
 	
 	exports.LogMonitor = _interopRequire(_LogMonitor);
 	
-	var _DebugPanel = __webpack_require__(427);
+	var _DebugPanel = __webpack_require__(426);
 	
 	exports.DebugPanel = _interopRequire(_DebugPanel);
 
 /***/ },
-/* 286 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31599,11 +31559,11 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _reactReduxLibComponentsCreateAll = __webpack_require__(287);
+	var _reactReduxLibComponentsCreateAll = __webpack_require__(286);
 	
 	var _reactReduxLibComponentsCreateAll2 = _interopRequireDefault(_reactReduxLibComponentsCreateAll);
 	
-	var _devTools = __webpack_require__(271);
+	var _devTools = __webpack_require__(275);
 	
 	function createDevTools(React) {
 	  var PropTypes = React.PropTypes;
@@ -31672,7 +31632,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 287 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31682,11 +31642,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _createProvider = __webpack_require__(288);
+	var _createProvider = __webpack_require__(287);
 	
 	var _createProvider2 = _interopRequireDefault(_createProvider);
 	
-	var _createConnect = __webpack_require__(290);
+	var _createConnect = __webpack_require__(289);
 	
 	var _createConnect2 = _interopRequireDefault(_createConnect);
 	
@@ -31700,7 +31660,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 288 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31714,7 +31674,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _utilsCreateStoreShape = __webpack_require__(289);
+	var _utilsCreateStoreShape = __webpack_require__(288);
 	
 	var _utilsCreateStoreShape2 = _interopRequireDefault(_utilsCreateStoreShape);
 	
@@ -31824,7 +31784,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 289 */
+/* 288 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -31843,7 +31803,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 290 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31860,27 +31820,27 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _utilsCreateStoreShape = __webpack_require__(289);
+	var _utilsCreateStoreShape = __webpack_require__(288);
 	
 	var _utilsCreateStoreShape2 = _interopRequireDefault(_utilsCreateStoreShape);
 	
-	var _utilsShallowEqual = __webpack_require__(291);
+	var _utilsShallowEqual = __webpack_require__(290);
 	
 	var _utilsShallowEqual2 = _interopRequireDefault(_utilsShallowEqual);
 	
-	var _utilsIsPlainObject = __webpack_require__(292);
+	var _utilsIsPlainObject = __webpack_require__(291);
 	
 	var _utilsIsPlainObject2 = _interopRequireDefault(_utilsIsPlainObject);
 	
-	var _utilsWrapActionCreators = __webpack_require__(293);
+	var _utilsWrapActionCreators = __webpack_require__(292);
 	
 	var _utilsWrapActionCreators2 = _interopRequireDefault(_utilsWrapActionCreators);
 	
-	var _hoistNonReactStatics = __webpack_require__(294);
+	var _hoistNonReactStatics = __webpack_require__(293);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _invariant = __webpack_require__(295);
+	var _invariant = __webpack_require__(294);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
@@ -32111,7 +32071,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 291 */
+/* 290 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -32145,7 +32105,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 292 */
+/* 291 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32180,7 +32140,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 293 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32199,7 +32159,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 294 */
+/* 293 */
 /***/ function(module, exports) {
 
 	/**
@@ -32241,7 +32201,7 @@
 
 
 /***/ },
-/* 295 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32298,7 +32258,7 @@
 
 
 /***/ },
-/* 296 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32321,15 +32281,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _LogMonitorEntry = __webpack_require__(297);
+	var _LogMonitorEntry = __webpack_require__(296);
 	
 	var _LogMonitorEntry2 = _interopRequireDefault(_LogMonitorEntry);
 	
-	var _LogMonitorButton = __webpack_require__(386);
+	var _LogMonitorButton = __webpack_require__(385);
 	
 	var _LogMonitorButton2 = _interopRequireDefault(_LogMonitorButton);
 	
-	var _themes = __webpack_require__(388);
+	var _themes = __webpack_require__(387);
 	
 	var themes = _interopRequireWildcard(_themes);
 	
@@ -32567,7 +32527,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 297 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32588,11 +32548,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactJsonTree = __webpack_require__(298);
+	var _reactJsonTree = __webpack_require__(297);
 	
 	var _reactJsonTree2 = _interopRequireDefault(_reactJsonTree);
 	
-	var _LogMonitorEntryAction = __webpack_require__(385);
+	var _LogMonitorEntryAction = __webpack_require__(384);
 	
 	var _LogMonitorEntryAction2 = _interopRequireDefault(_LogMonitorEntryAction);
 	
@@ -32702,7 +32662,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 298 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// ES6 + inline style port of JSONViewer https://bitbucket.org/davevedder/react-json-viewer/
@@ -32712,15 +32672,15 @@
 	
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _createClass = __webpack_require__(314)['default'];
+	var _createClass = __webpack_require__(313)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -32728,11 +32688,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _grabNode = __webpack_require__(329);
+	var _grabNode = __webpack_require__(328);
 	
 	var _grabNode2 = _interopRequireDefault(_grabNode);
 	
-	var _themesSolarized = __webpack_require__(384);
+	var _themesSolarized = __webpack_require__(383);
 	
 	var _themesSolarized2 = _interopRequireDefault(_themesSolarized);
 	
@@ -32791,14 +32751,14 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 299 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var _Object$create = __webpack_require__(300)["default"];
+	var _Object$create = __webpack_require__(299)["default"];
 	
-	var _Object$setPrototypeOf = __webpack_require__(303)["default"];
+	var _Object$setPrototypeOf = __webpack_require__(302)["default"];
 	
 	exports["default"] = function (subClass, superClass) {
 	  if (typeof superClass !== "function" && superClass !== null) {
@@ -32819,22 +32779,22 @@
 	exports.__esModule = true;
 
 /***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(300), __esModule: true };
+
+/***/ },
 /* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(301), __esModule: true };
-
-/***/ },
-/* 301 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var $ = __webpack_require__(302);
+	var $ = __webpack_require__(301);
 	module.exports = function create(P, D){
 	  return $.create(P, D);
 	};
 
 /***/ },
-/* 302 */
+/* 301 */
 /***/ function(module, exports) {
 
 	var $Object = Object;
@@ -32852,33 +32812,33 @@
 	};
 
 /***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(303), __esModule: true };
+
+/***/ },
 /* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(304), __esModule: true };
+	__webpack_require__(304);
+	module.exports = __webpack_require__(307).Object.setPrototypeOf;
 
 /***/ },
 /* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(305);
-	module.exports = __webpack_require__(308).Object.setPrototypeOf;
+	// 19.1.3.19 Object.setPrototypeOf(O, proto)
+	var $export = __webpack_require__(305);
+	$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(310).set});
 
 /***/ },
 /* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 19.1.3.19 Object.setPrototypeOf(O, proto)
-	var $export = __webpack_require__(306);
-	$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(311).set});
-
-/***/ },
-/* 306 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var global    = __webpack_require__(307)
-	  , core      = __webpack_require__(308)
-	  , ctx       = __webpack_require__(309)
+	var global    = __webpack_require__(306)
+	  , core      = __webpack_require__(307)
+	  , ctx       = __webpack_require__(308)
 	  , PROTOTYPE = 'prototype';
 	
 	var $export = function(type, name, source){
@@ -32924,7 +32884,7 @@
 	module.exports = $export;
 
 /***/ },
-/* 307 */
+/* 306 */
 /***/ function(module, exports) {
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -32933,18 +32893,18 @@
 	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ },
-/* 308 */
+/* 307 */
 /***/ function(module, exports) {
 
 	var core = module.exports = {version: '1.2.6'};
 	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
-/* 309 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
-	var aFunction = __webpack_require__(310);
+	var aFunction = __webpack_require__(309);
 	module.exports = function(fn, that, length){
 	  aFunction(fn);
 	  if(that === undefined)return fn;
@@ -32965,7 +32925,7 @@
 	};
 
 /***/ },
-/* 310 */
+/* 309 */
 /***/ function(module, exports) {
 
 	module.exports = function(it){
@@ -32974,14 +32934,14 @@
 	};
 
 /***/ },
-/* 311 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Works with __proto__ only. Old v8 can't work with null proto objects.
 	/* eslint-disable no-proto */
-	var getDesc  = __webpack_require__(302).getDesc
-	  , isObject = __webpack_require__(312)
-	  , anObject = __webpack_require__(313);
+	var getDesc  = __webpack_require__(301).getDesc
+	  , isObject = __webpack_require__(311)
+	  , anObject = __webpack_require__(312);
 	var check = function(O, proto){
 	  anObject(O);
 	  if(!isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
@@ -32990,7 +32950,7 @@
 	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
 	    function(test, buggy, set){
 	      try {
-	        set = __webpack_require__(309)(Function.call, getDesc(Object.prototype, '__proto__').set, 2);
+	        set = __webpack_require__(308)(Function.call, getDesc(Object.prototype, '__proto__').set, 2);
 	        set(test, []);
 	        buggy = !(test instanceof Array);
 	      } catch(e){ buggy = true; }
@@ -33005,7 +32965,7 @@
 	};
 
 /***/ },
-/* 312 */
+/* 311 */
 /***/ function(module, exports) {
 
 	module.exports = function(it){
@@ -33013,22 +32973,22 @@
 	};
 
 /***/ },
-/* 313 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(312);
+	var isObject = __webpack_require__(311);
 	module.exports = function(it){
 	  if(!isObject(it))throw TypeError(it + ' is not an object!');
 	  return it;
 	};
 
 /***/ },
-/* 314 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var _Object$defineProperty = __webpack_require__(315)["default"];
+	var _Object$defineProperty = __webpack_require__(314)["default"];
 	
 	exports["default"] = (function () {
 	  function defineProperties(target, props) {
@@ -33052,22 +33012,22 @@
 	exports.__esModule = true;
 
 /***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(315), __esModule: true };
+
+/***/ },
 /* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(316), __esModule: true };
-
-/***/ },
-/* 316 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var $ = __webpack_require__(302);
+	var $ = __webpack_require__(301);
 	module.exports = function defineProperty(it, key, desc){
 	  return $.setDesc(it, key, desc);
 	};
 
 /***/ },
-/* 317 */
+/* 316 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33081,12 +33041,12 @@
 	exports.__esModule = true;
 
 /***/ },
-/* 318 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var _Object$assign = __webpack_require__(319)["default"];
+	var _Object$assign = __webpack_require__(318)["default"];
 	
 	exports["default"] = _Object$assign || function (target) {
 	  for (var i = 1; i < arguments.length; i++) {
@@ -33105,38 +33065,38 @@
 	exports.__esModule = true;
 
 /***/ },
+/* 318 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(319), __esModule: true };
+
+/***/ },
 /* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(320), __esModule: true };
+	__webpack_require__(320);
+	module.exports = __webpack_require__(307).Object.assign;
 
 /***/ },
 /* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(321);
-	module.exports = __webpack_require__(308).Object.assign;
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(305);
+	
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(321)});
 
 /***/ },
 /* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 19.1.3.1 Object.assign(target, source)
-	var $export = __webpack_require__(306);
-	
-	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(322)});
-
-/***/ },
-/* 322 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// 19.1.2.1 Object.assign(target, source, ...)
-	var $        = __webpack_require__(302)
-	  , toObject = __webpack_require__(323)
-	  , IObject  = __webpack_require__(325);
+	var $        = __webpack_require__(301)
+	  , toObject = __webpack_require__(322)
+	  , IObject  = __webpack_require__(324);
 	
 	// should work with symbols and should have deterministic property order (V8 bug)
-	module.exports = __webpack_require__(327)(function(){
+	module.exports = __webpack_require__(326)(function(){
 	  var a = Object.assign
 	    , A = {}
 	    , B = {}
@@ -33165,17 +33125,17 @@
 	} : Object.assign;
 
 /***/ },
-/* 323 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(324);
+	var defined = __webpack_require__(323);
 	module.exports = function(it){
 	  return Object(defined(it));
 	};
 
 /***/ },
-/* 324 */
+/* 323 */
 /***/ function(module, exports) {
 
 	// 7.2.1 RequireObjectCoercible(argument)
@@ -33185,17 +33145,17 @@
 	};
 
 /***/ },
-/* 325 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(326);
+	var cof = __webpack_require__(325);
 	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 	  return cof(it) == 'String' ? it.split('') : Object(it);
 	};
 
 /***/ },
-/* 326 */
+/* 325 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -33205,7 +33165,7 @@
 	};
 
 /***/ },
-/* 327 */
+/* 326 */
 /***/ function(module, exports) {
 
 	module.exports = function(exec){
@@ -33217,7 +33177,7 @@
 	};
 
 /***/ },
-/* 328 */
+/* 327 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33231,12 +33191,12 @@
 	exports.__esModule = true;
 
 /***/ },
-/* 329 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -33244,39 +33204,39 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _objType = __webpack_require__(330);
+	var _objType = __webpack_require__(329);
 	
 	var _objType2 = _interopRequireDefault(_objType);
 	
-	var _JSONObjectNode = __webpack_require__(354);
+	var _JSONObjectNode = __webpack_require__(353);
 	
 	var _JSONObjectNode2 = _interopRequireDefault(_JSONObjectNode);
 	
-	var _JSONArrayNode = __webpack_require__(367);
+	var _JSONArrayNode = __webpack_require__(366);
 	
 	var _JSONArrayNode2 = _interopRequireDefault(_JSONArrayNode);
 	
-	var _JSONIterableNode = __webpack_require__(368);
+	var _JSONIterableNode = __webpack_require__(367);
 	
 	var _JSONIterableNode2 = _interopRequireDefault(_JSONIterableNode);
 	
-	var _JSONStringNode = __webpack_require__(378);
+	var _JSONStringNode = __webpack_require__(377);
 	
 	var _JSONStringNode2 = _interopRequireDefault(_JSONStringNode);
 	
-	var _JSONNumberNode = __webpack_require__(380);
+	var _JSONNumberNode = __webpack_require__(379);
 	
 	var _JSONNumberNode2 = _interopRequireDefault(_JSONNumberNode);
 	
-	var _JSONBooleanNode = __webpack_require__(381);
+	var _JSONBooleanNode = __webpack_require__(380);
 	
 	var _JSONBooleanNode2 = _interopRequireDefault(_JSONBooleanNode);
 	
-	var _JSONNullNode = __webpack_require__(382);
+	var _JSONNullNode = __webpack_require__(381);
 	
 	var _JSONNullNode2 = _interopRequireDefault(_JSONNullNode);
 	
-	var _JSONDateNode = __webpack_require__(383);
+	var _JSONDateNode = __webpack_require__(382);
 	
 	var _JSONDateNode2 = _interopRequireDefault(_JSONDateNode);
 	
@@ -33307,12 +33267,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 330 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _Symbol$iterator = __webpack_require__(331)['default'];
+	var _Symbol$iterator = __webpack_require__(330)['default'];
 	
 	exports.__esModule = true;
 	
@@ -33326,28 +33286,28 @@
 	module.exports = exports['default'];
 
 /***/ },
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(331), __esModule: true };
+
+/***/ },
 /* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(332), __esModule: true };
+	__webpack_require__(332);
+	__webpack_require__(348);
+	module.exports = __webpack_require__(345)('iterator');
 
 /***/ },
 /* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(333);
-	__webpack_require__(349);
-	module.exports = __webpack_require__(346)('iterator');
-
-/***/ },
-/* 333 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
-	var $at  = __webpack_require__(334)(true);
+	var $at  = __webpack_require__(333)(true);
 	
 	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(336)(String, 'String', function(iterated){
+	__webpack_require__(335)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
 	  this._i = 0;                // next index
 	// 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -33362,11 +33322,11 @@
 	});
 
 /***/ },
-/* 334 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(335)
-	  , defined   = __webpack_require__(324);
+	var toInteger = __webpack_require__(334)
+	  , defined   = __webpack_require__(323);
 	// true  -> String#at
 	// false -> String#codePointAt
 	module.exports = function(TO_STRING){
@@ -33384,7 +33344,7 @@
 	};
 
 /***/ },
-/* 335 */
+/* 334 */
 /***/ function(module, exports) {
 
 	// 7.1.4 ToInteger
@@ -33395,20 +33355,20 @@
 	};
 
 /***/ },
-/* 336 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY        = __webpack_require__(337)
-	  , $export        = __webpack_require__(306)
-	  , redefine       = __webpack_require__(338)
-	  , hide           = __webpack_require__(339)
-	  , has            = __webpack_require__(342)
-	  , Iterators      = __webpack_require__(343)
-	  , $iterCreate    = __webpack_require__(344)
-	  , setToStringTag = __webpack_require__(345)
-	  , getProto       = __webpack_require__(302).getProto
-	  , ITERATOR       = __webpack_require__(346)('iterator')
+	var LIBRARY        = __webpack_require__(336)
+	  , $export        = __webpack_require__(305)
+	  , redefine       = __webpack_require__(337)
+	  , hide           = __webpack_require__(338)
+	  , has            = __webpack_require__(341)
+	  , Iterators      = __webpack_require__(342)
+	  , $iterCreate    = __webpack_require__(343)
+	  , setToStringTag = __webpack_require__(344)
+	  , getProto       = __webpack_require__(301).getProto
+	  , ITERATOR       = __webpack_require__(345)('iterator')
 	  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
 	  , FF_ITERATOR    = '@@iterator'
 	  , KEYS           = 'keys'
@@ -33466,24 +33426,24 @@
 	};
 
 /***/ },
-/* 337 */
+/* 336 */
 /***/ function(module, exports) {
 
 	module.exports = true;
 
 /***/ },
+/* 337 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(338);
+
+/***/ },
 /* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(339);
-
-/***/ },
-/* 339 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var $          = __webpack_require__(302)
-	  , createDesc = __webpack_require__(340);
-	module.exports = __webpack_require__(341) ? function(object, key, value){
+	var $          = __webpack_require__(301)
+	  , createDesc = __webpack_require__(339);
+	module.exports = __webpack_require__(340) ? function(object, key, value){
 	  return $.setDesc(object, key, createDesc(1, value));
 	} : function(object, key, value){
 	  object[key] = value;
@@ -33491,7 +33451,7 @@
 	};
 
 /***/ },
-/* 340 */
+/* 339 */
 /***/ function(module, exports) {
 
 	module.exports = function(bitmap, value){
@@ -33504,16 +33464,16 @@
 	};
 
 /***/ },
-/* 341 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(327)(function(){
+	module.exports = !__webpack_require__(326)(function(){
 	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 	});
 
 /***/ },
-/* 342 */
+/* 341 */
 /***/ function(module, exports) {
 
 	var hasOwnProperty = {}.hasOwnProperty;
@@ -33522,23 +33482,23 @@
 	};
 
 /***/ },
-/* 343 */
+/* 342 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 344 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $              = __webpack_require__(302)
-	  , descriptor     = __webpack_require__(340)
-	  , setToStringTag = __webpack_require__(345)
+	var $              = __webpack_require__(301)
+	  , descriptor     = __webpack_require__(339)
+	  , setToStringTag = __webpack_require__(344)
 	  , IteratorPrototype = {};
 	
 	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-	__webpack_require__(339)(IteratorPrototype, __webpack_require__(346)('iterator'), function(){ return this; });
+	__webpack_require__(338)(IteratorPrototype, __webpack_require__(345)('iterator'), function(){ return this; });
 	
 	module.exports = function(Constructor, NAME, next){
 	  Constructor.prototype = $.create(IteratorPrototype, {next: descriptor(1, next)});
@@ -33546,34 +33506,34 @@
 	};
 
 /***/ },
-/* 345 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var def = __webpack_require__(302).setDesc
-	  , has = __webpack_require__(342)
-	  , TAG = __webpack_require__(346)('toStringTag');
+	var def = __webpack_require__(301).setDesc
+	  , has = __webpack_require__(341)
+	  , TAG = __webpack_require__(345)('toStringTag');
 	
 	module.exports = function(it, tag, stat){
 	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 	};
 
 /***/ },
-/* 346 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var store  = __webpack_require__(347)('wks')
-	  , uid    = __webpack_require__(348)
-	  , Symbol = __webpack_require__(307).Symbol;
+	var store  = __webpack_require__(346)('wks')
+	  , uid    = __webpack_require__(347)
+	  , Symbol = __webpack_require__(306).Symbol;
 	module.exports = function(name){
 	  return store[name] || (store[name] =
 	    Symbol && Symbol[name] || (Symbol || uid)('Symbol.' + name));
 	};
 
 /***/ },
-/* 347 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(307)
+	var global = __webpack_require__(306)
 	  , SHARED = '__core-js_shared__'
 	  , store  = global[SHARED] || (global[SHARED] = {});
 	module.exports = function(key){
@@ -33581,7 +33541,7 @@
 	};
 
 /***/ },
-/* 348 */
+/* 347 */
 /***/ function(module, exports) {
 
 	var id = 0
@@ -33591,28 +33551,28 @@
 	};
 
 /***/ },
-/* 349 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(350);
-	var Iterators = __webpack_require__(343);
+	__webpack_require__(349);
+	var Iterators = __webpack_require__(342);
 	Iterators.NodeList = Iterators.HTMLCollection = Iterators.Array;
 
 /***/ },
-/* 350 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var addToUnscopables = __webpack_require__(351)
-	  , step             = __webpack_require__(352)
-	  , Iterators        = __webpack_require__(343)
-	  , toIObject        = __webpack_require__(353);
+	var addToUnscopables = __webpack_require__(350)
+	  , step             = __webpack_require__(351)
+	  , Iterators        = __webpack_require__(342)
+	  , toIObject        = __webpack_require__(352);
 	
 	// 22.1.3.4 Array.prototype.entries()
 	// 22.1.3.13 Array.prototype.keys()
 	// 22.1.3.29 Array.prototype.values()
 	// 22.1.3.30 Array.prototype[@@iterator]()
-	module.exports = __webpack_require__(336)(Array, 'Array', function(iterated, kind){
+	module.exports = __webpack_require__(335)(Array, 'Array', function(iterated, kind){
 	  this._t = toIObject(iterated); // target
 	  this._i = 0;                   // next index
 	  this._k = kind;                // kind
@@ -33638,13 +33598,13 @@
 	addToUnscopables('entries');
 
 /***/ },
-/* 351 */
+/* 350 */
 /***/ function(module, exports) {
 
 	module.exports = function(){ /* empty */ };
 
 /***/ },
-/* 352 */
+/* 351 */
 /***/ function(module, exports) {
 
 	module.exports = function(done, value){
@@ -33652,31 +33612,31 @@
 	};
 
 /***/ },
-/* 353 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(325)
-	  , defined = __webpack_require__(324);
+	var IObject = __webpack_require__(324)
+	  , defined = __webpack_require__(323);
 	module.exports = function(it){
 	  return IObject(defined(it));
 	};
 
 /***/ },
-/* 354 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _Object$keys = __webpack_require__(355)['default'];
+	var _Object$keys = __webpack_require__(354)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -33684,17 +33644,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMixin = __webpack_require__(359);
+	var _reactMixin = __webpack_require__(358);
 	
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 	
-	var _mixins = __webpack_require__(362);
+	var _mixins = __webpack_require__(361);
 	
-	var _JSONArrow = __webpack_require__(366);
+	var _JSONArrow = __webpack_require__(365);
 	
 	var _JSONArrow2 = _interopRequireDefault(_JSONArrow);
 	
-	var _grabNode = __webpack_require__(329);
+	var _grabNode = __webpack_require__(328);
 	
 	var _grabNode2 = _interopRequireDefault(_grabNode);
 	
@@ -33838,39 +33798,39 @@
 	// cache store for our child nodes
 
 /***/ },
+/* 354 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(355), __esModule: true };
+
+/***/ },
 /* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(356), __esModule: true };
+	__webpack_require__(356);
+	module.exports = __webpack_require__(307).Object.keys;
 
 /***/ },
 /* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(357);
-	module.exports = __webpack_require__(308).Object.keys;
-
-/***/ },
-/* 357 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(323);
+	var toObject = __webpack_require__(322);
 	
-	__webpack_require__(358)('keys', function($keys){
+	__webpack_require__(357)('keys', function($keys){
 	  return function keys(it){
 	    return $keys(toObject(it));
 	  };
 	});
 
 /***/ },
-/* 358 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(306)
-	  , core    = __webpack_require__(308)
-	  , fails   = __webpack_require__(327);
+	var $export = __webpack_require__(305)
+	  , core    = __webpack_require__(307)
+	  , fails   = __webpack_require__(326);
 	module.exports = function(KEY, exec){
 	  var fn  = (core.Object || {})[KEY] || Object[KEY]
 	    , exp = {};
@@ -33879,11 +33839,11 @@
 	};
 
 /***/ },
-/* 359 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mixin = __webpack_require__(360);
-	var assign = __webpack_require__(361);
+	var mixin = __webpack_require__(359);
+	var assign = __webpack_require__(360);
 	
 	var mixinProto = mixin({
 	  // lifecycle stuff is as you'd expect
@@ -34036,7 +33996,7 @@
 
 
 /***/ },
-/* 360 */
+/* 359 */
 /***/ function(module, exports) {
 
 	var objToStr = function(x){ return Object.prototype.toString.call(x); };
@@ -34219,7 +34179,7 @@
 
 
 /***/ },
-/* 361 */
+/* 360 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34251,25 +34211,25 @@
 
 
 /***/ },
-/* 362 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _interopRequire = __webpack_require__(363)['default'];
+	var _interopRequire = __webpack_require__(362)['default'];
 	
 	exports.__esModule = true;
 	
-	var _squashClickEvent = __webpack_require__(364);
+	var _squashClickEvent = __webpack_require__(363);
 	
 	exports.SquashClickEventMixin = _interopRequire(_squashClickEvent);
 	
-	var _expandedStateHandler = __webpack_require__(365);
+	var _expandedStateHandler = __webpack_require__(364);
 	
 	exports.ExpandedStateHandlerMixin = _interopRequire(_expandedStateHandler);
 
 /***/ },
-/* 363 */
+/* 362 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34281,7 +34241,7 @@
 	exports.__esModule = true;
 
 /***/ },
-/* 364 */
+/* 363 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34295,7 +34255,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 365 */
+/* 364 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34319,18 +34279,18 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 366 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -34389,18 +34349,18 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 367 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -34408,17 +34368,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMixin = __webpack_require__(359);
+	var _reactMixin = __webpack_require__(358);
 	
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 	
-	var _mixins = __webpack_require__(362);
+	var _mixins = __webpack_require__(361);
 	
-	var _JSONArrow = __webpack_require__(366);
+	var _JSONArrow = __webpack_require__(365);
 	
 	var _JSONArrow2 = _interopRequireDefault(_JSONArrow);
 	
-	var _grabNode = __webpack_require__(329);
+	var _grabNode = __webpack_require__(328);
 	
 	var _grabNode2 = _interopRequireDefault(_grabNode);
 	
@@ -34564,22 +34524,22 @@
 	// cache store for the number of items string we display
 
 /***/ },
-/* 368 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _getIterator = __webpack_require__(369)['default'];
+	var _getIterator = __webpack_require__(368)['default'];
 	
-	var _Number$isSafeInteger = __webpack_require__(374)['default'];
+	var _Number$isSafeInteger = __webpack_require__(373)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -34587,17 +34547,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMixin = __webpack_require__(359);
+	var _reactMixin = __webpack_require__(358);
 	
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 	
-	var _mixins = __webpack_require__(362);
+	var _mixins = __webpack_require__(361);
 	
-	var _JSONArrow = __webpack_require__(366);
+	var _JSONArrow = __webpack_require__(365);
 	
 	var _JSONArrow2 = _interopRequireDefault(_JSONArrow);
 	
-	var _grabNode = __webpack_require__(329);
+	var _grabNode = __webpack_require__(328);
 	
 	var _grabNode2 = _interopRequireDefault(_grabNode);
 	
@@ -34785,51 +34745,51 @@
 	// cache store for the number of items string we display
 
 /***/ },
+/* 368 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(369), __esModule: true };
+
+/***/ },
 /* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(370), __esModule: true };
+	__webpack_require__(348);
+	__webpack_require__(332);
+	module.exports = __webpack_require__(370);
 
 /***/ },
 /* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(349);
-	__webpack_require__(333);
-	module.exports = __webpack_require__(371);
-
-/***/ },
-/* 371 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var anObject = __webpack_require__(313)
-	  , get      = __webpack_require__(372);
-	module.exports = __webpack_require__(308).getIterator = function(it){
+	var anObject = __webpack_require__(312)
+	  , get      = __webpack_require__(371);
+	module.exports = __webpack_require__(307).getIterator = function(it){
 	  var iterFn = get(it);
 	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
 	  return anObject(iterFn.call(it));
 	};
 
 /***/ },
-/* 372 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var classof   = __webpack_require__(373)
-	  , ITERATOR  = __webpack_require__(346)('iterator')
-	  , Iterators = __webpack_require__(343);
-	module.exports = __webpack_require__(308).getIteratorMethod = function(it){
+	var classof   = __webpack_require__(372)
+	  , ITERATOR  = __webpack_require__(345)('iterator')
+	  , Iterators = __webpack_require__(342);
+	module.exports = __webpack_require__(307).getIteratorMethod = function(it){
 	  if(it != undefined)return it[ITERATOR]
 	    || it['@@iterator']
 	    || Iterators[classof(it)];
 	};
 
 /***/ },
-/* 373 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
-	var cof = __webpack_require__(326)
-	  , TAG = __webpack_require__(346)('toStringTag')
+	var cof = __webpack_require__(325)
+	  , TAG = __webpack_require__(345)('toStringTag')
 	  // ES3 wrong here
 	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
 	
@@ -34845,25 +34805,25 @@
 	};
 
 /***/ },
+/* 373 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(374), __esModule: true };
+
+/***/ },
 /* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(375), __esModule: true };
+	__webpack_require__(375);
+	module.exports = __webpack_require__(307).Number.isSafeInteger;
 
 /***/ },
 /* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(376);
-	module.exports = __webpack_require__(308).Number.isSafeInteger;
-
-/***/ },
-/* 376 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// 20.1.2.5 Number.isSafeInteger(number)
-	var $export   = __webpack_require__(306)
-	  , isInteger = __webpack_require__(377)
+	var $export   = __webpack_require__(305)
+	  , isInteger = __webpack_require__(376)
 	  , abs       = Math.abs;
 	
 	$export($export.S, 'Number', {
@@ -34873,29 +34833,29 @@
 	});
 
 /***/ },
-/* 377 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 20.1.2.3 Number.isInteger(number)
-	var isObject = __webpack_require__(312)
+	var isObject = __webpack_require__(311)
 	  , floor    = Math.floor;
 	module.exports = function isInteger(it){
 	  return !isObject(it) && isFinite(it) && floor(it) === it;
 	};
 
 /***/ },
-/* 378 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -34903,13 +34863,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMixin = __webpack_require__(359);
+	var _reactMixin = __webpack_require__(358);
 	
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 	
-	var _mixins = __webpack_require__(362);
+	var _mixins = __webpack_require__(361);
 	
-	var _utilsHexToRgb = __webpack_require__(379);
+	var _utilsHexToRgb = __webpack_require__(378);
 	
 	var _utilsHexToRgb2 = _interopRequireDefault(_utilsHexToRgb);
 	
@@ -34971,7 +34931,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 379 */
+/* 378 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34990,18 +34950,18 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 380 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -35009,13 +34969,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMixin = __webpack_require__(359);
+	var _reactMixin = __webpack_require__(358);
 	
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 	
-	var _mixins = __webpack_require__(362);
+	var _mixins = __webpack_require__(361);
 	
-	var _utilsHexToRgb = __webpack_require__(379);
+	var _utilsHexToRgb = __webpack_require__(378);
 	
 	var _utilsHexToRgb2 = _interopRequireDefault(_utilsHexToRgb);
 	
@@ -35075,18 +35035,18 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 381 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -35094,13 +35054,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMixin = __webpack_require__(359);
+	var _reactMixin = __webpack_require__(358);
 	
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 	
-	var _mixins = __webpack_require__(362);
+	var _mixins = __webpack_require__(361);
 	
-	var _utilsHexToRgb = __webpack_require__(379);
+	var _utilsHexToRgb = __webpack_require__(378);
 	
 	var _utilsHexToRgb2 = _interopRequireDefault(_utilsHexToRgb);
 	
@@ -35161,18 +35121,18 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 382 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -35180,13 +35140,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMixin = __webpack_require__(359);
+	var _reactMixin = __webpack_require__(358);
 	
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 	
-	var _mixins = __webpack_require__(362);
+	var _mixins = __webpack_require__(361);
 	
-	var _utilsHexToRgb = __webpack_require__(379);
+	var _utilsHexToRgb = __webpack_require__(378);
 	
 	var _utilsHexToRgb2 = _interopRequireDefault(_utilsHexToRgb);
 	
@@ -35246,18 +35206,18 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 383 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _inherits = __webpack_require__(299)['default'];
+	var _inherits = __webpack_require__(298)['default'];
 	
-	var _classCallCheck = __webpack_require__(317)['default'];
+	var _classCallCheck = __webpack_require__(316)['default'];
 	
-	var _extends = __webpack_require__(318)['default'];
+	var _extends = __webpack_require__(317)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(328)['default'];
+	var _interopRequireDefault = __webpack_require__(327)['default'];
 	
 	exports.__esModule = true;
 	
@@ -35265,13 +35225,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMixin = __webpack_require__(359);
+	var _reactMixin = __webpack_require__(358);
 	
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 	
-	var _mixins = __webpack_require__(362);
+	var _mixins = __webpack_require__(361);
 	
-	var _utilsHexToRgb = __webpack_require__(379);
+	var _utilsHexToRgb = __webpack_require__(378);
 	
 	var _utilsHexToRgb2 = _interopRequireDefault(_utilsHexToRgb);
 	
@@ -35331,7 +35291,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 384 */
+/* 383 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35360,7 +35320,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 385 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35381,7 +35341,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactJsonTree = __webpack_require__(298);
+	var _reactJsonTree = __webpack_require__(297);
 	
 	var _reactJsonTree2 = _interopRequireDefault(_reactJsonTree);
 	
@@ -35445,7 +35405,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 386 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35464,7 +35424,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utilsBrighten = __webpack_require__(387);
+	var _utilsBrighten = __webpack_require__(386);
 	
 	var _utilsBrighten2 = _interopRequireDefault(_utilsBrighten);
 	
@@ -35558,7 +35518,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 387 */
+/* 386 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35585,7 +35545,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 388 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35594,160 +35554,160 @@
 	
 	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 	
-	var _threezerotwofour = __webpack_require__(389);
+	var _threezerotwofour = __webpack_require__(388);
 	
 	exports.threezerotwofour = _interopRequire(_threezerotwofour);
 	
-	var _apathy = __webpack_require__(390);
+	var _apathy = __webpack_require__(389);
 	
 	exports.apathy = _interopRequire(_apathy);
 	
-	var _ashes = __webpack_require__(391);
+	var _ashes = __webpack_require__(390);
 	
 	exports.ashes = _interopRequire(_ashes);
 	
-	var _atelierDune = __webpack_require__(392);
+	var _atelierDune = __webpack_require__(391);
 	
 	exports.atelierDune = _interopRequire(_atelierDune);
 	
-	var _atelierForest = __webpack_require__(393);
+	var _atelierForest = __webpack_require__(392);
 	
 	exports.atelierForest = _interopRequire(_atelierForest);
 	
-	var _atelierHeath = __webpack_require__(394);
+	var _atelierHeath = __webpack_require__(393);
 	
 	exports.atelierHeath = _interopRequire(_atelierHeath);
 	
-	var _atelierLakeside = __webpack_require__(395);
+	var _atelierLakeside = __webpack_require__(394);
 	
 	exports.atelierLakeside = _interopRequire(_atelierLakeside);
 	
-	var _atelierSeaside = __webpack_require__(396);
+	var _atelierSeaside = __webpack_require__(395);
 	
 	exports.atelierSeaside = _interopRequire(_atelierSeaside);
 	
-	var _bespin = __webpack_require__(397);
+	var _bespin = __webpack_require__(396);
 	
 	exports.bespin = _interopRequire(_bespin);
 	
-	var _brewer = __webpack_require__(398);
+	var _brewer = __webpack_require__(397);
 	
 	exports.brewer = _interopRequire(_brewer);
 	
-	var _bright = __webpack_require__(399);
+	var _bright = __webpack_require__(398);
 	
 	exports.bright = _interopRequire(_bright);
 	
-	var _chalk = __webpack_require__(400);
+	var _chalk = __webpack_require__(399);
 	
 	exports.chalk = _interopRequire(_chalk);
 	
-	var _codeschool = __webpack_require__(401);
+	var _codeschool = __webpack_require__(400);
 	
 	exports.codeschool = _interopRequire(_codeschool);
 	
-	var _colors = __webpack_require__(402);
+	var _colors = __webpack_require__(401);
 	
 	exports.colors = _interopRequire(_colors);
 	
-	var _default = __webpack_require__(403);
+	var _default = __webpack_require__(402);
 	
 	exports['default'] = _interopRequire(_default);
 	
-	var _eighties = __webpack_require__(404);
+	var _eighties = __webpack_require__(403);
 	
 	exports.eighties = _interopRequire(_eighties);
 	
-	var _embers = __webpack_require__(405);
+	var _embers = __webpack_require__(404);
 	
 	exports.embers = _interopRequire(_embers);
 	
-	var _flat = __webpack_require__(406);
+	var _flat = __webpack_require__(405);
 	
 	exports.flat = _interopRequire(_flat);
 	
-	var _google = __webpack_require__(407);
+	var _google = __webpack_require__(406);
 	
 	exports.google = _interopRequire(_google);
 	
-	var _grayscale = __webpack_require__(408);
+	var _grayscale = __webpack_require__(407);
 	
 	exports.grayscale = _interopRequire(_grayscale);
 	
-	var _greenscreen = __webpack_require__(409);
+	var _greenscreen = __webpack_require__(408);
 	
 	exports.greenscreen = _interopRequire(_greenscreen);
 	
-	var _harmonic = __webpack_require__(410);
+	var _harmonic = __webpack_require__(409);
 	
 	exports.harmonic = _interopRequire(_harmonic);
 	
-	var _hopscotch = __webpack_require__(411);
+	var _hopscotch = __webpack_require__(410);
 	
 	exports.hopscotch = _interopRequire(_hopscotch);
 	
-	var _isotope = __webpack_require__(412);
+	var _isotope = __webpack_require__(411);
 	
 	exports.isotope = _interopRequire(_isotope);
 	
-	var _marrakesh = __webpack_require__(413);
+	var _marrakesh = __webpack_require__(412);
 	
 	exports.marrakesh = _interopRequire(_marrakesh);
 	
-	var _mocha = __webpack_require__(414);
+	var _mocha = __webpack_require__(413);
 	
 	exports.mocha = _interopRequire(_mocha);
 	
-	var _monokai = __webpack_require__(415);
+	var _monokai = __webpack_require__(414);
 	
 	exports.monokai = _interopRequire(_monokai);
 	
-	var _ocean = __webpack_require__(416);
+	var _ocean = __webpack_require__(415);
 	
 	exports.ocean = _interopRequire(_ocean);
 	
-	var _paraiso = __webpack_require__(417);
+	var _paraiso = __webpack_require__(416);
 	
 	exports.paraiso = _interopRequire(_paraiso);
 	
-	var _pop = __webpack_require__(418);
+	var _pop = __webpack_require__(417);
 	
 	exports.pop = _interopRequire(_pop);
 	
-	var _railscasts = __webpack_require__(419);
+	var _railscasts = __webpack_require__(418);
 	
 	exports.railscasts = _interopRequire(_railscasts);
 	
-	var _shapeshifter = __webpack_require__(420);
+	var _shapeshifter = __webpack_require__(419);
 	
 	exports.shapeshifter = _interopRequire(_shapeshifter);
 	
-	var _solarized = __webpack_require__(421);
+	var _solarized = __webpack_require__(420);
 	
 	exports.solarized = _interopRequire(_solarized);
 	
-	var _summerfruit = __webpack_require__(422);
+	var _summerfruit = __webpack_require__(421);
 	
 	exports.summerfruit = _interopRequire(_summerfruit);
 	
-	var _tomorrow = __webpack_require__(423);
+	var _tomorrow = __webpack_require__(422);
 	
 	exports.tomorrow = _interopRequire(_tomorrow);
 	
-	var _tube = __webpack_require__(424);
+	var _tube = __webpack_require__(423);
 	
 	exports.tube = _interopRequire(_tube);
 	
-	var _twilight = __webpack_require__(425);
+	var _twilight = __webpack_require__(424);
 	
 	exports.twilight = _interopRequire(_twilight);
 	
-	var _nicinabox = __webpack_require__(426);
+	var _nicinabox = __webpack_require__(425);
 	
 	exports.nicinabox = _interopRequire(_nicinabox);
 
 /***/ },
-/* 389 */
+/* 388 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35776,7 +35736,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 390 */
+/* 389 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35805,7 +35765,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 391 */
+/* 390 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35834,7 +35794,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 392 */
+/* 391 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35863,7 +35823,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 393 */
+/* 392 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35892,7 +35852,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 394 */
+/* 393 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35921,7 +35881,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 395 */
+/* 394 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35950,7 +35910,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 396 */
+/* 395 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35979,7 +35939,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 397 */
+/* 396 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36008,7 +35968,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 398 */
+/* 397 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36037,7 +35997,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 399 */
+/* 398 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36066,7 +36026,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 400 */
+/* 399 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36095,7 +36055,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 401 */
+/* 400 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36124,7 +36084,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 402 */
+/* 401 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36153,7 +36113,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 403 */
+/* 402 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36182,7 +36142,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 404 */
+/* 403 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36211,7 +36171,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 405 */
+/* 404 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36240,7 +36200,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 406 */
+/* 405 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36269,7 +36229,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 407 */
+/* 406 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36298,7 +36258,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 408 */
+/* 407 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36327,7 +36287,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 409 */
+/* 408 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36356,7 +36316,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 410 */
+/* 409 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36385,7 +36345,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 411 */
+/* 410 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36414,7 +36374,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 412 */
+/* 411 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36443,7 +36403,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 413 */
+/* 412 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36472,7 +36432,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 414 */
+/* 413 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36501,7 +36461,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 415 */
+/* 414 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36530,7 +36490,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 416 */
+/* 415 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36559,7 +36519,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 417 */
+/* 416 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36588,7 +36548,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 418 */
+/* 417 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36617,7 +36577,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 419 */
+/* 418 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36646,7 +36606,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 420 */
+/* 419 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36675,7 +36635,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 421 */
+/* 420 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36704,7 +36664,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 422 */
+/* 421 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36733,7 +36693,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 423 */
+/* 422 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36762,7 +36722,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 424 */
+/* 423 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36791,7 +36751,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 425 */
+/* 424 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36820,7 +36780,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 426 */
+/* 425 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36849,7 +36809,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 427 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36946,4 +36906,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-b7399d61c2542c6747b3.js.map
+//# sourceMappingURL=bundle-devtools-571b1b3aff2898786749.js.map
