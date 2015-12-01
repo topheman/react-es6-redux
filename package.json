@@ -8,13 +8,15 @@
     "dev": "echo 'deprecated, use npm run webpack-dev' && npm run webpack-dev",
     "dev-mock": "echo 'deprecated, use npm run webpack-mock' && npm run webpack-mock",
     "build": "./node_modules/.bin/webpack --progress && ./node_modules/.bin/gulp build",
-    "build-prod": "API_ROOT_URL='https://topheman-apis-proxy.herokuapp.com/github' NODE_ENV=production ./node_modules/.bin/webpack --progress -p && NODE_ENV=production ./node_modules/.bin/gulp build",
-    "build-prod-all": "npm run build-prod && API_ROOT_URL='https://topheman-apis-proxy.herokuapp.com/github' DEVTOOLS=true NODE_ENV=production npm run build",
+    "build-prod": "NODE_ENV=production ./node_modules/.bin/webpack --progress -p && NODE_ENV=production ./node_modules/.bin/gulp build",
+    "build-prod-owner": "API_ROOT_URL='https://topheman-apis-proxy.herokuapp.com/github' npm run build-prod",
+    "build-prod-all": "npm run build-prod && DEVTOOLS=true NODE_ENV=production npm run build",
+    "build-prod-all-owner": "API_ROOT_URL='https://topheman-apis-proxy.herokuapp.com/github' npm run build-prod-all",
     "serve-build": "cd build && ../node_modules/.bin/serve --port 9001",
     "webpack": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
-    "webpack-dev": "DEVTOOLS=true npm run webpack",
+    "webpack-dev": "API_ROOT_URL='http://localhost:8000/github' DEVTOOLS=true npm run webpack",
     "webpack-mock": "DEVTOOLS=true NODE_ENV=mock npm run webpack",
-    "webpack-dev-simple": "API_ROOT_URL='https://api.github.com' DEVTOOLS=true npm run webpack"
+    "webpack-dev-simple": "DEVTOOLS=true npm run webpack"
   },
   "repository": {
     "type": "git",

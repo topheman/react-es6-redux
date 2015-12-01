@@ -13,8 +13,10 @@ console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode
 
 var NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
 var DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
-var API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'http://localhost:8000/github';
+var API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'https://api.github.com';
 var STUB_MOCK_TIMEOUT = process.env.STUB_MOCK_TIMEOUT ? process.env.STUB_MOCK_TIMEOUT : 400;
+
+var SOURCEMAPS_ACTIVE = NODE_ENV !== 'production' || DEVTOOLS === true;
 
 if(NODE_ENV === 'production'){
   console.log('PRODUCTION mode');
@@ -39,6 +41,9 @@ if( !(/^https?:\/\/.*(?!\/).$/.test(API_ROOT_URL)) ) {
   console.log('[WARNING] Your API_ROOT_URL should not have any trailing slash');
 }
 console.log('API_ROOT_URL',API_ROOT_URL);
+if(SOURCEMAPS_ACTIVE){
+  console.log('SOURCEMAPS activated');
+}
 
 /** before build */
 
@@ -119,7 +124,7 @@ var config = {
   },
   cache: true,
   debug: NODE_ENV === 'production' ? false : true,
-  devtool: DEVTOOLS ? "sourcemap" : false,
+  devtool: NODE_ENV !== 'production' || DEVTOOLS === true ? "sourcemap" : false,
   devServer: {
     contentBase: './public',
     inline: true
