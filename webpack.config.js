@@ -13,6 +13,9 @@ console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode
 
 var NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
 var DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
+var API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'http://localhost:8000/github';
+var STUB_MOCK_TIMEOUT = process.env.STUB_MOCK_TIMEOUT ? process.env.STUB_MOCK_TIMEOUT : 400;
+
 if(NODE_ENV === 'production'){
   console.log('PRODUCTION mode');
 }
@@ -22,6 +25,7 @@ else if(NODE_ENV === 'test'){
 }
 else if(NODE_ENV === 'mock'){
   console.log('MOCK mode');
+  console.log('STUB_MOCK_TIMEOUT', STUB_MOCK_TIMEOUT);
   mockObjects = true;
 }
 else{
@@ -30,6 +34,11 @@ else{
 if(DEVTOOLS){
   console.log('DEVTOOLS active');
 }
+
+if( !(/^https?:\/\/.*(?!\/).$/.test(API_ROOT_URL)) ) {
+  console.log('[WARNING] Your API_ROOT_URL should not have any trailing slash');
+}
+console.log('API_ROOT_URL',API_ROOT_URL);
 
 /** before build */
 
@@ -61,7 +70,9 @@ plugins.push(new webpack.DefinePlugin({
   // a conditional that can be dropped if equal to "production" - this way you get your own react.min.js build)
   'process.env':{
     'NODE_ENV': JSON.stringify(NODE_ENV),
-    'DEVTOOLS': DEVTOOLS // I rely on the variable bellow to make a bundle with the redux devtools (or not)
+    'DEVTOOLS': DEVTOOLS, // I rely on the variable bellow to make a bundle with the redux devtools (or not)
+    'API_ROOT_URL': JSON.stringify(API_ROOT_URL), // The httpClient will rely on that (change it at will)
+    'STUB_MOCK_TIMEOUT': JSON.parse(STUB_MOCK_TIMEOUT) // The httpStub will rely on that (change it at will)
   }
 }));
 
