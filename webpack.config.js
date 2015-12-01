@@ -11,39 +11,39 @@ console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode
 
 /** environment setup */
 
-var env = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
-var devtools = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
-if(env === 'production'){
+var NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
+var DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
+if(NODE_ENV === 'production'){
   console.log('PRODUCTION mode');
 }
-else if(env === 'test'){
+else if(NODE_ENV === 'test'){
   console.log('TEST mode');
   mockObjects = true;
 }
-else if(env === 'mock'){
+else if(NODE_ENV === 'mock'){
   console.log('MOCK mode');
   mockObjects = true;
 }
 else{
   console.log('DEVELOPMENT mode');
 }
-if(devtools){
+if(DEVTOOLS){
   console.log('DEVTOOLS active');
 }
 
 /** before build */
 
-var hash = (env === 'production' && devtools ? '-devtools' : '') + (env === 'production' ? '-[hash]' : '');
+var hash = (NODE_ENV === 'production' && DEVTOOLS ? '-devtools' : '') + (NODE_ENV === 'production' ? '-[hash]' : '');
 
 //in build mode, cleanup build folder before - since we can build two versions (production & devtools) in a row, skip delete for the devtools
-if(MODE_DEV_SERVER === false && devtools === false){
+if(MODE_DEV_SERVER === false && DEVTOOLS === false){
   console.log('Cleaning ...');
   var deleted = require('del').sync(['build/*','build/**/*',"!.git/**/*"]);
   deleted.forEach(function(e){
     console.log(e);
   });
 }
-else if(MODE_DEV_SERVER === false && devtools === true){
+else if(MODE_DEV_SERVER === false && DEVTOOLS === true){
   console.log('[INFO] Not cleaning up build/ folder for this pass (not in devtools mode)');
 }
 
@@ -60,12 +60,12 @@ plugins.push(new webpack.DefinePlugin({
   // React library code is based on process.env.NODE_ENV (all development related code is wrapped inside
   // a conditional that can be dropped if equal to "production" - this way you get your own react.min.js build)
   'process.env':{
-    'NODE_ENV': JSON.stringify(env),
-    'DEVTOOLS': devtools // I rely on the variable bellow to make a bundle with the redux devtools (or not)
+    'NODE_ENV': JSON.stringify(NODE_ENV),
+    'DEVTOOLS': DEVTOOLS // I rely on the variable bellow to make a bundle with the redux devtools (or not)
   }
 }));
 
-if(env === 'production' && devtools !== true){
+if(NODE_ENV === 'production' && DEVTOOLS !== true){
   plugins.push(new webpack.optimize.DedupePlugin());
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress:{
@@ -91,7 +91,7 @@ var resolve = {
   alias : {}
 };
 //only used browser side
-resolve.alias['httpServiceConfiguration'] = path.resolve(__dirname, './src/services/httpService/config/environment/config' + (env === 'production' ? '.build' : (env === 'mock' ? '.mock' : '.dev' ) ) + '.js');
+resolve.alias['httpServiceConfiguration'] = path.resolve(__dirname, './src/services/httpService/config/environment/config' + (NODE_ENV === 'production' ? '.build' : (NODE_ENV === 'mock' ? '.mock' : '.dev' ) ) + '.js');
 
 var config = {
   entry: {
@@ -107,8 +107,8 @@ var config = {
     path: "./build/assets"
   },
   cache: true,
-  debug: env === 'production' ? false : true,
-  devtool: devtools ? "sourcemap" : false,
+  debug: NODE_ENV === 'production' ? false : true,
+  devtool: DEVTOOLS ? "sourcemap" : false,
   devServer: {
     contentBase: './public',
     inline: true

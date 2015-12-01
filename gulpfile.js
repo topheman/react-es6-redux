@@ -11,15 +11,15 @@ var footer = require('gulp-footer');
 
 var common = require('./common');
 
-var env = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
-var devtools = process.env.DEVTOOLS ? true : false;
-if(env === 'production'){
+var NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
+var DEVTOOLS = process.env.DEVTOOLS ? true : false;
+if(NODE_ENV === 'production'){
   console.log('PRODUCTION mode');
 }
 else{
   console.log('DEVELOPMENT mode');
 }
-if(devtools){
+if(DEVTOOLS){
   console.log('DEVTOOLS active');
 }
 
@@ -47,7 +47,7 @@ function getTagFromFilepath(filepath){
 }
 
 gulp.task('compile', function() {
-  var hash = (env === 'production' && devtools ? '-devtools' : '') + (env === 'production' ? '-'+getWebpackHash() : '');
+  var hash = (NODE_ENV === 'production' && DEVTOOLS ? '-devtools' : '') + (NODE_ENV === 'production' ? '-'+getWebpackHash() : '');
   return gulp.src('./public/index.html')
     .pipe(inject( gulp.src('./build/assets/js/bundle'+hash+'.js', {read: false}), {
       starttag: '<!-- inject:js -->',
@@ -58,9 +58,9 @@ gulp.task('compile', function() {
       transform: getTagFromFilepath
     }))
     .pipe(processhtml())
-    .pipe(gulpif(env === 'production' && devtools === false ? true : false, minifyHtml({empty: true}))) //only minify html in production (when producing a devtool version)
+    .pipe(gulpif(NODE_ENV === 'production' && DEVTOOLS === false ? true : false, minifyHtml({empty: true}))) //only minify html in production (when producing a devtool version)
     .pipe(footer(common.getBannerHtml()))
-    .pipe(gulpif(env === 'production' && devtools === true ? true : false, rename('devtools.html'))) //when producing a devtools version, rename (not to erase the existing index.html)
+    .pipe(gulpif(NODE_ENV === 'production' && DEVTOOLS === true ? true : false, rename('devtools.html'))) //when producing a devtools version, rename (not to erase the existing index.html)
     .pipe(gulp.dest('./build'));
 });
 
