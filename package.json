@@ -13,7 +13,7 @@
     "serve-build": "cd build && ../node_modules/.bin/serve --port 9001",
     "webpack": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
     "webpack-dev": "DEVTOOLS=true npm run webpack",
-    "webpack-mock": "DEVTOOLS=true NODE_ENV=MOCK npm run webpack"
+    "webpack-mock": "DEVTOOLS=true NODE_ENV=mock npm run webpack"
   },
   "repository": {
     "type": "git",
