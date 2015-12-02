@@ -103,12 +103,6 @@ if(MODE_DEV_SERVER === false){
 
 /** webpack config */
 
-var resolve = {
-  alias : {}
-};
-//only used browser side
-resolve.alias['httpServiceConfiguration'] = path.resolve(__dirname, './src/services/httpService/config/environment/config' + (NODE_ENV === 'production' ? '.build' : (NODE_ENV === 'mock' ? '.mock' : '.dev' ) ) + '.js');
-
 var config = {
   entry: {
     "js/bundle": [
@@ -155,7 +149,6 @@ var config = {
       { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' }
     ]
   },
-  resolve: resolve,
   plugins: plugins
 };
 
