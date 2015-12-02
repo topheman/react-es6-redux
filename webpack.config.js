@@ -124,6 +124,11 @@ var config = {
     inline: true
   },
   module: {
+    preLoaders: [{
+      test: /\.js(x?)$/,
+      exclude: /node_modules/,
+      loader: 'eslint-loader'
+    }],
     loaders: [
       {
         test: /\.js(x?)$/,
