@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 
 import IntroBox from '../../components/IntroBox/IntroBox.jsx';
@@ -8,13 +6,13 @@ import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { changeUsername, findUsers } from '../../redux/modules/multipleUsers.js';//import action creators
+import { changeUsername, findUsers } from '../../redux/modules/multipleUsers.js';// import action creators
 
-const Github = ({ multipleUsers, changeUsername, findUsers }) => {
+const Github = ({ multipleUsers, changeUsername: propChangeUsername, findUsers: propFindUsers }) => {
   return (
     <div>
       <IntroBox/>
-      <SearchBox changeUsername={changeUsername} findUsers={findUsers} {...multipleUsers} />
+      <SearchBox changeUsername={propChangeUsername} findUsers={propFindUsers} {...multipleUsers} />
     </div>
   );
 };

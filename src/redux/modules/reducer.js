@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerStateReducer } from 'redux-router';
 
-//reducers specific to app logic - to see an annotated reducer, open src/redux/modules/multipleUsers.js
+// reducers specific to app logic - to see an annotated reducer, open src/redux/modules/multipleUsers.js
 import counter from './counter.js';
 import multipleUsers from './multipleUsers.js';
 import singleUser from './singleUser.js';

@@ -1,10 +1,17 @@
 {
+  "env": {
+    "mocha": true
+  },
   "extends": "airbnb",
   "parser": "babel-eslint",
   "rules": {
     // disable requiring trailing commas because it might be nice to revert to
     // being JSON at some point, and I don't want to make big changes now.
-    "comma-dangle": 0
+    "comma-dangle": 0,
+    "brace-style": [2, "stroustrup"],
+    "no-console": 0,
+    "padded-blocks": 0,
+    "indent": [2, 2, {"SwitchCase": 1}]
   },
   "plugins":[
     "react"

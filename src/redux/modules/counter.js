@@ -5,10 +5,10 @@
 
 const INCREMENT = 'counter/INCREMENT';
 
-/************ Reducer ************/
+/* *********** Reducer ************/
 
 export default function reducer(state = 0, action = {}) {
-  switch(action.type){
+  switch (action.type) {
     case INCREMENT:
       return state + 1;
     default:
@@ -16,10 +16,10 @@ export default function reducer(state = 0, action = {}) {
   }
 }
 
-/************ Action creators ************/
+/* *********** Action creators ************/
 
-export function increment (){
+export function increment() {
   return {
     type: INCREMENT
-  }
+  };
 }

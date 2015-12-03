@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 
 import Panel from './Panel.jsx';
@@ -7,7 +5,7 @@ import Spinner from './Spinner.jsx';
 
 const DisplayInfosPanel = ({infos, originalTitle}) => {
   const fetching = infos ? infos.fetching : false;
-  if(infos && infos.error){
+  if (infos && infos.error) {
     const { error } = infos;
     return (
       <Panel title="OOups!">
@@ -21,19 +19,17 @@ const DisplayInfosPanel = ({infos, originalTitle}) => {
       </Panel>
     );
   }
-  else{
-    //initial case before xhr
-    //better speed loading perception if username already present
-    return(
-      <Panel title={originalTitle}>
-        <div className="panel-body">
-          <div className="row">
-            <Spinner fetching={fetching} className="center-block"/>
-          </div>
+  // initial case before xhr
+  // better speed loading perception if username already present
+  return (
+    <Panel title={originalTitle}>
+      <div className="panel-body">
+        <div className="row">
+          <Spinner fetching={fetching} className="center-block"/>
         </div>
-      </Panel>
-    );
-  }
+      </div>
+    </Panel>
+  );
 };
 
 DisplayInfosPanel.propTypes = {

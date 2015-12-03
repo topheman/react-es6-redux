@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 
 import Panel from '../common/Panel.jsx';
@@ -7,12 +5,11 @@ import Tr from '../common/Tr.jsx';
 import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
 
 const Profile = ({profile}) => {
-  const fetching = profile.fetching;
-  if (profile && profile.data){
+  if (profile && profile.data) {
     const user = profile.data;
     user.$githubProfileHref = user.html_url;
-    user.$githubProfileHrefTitle = "Visit " + user.login + " profile on Github";
-    user.$avatar_url = user.avatar_url+"&s=130";
+    user.$githubProfileHrefTitle = 'Visit ' + user.login + ' profile on Github';
+    user.$avatar_url = user.avatar_url + '&s=130';
     return (
       <Panel title={user.login}>
         <div className="panel-body">
@@ -40,11 +37,9 @@ const Profile = ({profile}) => {
       </Panel>
     );
   }
-  else {
-    return(
-      <DisplayInfosPanel infos={profile} originalTitle={profile.pristineLogin}/>
-    )
-  }
+  return (
+    <DisplayInfosPanel infos={profile} originalTitle={profile.pristineLogin}/>
+  );
 };
 
 Profile.propTypes = {

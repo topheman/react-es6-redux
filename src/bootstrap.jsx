@@ -10,7 +10,7 @@ import routes from './routes.jsx';
 
 import configureStore from './redux/configure-store.js';
 
-//init httpService
+// init httpService
 import httpService from './services/httpService.js';
 httpService.getInstance();
 
@@ -36,12 +36,12 @@ let rootElement = null;
  * The linter can be disabled via DISABLE_LINTER env var - show a message in console to inform if it's on or off
  * Won't show in production
  */
-if(process.env.NODE_ENV !== 'production') {
-  if(process.env.DISABLE_LINTER) {
+if (process.env.NODE_ENV !== 'production') {
+  if (process.env.DISABLE_LINTER) {
     console.warn('Linter disabled, make sure to run your code against the linter, otherwise, if it fails, your commit will be rejected');
   }
-  else{
-    console.info('Linter active, if you meet some problems, you can still run without linter :','npm run webpack-dev-simple-nolint or npm run webpack-dev-nolint', 'More infos in the README');
+  else {
+    console.info('Linter active, if you meet some problems, you can still run without linter :', 'npm run webpack-dev-simple-nolint or npm run webpack-dev-nolint', 'More infos in the README');
   }
 }
 
@@ -54,7 +54,7 @@ if(process.env.NODE_ENV !== 'production') {
  *
  * https://webpack.github.io/docs/list-of-plugins.html#defineplugin
  */
-if(process.env.DEVTOOLS){
+if (process.env.DEVTOOLS) {
   console.info('redux devtools active, to hide the panel : ctrl+H - for more infos', 'https://github.com/gaearon/redux-devtools');
   const { DevTools, DebugPanel, LogMonitor } = require('redux-devtools/lib/react');
   rootElement = (
@@ -69,18 +69,18 @@ if(process.env.DEVTOOLS){
   );
 }
 else {
-  console.info('redux devtools not active, you can test them online at','https://topheman.github.io/react-es6-redux/devtools.html');
+  console.info('redux devtools not active, you can test them online at', 'https://topheman.github.io/react-es6-redux/devtools.html');
   console.info('if you\'re testing the project in local, please refer to the README to activate them');
   rootElement = (
     <Provider store={store}>
       {component}
     </Provider>
-  )
+  );
 }
 
-if(process.env.NODE_ENV === 'mock') {
+if (process.env.NODE_ENV === 'mock') {
   console.info('MOCK mode');
   console.info('STUB_MOCK_TIMEOUT', process.env.STUB_MOCK_TIMEOUT);
 }
 
-ReactDOM.render(rootElement, document.getElementById('app-container'))
+ReactDOM.render(rootElement, document.getElementById('app-container'));

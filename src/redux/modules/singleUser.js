@@ -20,7 +20,7 @@ const FETCH_REPOSITORIES_SUCCESS = 'singleUser/FETCH_REPOSITORIES_SUCCESS';
 const FETCH_REPOSITORIES_ERROR = 'singleUser/FETCH_REPOSITORIES_ERROR';
 
 const initialState = {
-  profile:{
+  profile: {
     pristineLogin: '',
     data: null,
     fetching: false,
@@ -35,7 +35,7 @@ const initialState = {
   }
 };
 
-/************ Reducer (and sub-reducers) ************/
+/* *********** Reducer (and sub-reducers) ************/
 
 /**
  * profile sub-reducer
@@ -44,7 +44,7 @@ const initialState = {
  * This reducer is not exported "as is", it will be combined with an other (which will be the one to be exported)
  */
 function profile(state = initialState.profile, action = {}) {
-  switch(action.type) {
+  switch (action.type) {
     case INIT:
       return {
         ...initialState.profile,
@@ -65,7 +65,7 @@ function profile(state = initialState.profile, action = {}) {
       return {
         ...state,
         fetching: false,
-        error : action.error.humanMessage
+        error: action.error.humanMessage
       };
     default:
       return state;
@@ -79,7 +79,7 @@ function profile(state = initialState.profile, action = {}) {
  * This reducer is not exported "as is", it will be combined with an other (which will be the one to be exported)
  */
 function repositories(state = initialState.repositories, action = {}) {
-  switch(action.type) {
+  switch (action.type) {
     case INIT:
       return {
         ...initialState.repositories,
@@ -101,7 +101,7 @@ function repositories(state = initialState.repositories, action = {}) {
       return {
         ...state,
         fetching: false,
-        error : action.error.humanMessage
+        error: action.error.humanMessage
       };
     default:
       return state;
@@ -121,7 +121,7 @@ const reducer = combineReducers({
  */
 export default reducer;
 
-/************ Action creators ************/
+/* *********** Action creators ************/
 
 /**
  * Called to init pristineLogin
@@ -130,10 +130,10 @@ export function initUsername(username = '') {
   return {
     type: INIT,
     username
-  }
+  };
 }
 
-/*** profile related action creators ***/
+/* ** profile related action creators ***/
 
 /**
  * The following action creators are not exported, nor used outside this module.
@@ -143,22 +143,22 @@ export function initUsername(username = '') {
 function requestFetchProfile(username) {
   return {
     type: FETCH_PROFILE,
-    username //username is not needed for state management, it helps loging/debug
-  }
+    username // username is not needed for state management, it helps loging/debug
+  };
 }
 
 function receiveFetchProfile(json) {
   return {
     type: FETCH_PROFILE_SUCCESS,
     json
-  }
+  };
 }
 
 function receiveFetchProfileError(error) {
   return {
     type: FETCH_PROFILE_ERROR,
     error
-  }
+  };
 }
 
 /**
@@ -166,14 +166,14 @@ function receiveFetchProfileError(error) {
  */
 export function getProfile(username) {
   return dispatch => {
-    dispatch(requestFetchProfile(username));//request will start
+    dispatch(requestFetchProfile(username));// request will start
     return githubClient.getUser(username)
-      .then(json => dispatch(receiveFetchProfile(json)))//request succeeded
-      .catch(error => dispatch(receiveFetchProfileError(error)));//request failed
-  }
+      .then(json => dispatch(receiveFetchProfile(json)))// request succeeded
+      .catch(error => dispatch(receiveFetchProfileError(error)));// request failed
+  };
 }
 
-/*** repositories related action creators ***/
+/* ** repositories related action creators ***/
 
 /**
  * The following action creators are not exported, nor used outside this module.
@@ -183,33 +183,33 @@ export function getProfile(username) {
 function requestFetchRepositories(username, options) {
   return {
     type: FETCH_REPOSITORIES,
-    username,//username & options are not needed for state management, it helps loging/debug
+    username, // username & options are not needed for state management, it helps loging/debug
     options
-  }
+  };
 }
 
 function receiveFetchRepositories(json) {
   return {
     type: FETCH_REPOSITORIES_SUCCESS,
     json
-  }
+  };
 }
 
 function receiveFetchRepositoriesError(error) {
   return {
     type: FETCH_REPOSITORIES_ERROR,
     error
-  }
+  };
 }
 
 /**
  * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
  */
-export function getRepositories(username, {page = 1, sort = 'stars', per_page = REPOS_PER_PAGE} = {}) {
+export function getRepositories(username, {page = 1, sort = 'stars', per_page = REPOS_PER_PAGE} = {}) {// eslint-disable-line camelcase
   return dispatch => {
-    dispatch(requestFetchRepositories(username, {page, sort, per_page}))//request will start
+    dispatch(requestFetchRepositories(username, {page, sort, per_page})); // request will start
     githubClient.getUserRepos(username, {page, sort, per_page})
-      .then(json => dispatch(receiveFetchRepositories(json)))//request succeeded
-      .catch(error => dispatch(receiveFetchRepositoriesError(error)))//request failed
-  }
+      .then(json => dispatch(receiveFetchRepositories(json))) // request succeeded
+      .catch(error => dispatch(receiveFetchRepositoriesError(error))); // request failed
+  };
 }

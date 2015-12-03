@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import ProfileList from './../ProfileList/ProfileList.jsx';
 import Spinner from '../common/Spinner.jsx';
@@ -19,19 +17,19 @@ class SearchBox extends React.Component {
     results: React.PropTypes.object
   }
 
-  constructor(props){
+  constructor(props) {
 
     super(props);
 
-    //init context bindings - due to diff between React.createClass and ES6 class
+    // init context bindings - due to diff between React.createClass and ES6 class
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
   }
   handleFocus(e) {
     const target = e.target;
-    //dirty but curiously in React this is a known bug and workaround ...
-    setTimeout(function() {
+    // dirty but curiously in React this is a known bug and workaround ...
+    setTimeout(() => {
       target.select();
     }, 0);
   }
@@ -39,12 +37,12 @@ class SearchBox extends React.Component {
     e.preventDefault();
     document.getElementById('user-name').blur();
     const currentUser = this.props.username;
-    //prevent submiting empty user
-    if(currentUser !== ''){
+    // prevent submiting empty user
+    if (currentUser !== '') {
       this.props.findUsers(currentUser);
     }
   }
-  handleChange(e){
+  handleChange() {
     const node = this.refs.input;
     const username = node.value.trim();
     this.props.changeUsername(username);
@@ -69,7 +67,7 @@ class SearchBox extends React.Component {
         </form>
         <ProfileList results={results}/>
       </div>
-    )
+    );
   }
 }
 

@@ -35,10 +35,10 @@ const initialState = {
  * The actions will be named exports.
  */
 
-/************ Reducer ************/
+/* *********** Reducer ************/
 
-export default function reducer(state = initialState, action = {}){
-  switch(action.type){
+export default function reducer(state = initialState, action = {}) {
+  switch (action.type) {
     case CHANGE_USERNAME:
       return {
         ...state,
@@ -68,16 +68,16 @@ export default function reducer(state = initialState, action = {}){
   }
 }
 
-/************ Action creators ************/
+/* *********** Action creators ************/
 
 /**
  * Called on input change
  */
-export function changeUsername(username = ''){
+export function changeUsername(username = '') {
   return {
     type: CHANGE_USERNAME,
     username
-  }
+  };
 }
 
 /**
@@ -85,36 +85,36 @@ export function changeUsername(username = ''){
  * To be more concise, they could be inlined in place as dipatch({type,payload})
  */
 
-function requestFetchUsers(username){
+function requestFetchUsers(username) {
   return {
     type: FETCH_USERS,
     username
-  }
+  };
 }
 
-function receiveFetchUsers(json){
+function receiveFetchUsers(json) {
   return {
     type: FETCH_USERS_SUCCESS,
     json
-  }
+  };
 }
 
-function receiveFetchUsersError(error){
+function receiveFetchUsersError(error) {
   return {
     type: FETCH_USERS_ERROR,
     error
-  }
+  };
 }
 
 /**
  * This is the only action creator exported (not including changeUsername).
  * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
  */
-export function findUsers(username){
+export function findUsers(username) {
   return dispatch => {
-    dispatch(requestFetchUsers(username));//request will start
+    dispatch(requestFetchUsers(username)); // request will start
     return githubClient.searchUser(username)
-      .then(json => dispatch(receiveFetchUsers(json)))//request succeeded
-      .catch(error => dispatch(receiveFetchUsersError(error)));//request failed
-  }
+      .then(json => dispatch(receiveFetchUsers(json))) // request succeeded
+      .catch(error => dispatch(receiveFetchUsersError(error))); // request failed
+  };
 }

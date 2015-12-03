@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * This module is here to replace http.js for test purposes (or offline development)
  * to provide data from the json files referenced bellow which are snapshots of results from the github API
@@ -24,61 +22,61 @@ const mockJsonFiles = {
 const STUB_MOCK_TIMEOUT = process.env.STUB_MOCK_TIMEOUT;
 
 export default {
-  get(relativeUrl){
+  get(relativeUrl) {
     const promise = new Promise((resolve, reject) => {
       let result = null;
-      for(let endpoint in mockJsonFiles){
-        if(endpoint.indexOf('*') === -1 && relativeUrl.indexOf(endpoint) > -1){
+      for (const endpoint in mockJsonFiles) {
+        if (endpoint.indexOf('*') === -1 && relativeUrl.indexOf(endpoint) > -1) {
           result = mockJsonFiles[endpoint];
           break;
         }
-        else{
-          let regexp = new RegExp(endpoint.replace('*','\\w+') + '.*');
-          if(regexp.test(relativeUrl) === true){
+        else {
+          const regexp = new RegExp(endpoint.replace('*', '\\w+') + '.*');
+          if (regexp.test(relativeUrl) === true) {
             result = mockJsonFiles[endpoint];
             break;
           }
         }
       }
-      if(result !== null){
-        let resolvedData = {
+      if (result !== null) {
+        const resolvedData = {
           data: result,
           status: 200,
           type: 2,
           infos: {
-            ratelimitRemaining: 123456,//@todo mock it ?
-            etag: (new Date()).getTime().toString()//@todo mock it ?
+            ratelimitRemaining: 123456, // @todo mock it ?
+            etag: (new Date()).getTime().toString()// @todo mock it ?
           }
         };
-        if(typeof STUB_MOCK_TIMEOUT === 'number'){
-          setTimeout(function(){
-            console.info('http.stub.js',relativeUrl,resolvedData);
+        if (typeof STUB_MOCK_TIMEOUT === 'number') {
+          setTimeout(() => {
+            console.info('http.stub.js', relativeUrl, resolvedData);
             return resolve(resolvedData);
-          },STUB_MOCK_TIMEOUT);
+          }, STUB_MOCK_TIMEOUT);
         }
-        else{
-          console.info('http.stub.js',relativeUrl,resolvedData);
+        else {
+          console.info('http.stub.js', relativeUrl, resolvedData);
           return resolve(resolvedData);
         }
       }
-      else{
-        let resolvedData = {
-          kind: "error",
-          message: "No endpoint matched in available mocks",
-          humanMessage: "An error occured, please try again."
-        }
-        if(typeof STUB_MOCK_TIMEOUT === 'number'){
-          setTimeout(function(){
-            console.error('http.stub.js',relativeUrl,resolvedData);
+      else {
+        const resolvedData = {
+          kind: 'error',
+          message: 'No endpoint matched in available mocks',
+          humanMessage: 'An error occured, please try again.'
+        };
+        if (typeof STUB_MOCK_TIMEOUT === 'number') {
+          setTimeout(() => {
+            console.error('http.stub.js', relativeUrl, resolvedData);
             return reject(resolvedData);
-          },STUB_MOCK_TIMEOUT);
+          }, STUB_MOCK_TIMEOUT);
         }
-        else{
-          console.error('http.stub.js',relativeUrl,resolvedData);
+        else {
+          console.error('http.stub.js', relativeUrl, resolvedData);
           return reject(resolvedData);
         }
       }
     });
     return promise;
   }
-}
+};

@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 
 import { connect } from 'react-redux';
@@ -22,6 +20,6 @@ const App = ({ children }) => {
 App.propTypes = {
   routerState: React.PropTypes.object.isRequired,
   children: React.PropTypes.node.isRequired
-}
+};
 
 export default connect(state => ({ routerState: state.router }))(App);

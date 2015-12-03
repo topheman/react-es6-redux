@@ -1,29 +1,33 @@
-'use strict';
-
 import React from 'react';
 import { IndexLink, Link } from 'react-router';
 
 export default class Header extends React.Component {
-  constructor(props){
+
+  static propTypes = {
+    title: React.PropTypes.string
+  }
+
+  constructor(props) {
 
     super(props);
 
-    //init context bindings - due to diff between React.createClass and ES6 class
+    // init context bindings - due to diff between React.createClass and ES6 class
     this.handleClick = this.handleClick.bind(this);
 
-    //init state
+    // init state
     this.state = {
       collapsed: true
     };
 
   }
-  handleClick(e){
+  handleClick() {
     const { collapsed } = this.state;
-    this.setState({collapsed:!collapsed});
+    this.setState({collapsed: !collapsed});
   }
   render() {
 
-    const collapsedMenuClassName = "collapse navbar-collapse" + (this.state.collapsed === true ? "" : " in");
+    const collapsedMenuClassName = 'collapse navbar-collapse' + (this.state.collapsed === true ? '' : ' in');
+    const { title } = this.props;
 
     return (
       <div>
@@ -37,7 +41,7 @@ export default class Header extends React.Component {
                 <span className="icon-bar"></span>
               </button>
               <IndexLink to="/" className="navbar-brand logo">
-                <span>{this.props.title}</span>
+                <span>{title}</span>
               </IndexLink>
             </div>
 

@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 
 import Panel from '../common/Panel.jsx';
@@ -14,37 +12,37 @@ export default class Repos extends React.Component {
     reposGotoPage: React.PropTypes.func.isRequired
   }
 
-  constructor(props){
+  constructor(props) {
 
     super(props);
 
-    //init context bindings - due to diff between React.createClass and ES6 class
+    // init context bindings - due to diff between React.createClass and ES6 class
     this.reposGotoPage = this.reposGotoPage.bind(this);
 
   }
-  reposGotoPage(pageNum){
+  reposGotoPage(pageNum) {
     this.props.reposGotoPage(pageNum);
   }
-  render(){
+  render() {
     const { repositories } = this.props;
     const fetching = repositories.fetching;
     const originalTitle = repositories.pristineLogin + "'s repositories";
-    if (repositories && repositories.data){
+    if (repositories && repositories.data) {
       const repos = repositories.data;
       return (
         <Panel title={originalTitle}>
           <div className="panel-body repos-list">
             <ReposPaginator infos={repositories.infos} reposGotoPage={this.reposGotoPage} fetching={fetching}/>
             <div className="list-group">
-              {repos.map(function(repo){
-                return(
+              {repos.map((repo) => {
+                return (
                   <a href={repo.html_url} key={repo.name} className="list-group-item" title={repo.full_name}>
                     {repo.name}
                     <div className="pull-right">
                       <DisplayStars number={repo.stargazers_count}/>
                     </div>
                   </a>
-                )
+                );
               })}
             </div>
             <ReposPaginator infos={repositories.infos} reposGotoPage={this.reposGotoPage} fetching={fetching}/>
@@ -52,10 +50,8 @@ export default class Repos extends React.Component {
         </Panel>
       );
     }
-    else {
-      return(
-        <DisplayInfosPanel infos={repositories} originalTitle={originalTitle}/>
-      )
-    }
+    return (
+      <DisplayInfosPanel infos={repositories} originalTitle={originalTitle}/>
+    );
   }
 }

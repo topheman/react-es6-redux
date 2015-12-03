@@ -4,8 +4,8 @@
  * I added some comments to help understand the code
  */
 
-import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
-import { reduxReactRouter, routerStateReducer } from 'redux-router';
+import { createStore, compose, applyMiddleware } from 'redux';
+import { reduxReactRouter } from 'redux-router';
 import createHashHistory from 'history/lib/createHashHistory';
 import thunk from 'redux-thunk';
 
@@ -35,11 +35,11 @@ if (process.env.DEVTOOLS) {
  * Compose the store-enhancers with the original createStore function to create a new composed one.
  * Same as: combinedCreateStore = storeEnhancers[0](storeEnhancers[1](createStore))
  */
-combinedCreateStore = compose(...storeEnhancers)(createStore)
+combinedCreateStore = compose(...storeEnhancers)(createStore);
 
 const middlewares = [thunk];
 
-if (process.env.DEVTOOLS){
+if (process.env.DEVTOOLS) {
   middlewares.push(require('./middleware/logger'));
 }
 
@@ -49,7 +49,7 @@ if (process.env.DEVTOOLS){
  * The applyMiddleware allows us to add the following middlewares to the previously altered version of createStore.
  * The redux middlewares have the signature : ({ getState, dispatch }) => next => action
  */
-const finalCreateStore = applyMiddleware(...middlewares)(combinedCreateStore)
+const finalCreateStore = applyMiddleware(...middlewares)(combinedCreateStore);
 
 /**
  * Importing the rootReducer which combines all the other ones, including the reducer of the routerStateReducer
@@ -57,22 +57,23 @@ const finalCreateStore = applyMiddleware(...middlewares)(combinedCreateStore)
  */
 const rootReducer = require('./modules/reducer');
 
-export default function configureStore (initialState) {
+export default function configureStore(initialState) {
 
   /**
    * The store can finally be created based on the rootReducer and finalCreateStore function,
    * as we would have done createStore(reducers), but with composed versions of each ones,
    * thanks to functional programming
    */
-  const store = finalCreateStore(rootReducer, initialState)
+  const store = finalCreateStore(rootReducer, initialState);
 
-  if (module.hot)
-  // Enable Webpack hot module replacement for reducers
+  if (module.hot) {
+    // Enable Webpack hot module replacement for reducers
     module.hot.accept('./modules/reducer', () => {
       console.log('reloading reducer');
       const nextRootReducer = require('./modules/reducer');
       store.replaceReducer(nextRootReducer);
     });
+  }
 
   return store;
 }

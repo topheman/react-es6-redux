@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 
 import Spinner from '../common/Spinner.jsx';
@@ -22,6 +20,13 @@ export default class ReposPaginator extends React.Component {
     this.getClickGotoPageHandler = this.getClickGotoPageHandler.bind(this);
   }
 
+  getClickGotoPageHandler(methodName) {
+    return function gotoPageHandler(e) {
+      e.preventDefault();
+      this[methodName]();
+    }.bind(this);
+  }
+
   gotoPage(pageNum) {
     this.props.reposGotoPage(pageNum);
   }
@@ -42,20 +47,13 @@ export default class ReposPaginator extends React.Component {
     this.gotoPage(this.props.infos.totalPages);
   }
 
-  getClickGotoPageHandler(methodName) {
-    return function(e){
-      e.preventDefault();
-      this[methodName]();
-    }.bind(this);
-  }
-
   render() {
     const { infos, fetching } = this.props;
     if (infos.totalPages > 1) {
-      let firstPage,
-        previousPage,
-        nextPage,
-        lastPage;
+      let firstPage;
+      let previousPage;
+      let nextPage;
+      let lastPage;
       if (infos.page > 1) {
         firstPage = (
           <li className="previous">
@@ -106,10 +104,8 @@ export default class ReposPaginator extends React.Component {
         </div>
       );
     }
-    else {
-      return (
-        <p></p>
-      );
-    }
+    return (
+      <p></p>
+    );
   }
 }

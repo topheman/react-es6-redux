@@ -1,11 +1,9 @@
-'use strict';
-
 import React, { PropTypes } from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { increment } from '../../redux/modules/counter.js';//import action creators
+import { increment } from '../../redux/modules/counter.js';// import action creators
 
 export class CounterButton extends React.Component {
 
@@ -14,10 +12,10 @@ export class CounterButton extends React.Component {
     counter: PropTypes.number.isRequired
   }
 
-  render(){
-    const { counter, increment } = this.props;
-    return(
-      <button className="btn btn-primary" type="button" onClick={increment}>
+  render() {
+    const { counter, increment: incrementCounter } = this.props;
+    return (
+      <button className="btn btn-primary" type="button" onClick={incrementCounter}>
         Click to increment <span className="badge">{counter}</span>
       </button>
     );
@@ -33,12 +31,12 @@ export class CounterButton extends React.Component {
  * but with every action creator wrapped into a dispatch call so they may be invoked directly.
  */
 export default connect(
-  (state) => ({counter: state.counter}),//mapStateToProps - signature : (state) => props
-  (dispatch) => bindActionCreators({ increment }, dispatch)//mapDispatchToProps (using bindActionCreators helper) - http://rackt.org/redux/docs/api/bindActionCreators.html
+  (state) => ({counter: state.counter}), // mapStateToProps - signature : (state) => props
+  (dispatch) => bindActionCreators({ increment }, dispatch)// mapDispatchToProps (using bindActionCreators helper) - http://rackt.org/redux/docs/api/bindActionCreators.html
   // The bindActionCreators results to the following - dispatch in param - wraps the actions in dispatch in a key value object
-  //(dispatch) => ({
-  //  increment: function(){
-  //    return dispatch(CounterActions.increment());
-  //  }
-  //})
+  // (dispatch) => ({
+  //   increment: function(){
+  //     return dispatch(CounterActions.increment());
+  //   }
+  // })
 )(CounterButton);
