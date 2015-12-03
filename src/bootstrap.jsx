@@ -33,6 +33,19 @@ const store = configureStore(initialState);
 let rootElement = null;
 
 /**
+ * The linter can be disabled via DISABLE_LINTER env var - show a message in console to inform if it's on or off
+ * Won't show in production
+ */
+if(process.env.NODE_ENV !== 'production') {
+  if(process.env.DISABLE_LINTER) {
+    console.warn('Linter disabled, make sure to run your code against the linter, otherwise, if it fails, your commit will be rejected');
+  }
+  else{
+    console.info('Linter active, if you meet some problems, you can still run without linter :','npm run webpack-dev-simple-nolint or npm run webpack-dev-nolint', 'More infos in the README');
+  }
+}
+
+/**
  * Thanks to webpack.DefinePlugin which lets you inject variables at transpile time,
  * everything inside the if statement will be dropped at minification if process.env.DEVTOOLS is set to false.
  * This is why I don't use static ES6 import but CommonJS import (so that it will only get required in that particular case)

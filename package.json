@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --recursive --require ./test/setup.js",
+    "lint": "./node_modules/.bin/eslint --ext .js --ext .jsx src test",
+    "lint-watch": "./node_modules/.bin/esw --watch --ext .js --ext .jsx src test",
     "dev": "echo 'deprecated, use npm run webpack-dev' && npm run webpack-dev",
     "dev-mock": "echo 'deprecated, use npm run webpack-mock' && npm run webpack-mock",
     "build": "./node_modules/.bin/webpack --progress && ./node_modules/.bin/gulp build",
@@ -42,6 +44,7 @@
     "eslint-config-airbnb": "^1.0.2",
     "eslint-loader": "^1.1.1",
     "eslint-plugin-react": "^3.11.2",
+    "eslint-watch": "^2.1.4",
     "expect": "^1.13.0",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
