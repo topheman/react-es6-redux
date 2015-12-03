@@ -20,6 +20,9 @@
     "webpack-mock": "DEVTOOLS=true NODE_ENV=mock npm run webpack",
     "webpack-dev-simple": "DEVTOOLS=true npm run webpack"
   },
+  "pre-commit": [
+    "test"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/topheman/react-es6-redux.git"
@@ -64,6 +67,7 @@
     "mocha": "^2.3.4",
     "moment": "^2.10.6",
     "node-sass": "^3.3.3",
+    "pre-commit": "^1.1.2",
     "react-addons-test-utils": "^0.14.3",
     "react-hot-loader": "^1.3.0",
     "redux-devtools": "^2.1.5",
