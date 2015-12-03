@@ -4,7 +4,7 @@
   "description": "A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive --require ./test/setup.js",
+    "test": "npm run lint && mocha --compilers js:babel-core/register --recursive --require ./test/setup.js",
     "lint": "./node_modules/.bin/eslint --ext .js --ext .jsx src test",
     "lint-watch": "./node_modules/.bin/esw --watch --ext .js --ext .jsx src test",
     "dev": "echo 'deprecated, use npm run webpack-dev' && npm run webpack-dev",
