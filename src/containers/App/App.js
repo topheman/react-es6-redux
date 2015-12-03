@@ -2,8 +2,8 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import Header from '../../components/Header/Header.jsx';
-import Footer from '../../components/Footer/Footer.jsx';
+import Header from '../../components/Header/Header.js';
+import Footer from '../../components/Footer/Footer.js';
 
 const App = ({ children }) => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Spinner from '../common/Spinner.jsx';
+import Spinner from '../common/Spinner.js';
 
 export default class ReposPaginator extends React.Component {
 

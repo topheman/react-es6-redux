@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TwitterButton from './../TwitterButton/TwitterButton.jsx';
+import TwitterButton from './../TwitterButton/TwitterButton.js';
 
 const Footer = () => (
   <footer className="footer container">

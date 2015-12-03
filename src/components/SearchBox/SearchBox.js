@@ -1,6 +1,6 @@
 import React from 'react';
-import ProfileList from './../ProfileList/ProfileList.jsx';
-import Spinner from '../common/Spinner.jsx';
+import ProfileList from './../ProfileList/ProfileList.js';
+import Spinner from '../common/Spinner.js';
 
 /**
  * This component doesn't have state nor it has to know about connect or redux.

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Panel from '../common/Panel.jsx';
-import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
-import DisplayStars from '../common/DisplayStars.jsx';
-import ReposPaginator from '../ReposPaginator/ReposPaginator.jsx';
+import Panel from '../common/Panel.js';
+import DisplayInfosPanel from '../common/DisplayInfosPanel.js';
+import DisplayStars from '../common/DisplayStars.js';
+import ReposPaginator from '../ReposPaginator/ReposPaginator.js';
 
 export default class Repos extends React.Component {
 

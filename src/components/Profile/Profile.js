@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Panel from '../common/Panel.jsx';
-import Tr from '../common/Tr.jsx';
-import DisplayInfosPanel from '../common/DisplayInfosPanel.jsx';
+import Panel from '../common/Panel.js';
+import Tr from '../common/Tr.js';
+import DisplayInfosPanel from '../common/DisplayInfosPanel.js';
 
 const Profile = ({profile}) => {
   if (profile && profile.data) {

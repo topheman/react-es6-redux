@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { connect } from 'react-redux';
 
-import CounterButton from '../../components/CounterButton/CounterButton.jsx';
+import CounterButton from '../../components/CounterButton/CounterButton.js';
 
 const Redux = ({ counter }) => {
   return (

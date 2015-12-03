@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import ProfileBox from './../ProfileBox/ProfileBox.jsx';
+import ProfileBox from './../ProfileBox/ProfileBox.js';
 
 const ProfileList = ({results}) => {
   if (results === null) {

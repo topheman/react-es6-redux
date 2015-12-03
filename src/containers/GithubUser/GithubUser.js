@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Profile from '../../components/Profile/Profile.jsx';
-import Repos from '../../components/Repos/Repos.jsx';
+import Profile from '../../components/Profile/Profile.js';
+import Repos from '../../components/Repos/Repos.js';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

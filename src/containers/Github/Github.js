@@ -1,7 +1,7 @@
 import React from 'react';
 
-import IntroBox from '../../components/IntroBox/IntroBox.jsx';
-import SearchBox from '../../components/SearchBox/SearchBox.jsx';
+import IntroBox from '../../components/IntroBox/IntroBox.js';
+import SearchBox from '../../components/SearchBox/SearchBox.js';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

@@ -125,7 +125,7 @@ var config = {
   entry: {
     "js/bundle": [
       'webpack/hot/only-dev-server',//removed on build mode
-      "./src/bootstrap.jsx"
+      "./src/bootstrap.js"
     ],
     "css/main": "./src/style/main.scss"
   },
