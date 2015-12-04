@@ -4,7 +4,7 @@
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
  * @version v2.5.0 - 04/12/2015
- * @revision #19c8261 - https://github.com/topheman/react-es6-redux/tree/19c82616846e155209db348ac723e1cd8ad78c15
+ * @revision #c6761c4 - https://github.com/topheman/react-es6-redux/tree/c6761c40ff8ec0afb90600dc2e43489b0d8a4790
  * @author Christophe Rosset
  * @copyright 2015(c) Christophe Rosset
  * @license MIT
@@ -26765,7 +26765,7 @@
 	    case FETCH_USERS_SUCCESS:
 	      return _extends({}, state, {
 	        fetching: false,
-	        results: action.json.data
+	        results: action.result.data
 	      });
 	    case FETCH_USERS_ERROR:
 	      return _extends({}, state, {
@@ -26795,46 +26795,36 @@
 	}
 	
 	/**
-	 * The following action creators are not exported, nor used outside of this module.
-	 * To be more concise, they could be inlined in place as dipatch({type,payload})
-	 */
-	
-	function requestFetchUsers(username) {
-	  return {
-	    type: FETCH_USERS,
-	    username: username
-	  };
-	}
-	
-	function receiveFetchUsers(json) {
-	  return {
-	    type: FETCH_USERS_SUCCESS,
-	    json: json
-	  };
-	}
-	
-	function receiveFetchUsersError(error) {
-	  return {
-	    type: FETCH_USERS_ERROR,
-	    error: error
-	  };
-	}
-	
-	/**
 	 * This is the only action creator exported (not including changeUsername).
-	 * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
+	 * It's using a sugar syntax enabled by the clientMiddleware (see explanation in ../middleware/clientMiddleware.js)
 	 */
 	
 	function findUsers(username) {
-	  return function (dispatch) {
-	    dispatch(requestFetchUsers(username)); // request will start
-	    return _servicesGithubJs2['default'].searchUser(username).then(function (json) {
-	      return dispatch(receiveFetchUsers(json));
-	    }) // request succeeded
-	    ['catch'](function (error) {
-	      return dispatch(receiveFetchUsersError(error));
-	    }); // request failed
+	  return {
+	    types: [FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR],
+	    promise: function promise() {
+	      return _servicesGithubJs2['default'].searchUser(username);
+	    }
 	  };
+	
+	  // the version without using the clientMiddleware syntax sugar:
+	  /*
+	  return dispatch => {
+	    dispatch({
+	      type: FETCH_USERS,
+	      username
+	    }); // request will start
+	    return githubClient.searchUser(username)
+	      .then(result => dispatch({
+	        type: FETCH_USERS_SUCCESS,
+	        result
+	      })) // request succeeded
+	      .catch(error => dispatch({
+	        type: FETCH_USERS_ERROR,
+	        error
+	      })); // request failed
+	  };
+	  */
 	}
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "multipleUsers.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
@@ -29191,7 +29181,7 @@
 	    case FETCH_PROFILE_SUCCESS:
 	      return _extends({}, state, {
 	        fetching: false,
-	        data: action.json.data
+	        data: action.result.data
 	      });
 	    case FETCH_PROFILE_ERROR:
 	      return _extends({}, state, {
@@ -29225,8 +29215,8 @@
 	    case FETCH_REPOSITORIES_SUCCESS:
 	      return _extends({}, state, {
 	        fetching: false,
-	        data: action.json.data,
-	        infos: action.json.infos
+	        data: action.result.data,
+	        infos: action.result.infos
 	      });
 	    case FETCH_REPOSITORIES_ERROR:
 	      return _extends({}, state, {
@@ -29253,10 +29243,6 @@
 	
 	/* *********** Action creators ************/
 	
-	/**
-	 * Called to init pristineLogin
-	 */
-	
 	function initUsername() {
 	  var username = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
 	
@@ -29266,82 +29252,14 @@
 	  };
 	}
 	
-	/* ** profile related action creators ***/
-	
-	/**
-	 * The following action creators are not exported, nor used outside this module.
-	 * To be more concise, they could be inlined in place as dipatch({type,payload})
-	 */
-	
-	function requestFetchProfile(username) {
-	  return {
-	    type: FETCH_PROFILE,
-	    username: username // username is not needed for state management, it helps loging/debug
-	  };
-	}
-	
-	function receiveFetchProfile(json) {
-	  return {
-	    type: FETCH_PROFILE_SUCCESS,
-	    json: json
-	  };
-	}
-	
-	function receiveFetchProfileError(error) {
-	  return {
-	    type: FETCH_PROFILE_ERROR,
-	    error: error
-	  };
-	}
-	
-	/**
-	 * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
-	 */
-	
 	function getProfile(username) {
-	  return function (dispatch) {
-	    dispatch(requestFetchProfile(username)); // request will start
-	    return _servicesGithubJs2['default'].getUser(username).then(function (json) {
-	      return dispatch(receiveFetchProfile(json));
-	    }) // request succeeded
-	    ['catch'](function (error) {
-	      return dispatch(receiveFetchProfileError(error));
-	    }); // request failed
-	  };
-	}
-	
-	/* ** repositories related action creators ***/
-	
-	/**
-	 * The following action creators are not exported, nor used outside this module.
-	 * To be more concise, they could be inlined in place as dipatch({type,payload})
-	 */
-	
-	function requestFetchRepositories(username, options) {
 	  return {
-	    type: FETCH_REPOSITORIES,
-	    username: username, // username & options are not needed for state management, it helps loging/debug
-	    options: options
+	    types: [FETCH_PROFILE, FETCH_PROFILE_SUCCESS, FETCH_PROFILE_ERROR],
+	    promise: function promise() {
+	      return _servicesGithubJs2['default'].getUser(username);
+	    }
 	  };
 	}
-	
-	function receiveFetchRepositories(json) {
-	  return {
-	    type: FETCH_REPOSITORIES_SUCCESS,
-	    json: json
-	  };
-	}
-	
-	function receiveFetchRepositoriesError(error) {
-	  return {
-	    type: FETCH_REPOSITORIES_ERROR,
-	    error: error
-	  };
-	}
-	
-	/**
-	 * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
-	 */
 	
 	function getRepositories(username) {
 	  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -29353,14 +29271,11 @@
 	  var _ref$per_page = _ref.per_page;
 	  var per_page = _ref$per_page === undefined ? REPOS_PER_PAGE : _ref$per_page;
 	  // eslint-disable-line camelcase
-	  return function (dispatch) {
-	    dispatch(requestFetchRepositories(username, { page: page, sort: sort, per_page: per_page })); // request will start
-	    _servicesGithubJs2['default'].getUserRepos(username, { page: page, sort: sort, per_page: per_page }).then(function (json) {
-	      return dispatch(receiveFetchRepositories(json));
-	    }) // request succeeded
-	    ['catch'](function (error) {
-	      return dispatch(receiveFetchRepositoriesError(error));
-	    }); // request failed
+	  return {
+	    types: [FETCH_REPOSITORIES, FETCH_REPOSITORIES_SUCCESS, FETCH_REPOSITORIES_ERROR],
+	    promise: function promise() {
+	      return _servicesGithubJs2['default'].getUserRepos(username, { page: page, sort: sort, per_page: per_page });
+	    }
 	  };
 	}
 
@@ -29822,9 +29737,9 @@
 	
 	var _historyLibCreateHashHistory2 = _interopRequireDefault(_historyLibCreateHashHistory);
 	
-	var _reduxThunk = __webpack_require__(273);
+	var _middlewareClientMiddleware = __webpack_require__(273);
 	
-	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+	var _middlewareClientMiddleware2 = _interopRequireDefault(_middlewareClientMiddleware);
 	
 	var createHistory = function createHistory() {
 	  return _historyLibCreateHashHistory2['default']({ queryKey: 'hash' });
@@ -29855,7 +29770,7 @@
 	 */
 	combinedCreateStore = _redux.compose.apply(undefined, storeEnhancers)(_redux.createStore);
 	
-	var middlewares = [_reduxThunk2['default']];
+	var middlewares = [_middlewareClientMiddleware2['default']];
 	
 	if (true) {
 	  middlewares.push(__webpack_require__(277));
@@ -29902,25 +29817,86 @@
 
 /***/ },
 /* 273 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
 	'use strict';
 	
 	exports.__esModule = true;
-	exports['default'] = thunkMiddleware;
 	
-	function thunkMiddleware(_ref) {
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var _servicesHttpServiceJs = __webpack_require__(254);
+	
+	var _servicesHttpServiceJs2 = _interopRequireDefault(_servicesHttpServiceJs);
+	
+	/**
+	 * If you manage async actions, this will remove a lot of boilerplate,
+	 * Accepts an action with an object of the form:
+	 * {
+	 *   type: ['LOAD', 'LOAD_SUCCESS', 'LOAD_FAILURE'],
+	 *   promise: (client) => client.get('/url') // needs to return a promise - using the client is not mandatory
+	 * }
+	 * It remains compliant with normal actions (see src/redux/modules/multipleUsers.js for example)
+	 *
+	 * That way:
+	 *   - less boilerplate for async actions
+	 *   - normalization:
+	 *      - on success: action.result is populated with the response
+	 *      - on error: action.error is populated with the error
+	 */
+	
+	exports['default'] = function (_ref) {
 	  var dispatch = _ref.dispatch;
 	  var getState = _ref.getState;
 	
 	  return function (next) {
 	    return function (action) {
-	      return typeof action === 'function' ? action(dispatch, getState) : next(action);
+	      // the line bellow does exactly the same as redux-thunk (enables dispatching async actions) https://github.com/gaearon/redux-thunk/blob/master/src/index.js
+	      if (typeof action === 'function') {
+	        return action(dispatch, getState);
+	      }
+	
+	      var promise = action.promise;
+	      var types = action.types;
+	
+	      var rest = _objectWithoutProperties(action, ['promise', 'types']);
+	
+	      // eslint-disable-line no-redeclare
+	
+	      // if no promise passed, simply dispatch like a regular action : {type}
+	      if (!promise) {
+	        return next(action);
+	      }
+	
+	      // otherwise, extract the types and dispatch each actions on request, success and failure
+	      var REQUEST = types[0];
+	      var SUCCESS = types[1];
+	      var FAILURE = types[2];
+	
+	      next(_extends({}, rest, { type: REQUEST }));
+	
+	      // inject here the httpClient so its accessible in the callback if necessary
+	      return promise(_servicesHttpServiceJs2['default'].getInstance()).then(function (result) {
+	        return next(_extends({}, rest, { result: result, type: SUCCESS }));
+	      }, function (error) {
+	        return next(_extends({}, rest, { error: error, type: FAILURE }));
+	      })['catch'](function (error) {
+	        console.error('MIDDLEWARE ERROR:', error);
+	        next(_extends({}, rest, { error: error, type: FAILURE }));
+	      });
 	    };
 	  };
-	}
+	};
 	
 	module.exports = exports['default'];
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "clientMiddleware.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
 /* 274 */
@@ -36914,4 +36890,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-1eed785df0017db39da8.js.map
+//# sourceMappingURL=bundle-devtools-81268385184b5908d341.js.map
