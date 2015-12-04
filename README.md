@@ -5,7 +5,7 @@ react-es6-redux
 
 ![image](http://dev.topheman.com/wp-content/uploads/2015/04/logo-reactjs.png)
 
-This project is a POC based on **React** framework, coded in **ES6**, relying on [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) as a backend (providing the github API) and using **redux** for state management.
+This project is a POC based on **React** framework, coded in **ES6+**, relying on [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) as a backend (providing the github API) and using **redux** for state management.
 
 This repo holds the front-only part.
 
@@ -73,19 +73,33 @@ You can run it with `npm run serve-build`
 
 ####Test
 
-*This part is still in progress, but you can launch tests with the following command:*
-
 ```shell
 npm test
 ```
 
+This will launch:
+
+* linting of `/src` & `/test` folders via `eslint`
+* the unit-tests in `/test` folder via `mocha`
+
+This task is launched on `pre-commit` hook.
+
+####Linter
+
+I'm using eslint, based on [eslint-config-airbnb](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb), a preset for `.eslintrc` configuration. For more infos, checkout the release it was implemented: [v2.5.0](https://github.com/topheman/react-es6-redux/releases/tag/v2.5.0).
+
+* `npm run lint`: single run linting of `/src` & `/test` folders
+* `npm run lint-watch`: same in watch mode
+
+
 ####Specific commands
 
-You may want some granularity, the `DEVTOOLS` and `NODE_ENV` variables are at your disposal:
+You may want some granularity, the `DEVTOOLS`, `NODE_ENV` & `DISABLE_LINTER` variables are at your disposal:
 
 * `DEVTOOLS=true npm run build`: will build a debug version with the devtools
 * `DEVTOOLS=false npm run webpack`: will launch a webpack dev server without the devtools (if you find it annoying)
 * `DEVTOOLS=false NODE_ENV=MOCK npm run webpack` will launch a webpack dev server in mock mode without the devtools
+* `DISABLE_LINTER=true npm run webpack-dev-simple` (if you don't want to be bothered by the linter - at your own risks! the pre-commit hook will run the linter and the tests anyway)
 * ... you can mix and match ;-)
 
 ####With topheman-apis-proxy
