@@ -7,7 +7,7 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import { reduxReactRouter } from 'redux-router';
 import createHashHistory from 'history/lib/createHashHistory';
-import thunk from 'redux-thunk';
+import clientMiddleware from './middleware/clientMiddleware';
 
 const createHistory = () => {
   return createHashHistory({queryKey: 'hash'});
@@ -37,7 +37,7 @@ if (process.env.DEVTOOLS) {
  */
 combinedCreateStore = compose(...storeEnhancers)(createStore);
 
-const middlewares = [thunk];
+const middlewares = [clientMiddleware];
 
 if (process.env.DEVTOOLS) {
   middlewares.push(require('./middleware/logger'));

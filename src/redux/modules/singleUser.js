@@ -59,7 +59,7 @@ function profile(state = initialState.profile, action = {}) {
       return {
         ...state,
         fetching: false,
-        data: action.json.data
+        data: action.result.data
       };
     case FETCH_PROFILE_ERROR:
       return {
@@ -94,8 +94,8 @@ function repositories(state = initialState.repositories, action = {}) {
       return {
         ...state,
         fetching: false,
-        data: action.json.data,
-        infos: action.json.infos
+        data: action.result.data,
+        infos: action.result.infos
       };
     case FETCH_REPOSITORIES_ERROR:
       return {
@@ -123,9 +123,6 @@ export default reducer;
 
 /* *********** Action creators ************/
 
-/**
- * Called to init pristineLogin
- */
 export function initUsername(username = '') {
   return {
     type: INIT,
@@ -133,83 +130,16 @@ export function initUsername(username = '') {
   };
 }
 
-/* ** profile related action creators ***/
-
-/**
- * The following action creators are not exported, nor used outside this module.
- * To be more concise, they could be inlined in place as dipatch({type,payload})
- */
-
-function requestFetchProfile(username) {
-  return {
-    type: FETCH_PROFILE,
-    username // username is not needed for state management, it helps loging/debug
-  };
-}
-
-function receiveFetchProfile(json) {
-  return {
-    type: FETCH_PROFILE_SUCCESS,
-    json
-  };
-}
-
-function receiveFetchProfileError(error) {
-  return {
-    type: FETCH_PROFILE_ERROR,
-    error
-  };
-}
-
-/**
- * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
- */
 export function getProfile(username) {
-  return dispatch => {
-    dispatch(requestFetchProfile(username));// request will start
-    return githubClient.getUser(username)
-      .then(json => dispatch(receiveFetchProfile(json)))// request succeeded
-      .catch(error => dispatch(receiveFetchProfileError(error)));// request failed
-  };
-}
-
-/* ** repositories related action creators ***/
-
-/**
- * The following action creators are not exported, nor used outside this module.
- * To be more concise, they could be inlined in place as dipatch({type,payload})
- */
-
-function requestFetchRepositories(username, options) {
   return {
-    type: FETCH_REPOSITORIES,
-    username, // username & options are not needed for state management, it helps loging/debug
-    options
+    types: [FETCH_PROFILE, FETCH_PROFILE_SUCCESS, FETCH_PROFILE_ERROR],
+    promise: () => githubClient.getUser(username)
   };
 }
 
-function receiveFetchRepositories(json) {
-  return {
-    type: FETCH_REPOSITORIES_SUCCESS,
-    json
-  };
-}
-
-function receiveFetchRepositoriesError(error) {
-  return {
-    type: FETCH_REPOSITORIES_ERROR,
-    error
-  };
-}
-
-/**
- * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
- */
 export function getRepositories(username, {page = 1, sort = 'stars', per_page = REPOS_PER_PAGE} = {}) {// eslint-disable-line camelcase
-  return dispatch => {
-    dispatch(requestFetchRepositories(username, {page, sort, per_page})); // request will start
-    githubClient.getUserRepos(username, {page, sort, per_page})
-      .then(json => dispatch(receiveFetchRepositories(json))) // request succeeded
-      .catch(error => dispatch(receiveFetchRepositoriesError(error))); // request failed
+  return {
+    types: [FETCH_REPOSITORIES, FETCH_REPOSITORIES_SUCCESS, FETCH_REPOSITORIES_ERROR],
+    promise: () => githubClient.getUserRepos(username, {page, sort, per_page})
   };
 }

@@ -53,7 +53,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         fetching: false,
-        results: action.json.data
+        results: action.result.data
       };
     case FETCH_USERS_ERROR:
       return {
@@ -81,40 +81,31 @@ export function changeUsername(username = '') {
 }
 
 /**
- * The following action creators are not exported, nor used outside of this module.
- * To be more concise, they could be inlined in place as dipatch({type,payload})
- */
-
-function requestFetchUsers(username) {
-  return {
-    type: FETCH_USERS,
-    username
-  };
-}
-
-function receiveFetchUsers(json) {
-  return {
-    type: FETCH_USERS_SUCCESS,
-    json
-  };
-}
-
-function receiveFetchUsersError(error) {
-  return {
-    type: FETCH_USERS_ERROR,
-    error
-  };
-}
-
-/**
  * This is the only action creator exported (not including changeUsername).
- * Since async action are involved, the signature is (dispatch) => { ... } (thanks to redux-thunk - https://github.com/gaearon/redux-thunk )
+ * It's using a sugar syntax enabled by the clientMiddleware (see explanation in ../middleware/clientMiddleware.js)
  */
 export function findUsers(username) {
-  return dispatch => {
-    dispatch(requestFetchUsers(username)); // request will start
-    return githubClient.searchUser(username)
-      .then(json => dispatch(receiveFetchUsers(json))) // request succeeded
-      .catch(error => dispatch(receiveFetchUsersError(error))); // request failed
+  return {
+    types: [FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR],
+    promise: () => githubClient.searchUser(username)
   };
+
+  // the version without using the clientMiddleware syntax sugar:
+  /*
+  return dispatch => {
+    dispatch({
+      type: FETCH_USERS,
+      username
+    }); // request will start
+    return githubClient.searchUser(username)
+      .then(result => dispatch({
+        type: FETCH_USERS_SUCCESS,
+        result
+      })) // request succeeded
+      .catch(error => dispatch({
+        type: FETCH_USERS_ERROR,
+        error
+      })); // request failed
+  };
+  */
 }
