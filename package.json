@@ -17,7 +17,8 @@
     "build-prod-all": "npm run build-prod && DEVTOOLS=true NODE_ENV=production npm run build",
     "build-prod-all-owner": "API_ROOT_URL='https://topheman-apis-proxy.herokuapp.com/github' npm run build-prod-all",
     "serve-build": "cd build && ../node_modules/.bin/serve --port 9001",
-    "webpack": "./node_modules/.bin/webpack-dev-server --progress --colors --hot",
+    "webpack-lazy": "./node_modules/.bin/webpack-dev-server --progress --colors --lazy",
+    "webpack": "./node_modules/.bin/webpack-dev-server --progress --colors --hot --inline",
     "webpack-dev": "API_ROOT_URL='http://localhost:8000/github' DEVTOOLS=true npm run webpack",
     "webpack-mock": "DEVTOOLS=true NODE_ENV=mock npm run webpack",
     "webpack-dev-simple": "DEVTOOLS=true npm run webpack"

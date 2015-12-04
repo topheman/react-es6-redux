@@ -1,41 +1,42 @@
 'use strict';
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var mockObjects = false;
-var common = require('./common');
-var plugins = [];
-var MODE_DEV_SERVER = process.argv[1].indexOf('webpack-dev-server') > -1 ? true : false;
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const common = require('./common');
+const plugins = [];
+const MODE_DEV_SERVER = process.argv[1].indexOf('webpack-dev-server') > -1 ? true : false;
+const LAZY_MODE = process.argv.indexOf('--lazy') > -1 ? true : false;
 
 console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode');
 
 /** environment setup */
 
-var NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
-var DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
-var API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'https://api.github.com';
-var STUB_MOCK_TIMEOUT = process.env.STUB_MOCK_TIMEOUT ? process.env.STUB_MOCK_TIMEOUT : 400;
+const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
+const DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
+const API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'https://api.github.com';
+const STUB_MOCK_TIMEOUT = process.env.STUB_MOCK_TIMEOUT ? process.env.STUB_MOCK_TIMEOUT : 400;
 const DISABLE_LINTER = process.env.DISABLE_LINTER ? JSON.parse(process.env.DISABLE_LINTER) : false;
 
-var SOURCEMAPS_ACTIVE = NODE_ENV !== 'production' || DEVTOOLS === true;
+const SOURCEMAPS_ACTIVE = NODE_ENV !== 'production' || DEVTOOLS === true;
 
 if(NODE_ENV === 'production'){
   console.log('PRODUCTION mode');
 }
 else if(NODE_ENV === 'test'){
   console.log('TEST mode');
-  mockObjects = true;
 }
 else if(NODE_ENV === 'mock'){
   console.log('MOCK mode');
   console.log('STUB_MOCK_TIMEOUT', STUB_MOCK_TIMEOUT);
-  mockObjects = true;
 }
 else{
   console.log('DEVELOPMENT mode');
 }
 if(DEVTOOLS){
   console.log('DEVTOOLS active');
+}
+if(LAZY_MODE){
+  console.log('LAZY_MODE active (won\'t hot reload - will only build on request)');
 }
 
 if( !(/^https?:\/\/.*(?!\/).$/.test(API_ROOT_URL)) ) {
@@ -46,21 +47,7 @@ if(SOURCEMAPS_ACTIVE){
   console.log('SOURCEMAPS activated');
 }
 
-/** before build */
-
-var hash = (NODE_ENV === 'production' && DEVTOOLS ? '-devtools' : '') + (NODE_ENV === 'production' ? '-[hash]' : '');
-
-//in build mode, cleanup build folder before - since we can build two versions (production & devtools) in a row, skip delete for the devtools
-if(MODE_DEV_SERVER === false && DEVTOOLS === false){
-  console.log('Cleaning ...');
-  var deleted = require('del').sync(['build/*','build/**/*',"!.git/**/*"]);
-  deleted.forEach(function(e){
-    console.log(e);
-  });
-}
-else if(MODE_DEV_SERVER === false && DEVTOOLS === true){
-  console.log('[INFO] Not cleaning up build/ folder for this pass (not in devtools mode)');
-}
+const hash = (NODE_ENV === 'production' && DEVTOOLS ? '-devtools' : '') + (NODE_ENV === 'production' ? '-[hash]' : '');
 
 /** plugins setup */
 
@@ -68,7 +55,7 @@ plugins.push(new webpack.NoErrorsPlugin());
 // extract css into one main.css file
 plugins.push(new ExtractTextPlugin('css/main' + hash + '.css',{
   disable: false,
-    allChunks: true
+  allChunks: true
 }));
 plugins.push(new webpack.BannerPlugin(common.getBanner()));
 plugins.push(new webpack.DefinePlugin({
@@ -105,7 +92,7 @@ if(MODE_DEV_SERVER === false){
 
 /** preloaders */
 
-let preloaders = [];
+const preloaders = [];
 
 if(DISABLE_LINTER) {
   console.log ('LINTER DISABLED');
@@ -119,14 +106,25 @@ else{
   });
 }
 
+/** before build */
+
+//in build mode, cleanup build folder before - since we can build two versions (production & devtools) in a row, skip delete for the devtools
+if(MODE_DEV_SERVER === false && DEVTOOLS === false){
+  console.log('Cleaning ...');
+  const deleted = require('del').sync(['build/*','build/**/*',"!.git/**/*"]);
+  deleted.forEach(function(e){
+    console.log(e);
+  });
+}
+else if(MODE_DEV_SERVER === false && DEVTOOLS === true){
+  console.log('[INFO] Not cleaning up build/ folder for this pass (not in devtools mode)');
+}
+
 /** webpack config */
 
 var config = {
   entry: {
-    "js/bundle": [
-      'webpack/hot/only-dev-server',//removed on build mode
-      "./src/bootstrap.js"
-    ],
+    "js/bundle": "./src/bootstrap.js",
     "css/main": "./src/style/main.scss"
   },
   output: {
@@ -170,10 +168,5 @@ var config = {
   },
   plugins: plugins
 };
-
-if(MODE_DEV_SERVER === false){
-  //remove 'webpack/hot/only-dev-server' on build
-  config.entry["js/bundle"].shift();
-}
 
 module.exports = config;
