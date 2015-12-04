@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && npm run unit-test",
-    "unit-test": "mocha --compilers js:babel-core/register --recursive --require ./test/setup.js",
+    "unit-test": "mocha --compilers js:babel-core/register --recursive --require ./test/unit/setup.js",
     "unit-test-watch": "npm run lint-watch & npm run unit-test -- --watch",
     "lint": "./node_modules/.bin/eslint --ext .js --ext .jsx src test",
     "lint-watch": "./node_modules/.bin/esw --watch --ext .js --ext .jsx src test",

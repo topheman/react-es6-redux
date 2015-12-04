@@ -2,7 +2,7 @@ import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
 import React from 'react';
 
-import { CounterButton } from '../../../src/components/CounterButton/CounterButton.js';
+import { CounterButton } from '../../../../src/components/CounterButton/CounterButton.js';
 
 function setup({counter = 0} = {}) {
   const props = {
