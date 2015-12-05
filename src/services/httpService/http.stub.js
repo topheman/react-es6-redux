@@ -13,26 +13,43 @@ import _mockGithubFollowers from './http.mocks/followers.json';
 import _mockGithubUsersSearch from './http.mocks/users.search.json';
 
 const mockJsonFiles = {
-  '/users/*/repos': _mockGithubRepos,
-  '/users/*/followers': _mockGithubFollowers,
-  '/users/': _mockGithubUser,
-  '/search/users?': _mockGithubUsersSearch
+  '/users/topheman/repos': _mockGithubRepos,
+  '/users/topheman/followers': _mockGithubFollowers,
+  '/users/topheman': _mockGithubUser,
+  '/search/users?q=tophe': _mockGithubUsersSearch
 };
 
 const STUB_MOCK_TIMEOUT = process.env.STUB_MOCK_TIMEOUT;
 
 export default {
-  get(relativeUrl) {
+  get(relativeUrl, params = {}) {
     const promise = new Promise((resolve, reject) => {
+
+      let url = relativeUrl;
+
+      // add query params
+      if (typeof params === 'object' && params !== null) {
+        if (Object.keys(params).length > 0) {
+          let query = '';
+          for (const name in params) {
+            if (typeof params[name] !== 'object') {
+              query += query === '' ? '' : '&';
+              query += name + '=' + params[name];
+            }
+          }
+          url += (query !== '') ? ('?' + query) : '';
+        }
+      }
+
       let result = null;
       for (const endpoint in mockJsonFiles) {
-        if (endpoint.indexOf('*') === -1 && relativeUrl.indexOf(endpoint) > -1) {
+        if (endpoint.indexOf('*') === -1 && url.indexOf(endpoint) > -1) {
           result = mockJsonFiles[endpoint];
           break;
         }
         else {
           const regexp = new RegExp(endpoint.replace('*', '\\w+') + '.*');
-          if (regexp.test(relativeUrl) === true) {
+          if (regexp.test(url) === true) {
             result = mockJsonFiles[endpoint];
             break;
           }
@@ -50,12 +67,12 @@ export default {
         };
         if (typeof STUB_MOCK_TIMEOUT === 'number') {
           setTimeout(() => {
-            console.info('http.stub.js', relativeUrl, resolvedData);
+            console.info('http.stub.js', url, resolvedData);
             return resolve(resolvedData);
           }, STUB_MOCK_TIMEOUT);
         }
         else {
-          console.info('http.stub.js', relativeUrl, resolvedData);
+          console.info('http.stub.js', url, resolvedData);
           return resolve(resolvedData);
         }
       }
@@ -67,12 +84,12 @@ export default {
         };
         if (typeof STUB_MOCK_TIMEOUT === 'number') {
           setTimeout(() => {
-            console.error('http.stub.js', relativeUrl, resolvedData);
+            console.error('http.stub.js', url, resolvedData);
             return reject(resolvedData);
           }, STUB_MOCK_TIMEOUT);
         }
         else {
-          console.error('http.stub.js', relativeUrl, resolvedData);
+          console.error('http.stub.js', url, resolvedData);
           return reject(resolvedData);
         }
       }

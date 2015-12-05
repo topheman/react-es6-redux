@@ -20,7 +20,7 @@ function setup({counter = 0} = {}) {
   };
 }
 
-describe('components/common/CounterButton', () => {
+describe('components/CounterButton/CounterButton.js', () => {
   describe('render', () => {
     it('should render correctly the button and its children (default state)', () => {
       const { output } = setup();
