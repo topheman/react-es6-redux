@@ -21,7 +21,8 @@
     "webpack": "./node_modules/.bin/webpack-dev-server --progress --colors --hot --inline",
     "webpack-dev": "API_ROOT_URL='http://localhost:8000/github' DEVTOOLS=true npm run webpack",
     "webpack-mock": "DEVTOOLS=true NODE_ENV=mock npm run webpack",
-    "webpack-dev-simple": "DEVTOOLS=true npm run webpack"
+    "webpack-dev-simple": "DEVTOOLS=true npm run webpack",
+    "generate-http-fixtures": "node ./bin/nock/call-nock.js"
   },
   "pre-commit": [
     "test"
@@ -69,6 +70,7 @@
     "lodash": "^3.10.1",
     "mocha": "^2.3.4",
     "moment": "^2.10.6",
+    "nock": "^3.3.2",
     "node-sass": "^3.3.3",
     "pre-commit": "^1.1.2",
     "react-addons-test-utils": "^0.14.3",
