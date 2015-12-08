@@ -14,7 +14,6 @@ console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode
 const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
 const DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
 const API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'https://api.github.com';
-const STUB_MOCK_TIMEOUT = process.env.STUB_MOCK_TIMEOUT ? process.env.STUB_MOCK_TIMEOUT : 400;
 const DISABLE_LINTER = process.env.DISABLE_LINTER ? JSON.parse(process.env.DISABLE_LINTER) : false;
 
 const SOURCEMAPS_ACTIVE = NODE_ENV !== 'production' || DEVTOOLS === true;
@@ -27,7 +26,6 @@ else if(NODE_ENV === 'test'){
 }
 else if(NODE_ENV === 'mock'){
   console.log('MOCK mode');
-  console.log('STUB_MOCK_TIMEOUT', STUB_MOCK_TIMEOUT);
 }
 else{
   console.log('DEVELOPMENT mode');
@@ -65,7 +63,6 @@ plugins.push(new webpack.DefinePlugin({
     'NODE_ENV': JSON.stringify(NODE_ENV),
     'DEVTOOLS': DEVTOOLS, // I rely on the variable bellow to make a bundle with the redux devtools (or not)
     'API_ROOT_URL': JSON.stringify(API_ROOT_URL), // The httpClient will rely on that (change it at will)
-    'STUB_MOCK_TIMEOUT': JSON.parse(STUB_MOCK_TIMEOUT), // The httpStub will rely on that (change it at will)
     'DISABLE_LINTER': DISABLE_LINTER // Simply to log in browser console if linting is on or off
   }
 }));

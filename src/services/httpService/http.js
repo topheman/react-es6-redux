@@ -1,4 +1,14 @@
-import request from 'superagent';
+/**
+ * This is the github client which decorates requests and responses from github.
+ * It will adapt to the API_ROOT_URL you pass in env var.
+ * In mock mode, it won't make any http requests, but will use the test/fixtures/http.json mock files (generated via npm run generate-http-fixtures)
+ */
+
+const request = require('superagent');
+
+if (process.env.NODE_ENV === 'mock') {
+  require('./http.mock.js')(request);
+}
 
 export default {
   get(relativeUrl, params = {}) {

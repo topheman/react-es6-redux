@@ -20,7 +20,7 @@
     "webpack-lazy": "./node_modules/.bin/webpack-dev-server --progress --colors --lazy",
     "webpack": "./node_modules/.bin/webpack-dev-server --progress --colors --hot --inline",
     "webpack-dev": "API_ROOT_URL='http://localhost:8000/github' DEVTOOLS=true npm run webpack",
-    "webpack-mock": "DEVTOOLS=true NODE_ENV=mock npm run webpack",
+    "webpack-mock": "DEVTOOLS=true NODE_ENV=mock API_ROOT_URL='http://localhost' npm run webpack",
     "webpack-dev-simple": "DEVTOOLS=true npm run webpack",
     "generate-http-fixtures": "node ./bin/nock/call-nock.js"
   },
@@ -95,7 +95,8 @@
     "react-router": "^1.0.0",
     "redux": "^3.0.4",
     "redux-router": "^1.0.0-beta3",
-    "superagent": "^1.4.0"
+    "superagent": "^1.4.0",
+    "superagent-mocker": "^0.3.0"
   },
   "private": true
 }
