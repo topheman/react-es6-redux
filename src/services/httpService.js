@@ -1,18 +1,14 @@
 /**
- * To avoid having to involve webpack into requiring modules when we'll execute any code server-side
- * I dropped the resolve.alias solution in favor of dependency injection.
+ * This is the singleton of the http service, where you can get the github client (which decorates the response from the github API)
+ * In your app you may not want such a custom client, you should definitly take a look at
+ * https://github.com/erikras/react-redux-universal-hot-example/blob/master/src/helpers/ApiClient.js
  */
 
 let instance = null;
 
 class HttpService {
   constructor() {
-    if (process.env.NODE_ENV === 'mock') {
-      this.service = require('./httpService/http.stub');
-    }
-    else {
-      this.service = require('./httpService/http');
-    }
+    this.service = require('./httpService/http');
   }
   get(relativeUrl, params) {
     return this.service.get(relativeUrl, params);

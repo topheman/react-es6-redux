@@ -80,7 +80,6 @@ else {
 
 if (process.env.NODE_ENV === 'mock') {
   console.info('MOCK mode');
-  console.info('STUB_MOCK_TIMEOUT', process.env.STUB_MOCK_TIMEOUT);
 }
 
 ReactDOM.render(rootElement, document.getElementById('app-container'));
