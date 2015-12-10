@@ -21,9 +21,6 @@ const SOURCEMAPS_ACTIVE = NODE_ENV !== 'production' || DEVTOOLS === true;
 if(NODE_ENV === 'production'){
   console.log('PRODUCTION mode');
 }
-else if(NODE_ENV === 'test'){
-  console.log('TEST mode');
-}
 else if(NODE_ENV === 'mock'){
   console.log('MOCK mode');
 }
@@ -131,7 +128,7 @@ var config = {
   },
   cache: true,
   debug: NODE_ENV === 'production' ? false : true,
-  devtool: NODE_ENV !== 'production' || DEVTOOLS === true ? "sourcemap" : false,
+  devtool: SOURCEMAPS_ACTIVE ? "sourcemap" : false,
   devServer: {
     contentBase: './public',
     inline: true

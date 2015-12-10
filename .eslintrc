@@ -1,6 +1,11 @@
 {
   "env": {
-    "mocha": true
+    "mocha": true,
+    "jasmine": true,
+    "protractor": true
+  },
+  "globals": {
+    "goToUrl": true
   },
   "extends": "airbnb",
   "parser": "babel-eslint",
