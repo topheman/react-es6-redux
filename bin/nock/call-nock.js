@@ -26,7 +26,9 @@ const uris = [
   '/users/topheman/repos?page=2&per_page=15&sort=stars',
   '/users/topheman/repos?page=3&per_page=15&sort=stars',
   '/users/topheman/followers',
-  '/search/users?q=tophe'
+  '/search/users?q=tophe',
+  '/search/users?q=topheman', // this one is to return "one result"
+  '/search/users?q=aaazzzeeerrrtttyyyuuuiiioooppp' // this one is to return "no results"
 ];
 
 const promises = uris.map((uri) => {
@@ -41,6 +43,7 @@ Promise.all(promises)
       const output = nockCallObjects.map((item) => {
         item.scope = 'http://localhost'; // change the host name (avoid CORS), and protocol (superagent-mocker considers ":" as wildcard, so you can't put a port)
         item.path = item.path.replace(/^\/github/,''); // remove the leading "/github" (in topheman-apis-proxy), so that relative url will be used
+        item.path = item.path.replace('aaazzzeeerrrtttyyyuuuiiioooppp',':username'); // this one is to return "no results"
         console.log(item.path);
         return item;
       });
