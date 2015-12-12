@@ -2,8 +2,12 @@ language: node_js
 node_js:
   - "4"
 env:
+  global:
   - CXX=g++-4.8
+  - SAUCE_USERNAME=react-es6-redux
+  - SAUCE_ACCESS_KEY=e5996a82-a35b-4707-b324-79fe310d5ab3
 addons:
+  sauce_connect: true
   apt:
     sources:
     - ubuntu-toolchain-r-test
@@ -11,5 +15,8 @@ addons:
     - g++-4.8
 before_script:
   - npm run build-prod-all-owner
+  - npm run build-travis
+  - "npm run serve-build > /dev/null &"
 script:
   - npm test
+  - npm run test-e2e -- --port 9001

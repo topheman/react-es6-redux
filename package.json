@@ -4,6 +4,7 @@
   "description": "A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm run webdriver-manager-update",
     "test": "npm run lint && npm run unit-test",
     "test-build": "./bin/test-build.sh",
     "unit-test": "mocha 'test/unit/**/*.js' --compilers js:babel-core/register --recursive --require ./test/unit/setup.js",
@@ -19,7 +20,8 @@
     "build-prod-owner": "API_ROOT_URL='https://topheman-apis-proxy.herokuapp.com/github' npm run build-prod",
     "build-prod-all": "npm run build-prod && DEVTOOLS=true NODE_ENV=production npm run build",
     "build-prod-all-owner": "API_ROOT_URL='https://topheman-apis-proxy.herokuapp.com/github' npm run build-prod-all",
-    "serve-build": "cd build && ../node_modules/.bin/serve --port 9001",
+    "build-travis": "NODE_ENV=mock API_ROOT_URL='http://localhost' ./node_modules/.bin/webpack --progress -p && NODE_ENV=mock ./node_modules/.bin/gulp build",
+    "serve-build": "./node_modules/.bin/serve --port 9001 build",
     "webpack-lazy": "./node_modules/.bin/webpack-dev-server --progress --colors --lazy",
     "webpack": "./node_modules/.bin/webpack-dev-server --progress --colors --hot --inline",
     "webpack-dev": "API_ROOT_URL='http://localhost:8000/github' DEVTOOLS=true npm run webpack",

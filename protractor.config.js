@@ -41,4 +41,17 @@ var config = {
   }
 };
 
+if (process.env.TRAVIS) {
+  config.sauceUser = process.env.SAUCE_USERNAME;
+  config.sauceKey = process.env.SAUCE_ACCESS_KEY;
+  config.capabilities = {
+    'name': 'react-es6-redux E2E',
+    'browserName': 'chrome',
+    'seleniumVersion': '2.48.2',
+    'chromedriverVersion': '2.20',
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    'build': process.env.TRAVIS_BUILD_NUMBER
+  };
+}
+
 module.exports.config = exports.config = config;
