@@ -4,8 +4,12 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const common = require('./common');
 const plugins = [];
+
+const root = __dirname;
+
 const MODE_DEV_SERVER = process.argv[1].indexOf('webpack-dev-server') > -1 ? true : false;
 const LAZY_MODE = process.argv.indexOf('--lazy') > -1 ? true : false;
+const CLEAN_ONLY = process.argv.indexOf('--clean-only') > -1 ? true : false;// webpack --clean-only (useful to cleanup the build folder)
 
 console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode');
 
@@ -74,6 +78,7 @@ if(NODE_ENV === 'production' && DEVTOOLS !== true){
 }
 
 if(MODE_DEV_SERVER === false){
+  console.log('root', root);
   //write infos about the build (to retrieve the hash) https://webpack.github.io/docs/long-term-caching.html#get-filenames-from-stats
   plugins.push(function() {
     this.plugin("done", function(stats) {
@@ -105,10 +110,18 @@ else{
 //in build mode, cleanup build folder before - since we can build two versions (production & devtools) in a row, skip delete for the devtools
 if(MODE_DEV_SERVER === false && DEVTOOLS === false){
   console.log('Cleaning ...');
-  const deleted = require('del').sync(['build/*','build/**/*',"!.git/**/*"]);
+  const deleted = require('del').sync([
+    root + '/build/*',
+    root + '/build/**/*',
+    root + '/build/!.git/**/*'
+  ]);
   deleted.forEach(function(e){
     console.log(e);
   });
+  if (CLEAN_ONLY) {
+    console.log('CLEAN_ONLY mode, exiting clean without going further');
+    process.exit(0);
+  }
 }
 else if(MODE_DEV_SERVER === false && DEVTOOLS === true){
   console.log('[INFO] Not cleaning up build/ folder for this pass (not in devtools mode)');

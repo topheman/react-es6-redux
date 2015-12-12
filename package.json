@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && npm run unit-test",
+    "test-build": "./bin/test-build.sh",
     "unit-test": "mocha 'test/unit/**/*.js' --compilers js:babel-core/register --recursive --require ./test/unit/setup.js",
     "unit-test-watch": "npm run lint-watch & npm run unit-test -- --watch",
     "test-e2e": "./node_modules/.bin/protractor protractor.config.js",
@@ -13,6 +14,7 @@
     "dev": "echo 'deprecated, use npm run webpack-dev' && npm run webpack-dev",
     "dev-mock": "echo 'deprecated, use npm run webpack-mock' && npm run webpack-mock",
     "build": "./node_modules/.bin/webpack --progress && ./node_modules/.bin/gulp build",
+    "clean": "./node_modules/.bin/webpack --clean-only",
     "build-prod": "NODE_ENV=production ./node_modules/.bin/webpack --progress -p && NODE_ENV=production ./node_modules/.bin/gulp build",
     "build-prod-owner": "API_ROOT_URL='https://topheman-apis-proxy.herokuapp.com/github' npm run build-prod",
     "build-prod-all": "npm run build-prod && DEVTOOLS=true NODE_ENV=production npm run build",
