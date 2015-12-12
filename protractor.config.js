@@ -35,7 +35,7 @@ var config = {
     global.goToUrl = function (relativeUrl, baseUrl, port) {
       baseUrl = typeof baseUrl === 'undefined' ? BASE_URL : baseUrl;
       port = typeof port === 'undefined' ? PORT : port;
-      browser.get(baseUrl + ':' + port + relativeUrl);
+      return browser.get(baseUrl + ':' + port + relativeUrl);
     };
     jasmine.getEnv().addReporter(new SpecReporter());
   }
