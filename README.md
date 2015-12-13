@@ -2,10 +2,13 @@ react-es6-redux
 ===============
 
 [![Build Status](https://travis-ci.org/topheman/react-es6-redux.svg?branch=master)](https://travis-ci.org/topheman/react-es6-redux)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/react-es6-redux)](https://saucelabs.com/u/react-es6-redux)
 
 ![image](http://dev.topheman.com/wp-content/uploads/2015/04/logo-reactjs.png)
 
 This project is a POC based on **React** framework, coded in **ES6+**, relying on [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) as a backend (providing the github API) and using **redux** for state management.
+
+It also has **Continuous Integration support** via [Travis CI](https://travis-ci.org/topheman/react-es6-redux), with **unit tests** as well as **e2e tests** (through [SauceLabs](https://saucelabs.com/u/react-es6-redux)).
 
 This repo holds the front-only part.
 
@@ -14,9 +17,10 @@ This repo holds the front-only part.
 
 To read further about this project and its evolution:
 
-* [Blog post about the original version](http://dev.topheman.com/playing-with-es6-and-react/)
-* [Blog post about the upgrade to react v0.14](http://dev.topheman.com/upgraded-to-react-v0-14/)
+* [Read the WIKI](https://github.com/topheman/react-es6-redux/wiki)
 * [The slides on the talk I made at the ReactJsParis meetup about this project](http://slides.com/topheman/react-es6-redux)
+* [Blog post about the upgrade to react v0.14](http://dev.topheman.com/upgraded-to-react-v0-14/)
+* [Blog post about the original version](http://dev.topheman.com/playing-with-es6-and-react/)
 
 ###Basic features :
 
@@ -53,7 +57,7 @@ You're good to go with hot-reload / redux-devtools / time-travel / sourcemaps ..
 
 #####Mock mode
 
-You can also run the app in mock mode (useful for unit-tests):
+You can also run the app in mock mode (useful for tests):
 
 * `npm run webpack-mock`
 * Open [http://localhost:8080/](http://localhost:8080/)
@@ -73,16 +77,25 @@ You can run it with `npm run serve-build`
 
 ####Test
 
-```shell
-npm test
-```
+#####Unit tests
 
-This will launch:
+`npm test` will launch:
 
 * linting of `/src` & `/test` folders via `eslint`
-* the unit-tests in `/test` folder via `mocha`
+* the unit-tests in `/test/unit` folder via `mocha`
 
-This task is launched on `pre-commit` hook.
+This task is launched on `pre-commit` hook & on Travis CI.
+
+*Note: There aren't much unit tests currently, this part is still in progress.*
+
+#####End to end tests
+
+Open two terminal tabs, on each one:
+
+* `npm run webpack-mock`: will launch the project in mock mode
+* `npm run test-e2e`: will run the e2e tests in `/test/e2e` via `protractor` against your local server
+
+Those tests are run on Travis CI, via SauceLabs. For more infos about that, see the [Continuous Integration section](#continuous-integration).
 
 ####Linter
 
@@ -90,7 +103,6 @@ I'm using eslint, based on [eslint-config-airbnb](https://github.com/airbnb/java
 
 * `npm run lint`: single run linting of `/src` & `/test` folders
 * `npm run lint-watch`: same in watch mode
-
 
 ####Specific commands
 
@@ -101,6 +113,8 @@ You may want some granularity, the `DEVTOOLS`, `NODE_ENV` & `DISABLE_LINTER` var
 * `DEVTOOLS=false NODE_ENV=MOCK npm run webpack` will launch a webpack dev server in mock mode without the devtools
 * `DISABLE_LINTER=true npm run webpack-dev-simple` (if you don't want to be bothered by the linter - at your own risks! the pre-commit hook will run the linter and the tests anyway)
 * ... you can mix and match ;-)
+
+**Read the ["Advanced tasks" wiki section](https://github.com/topheman/react-es6-redux/wiki/Advanced-tasks) for more infos ...**
 
 ####With topheman-apis-proxy
 
@@ -113,6 +127,15 @@ Then your workflow will be:
 * Open a terminal in the react-es6-redux folder and `npm run webpack-dev`
 * Open a terminal in the topheman-apis-proxy folder and `grunt serve` (see more in the [run in local](https://github.com/topheman/topheman-apis-proxy#run-in-local) README section)
 * Go to [http://localhost:8080/](http://localhost:8080/)
+
+###Continuous Integration
+
+The CI configuration is highly inpired by my previous project [topheman/vanilla-es6-jspm](https://github.com/topheman/vanilla-es6-jspm). On each push, Travis CI will run the tests specified in the [.travis.yml](https://github.com/topheman/react-es6-redux/blob/master/.travis.yml) file, which is mostly:
+
+* checking if the build task for production works
+* linting source code
+* running unit tests
+* running e2e tests against a built mock version of the site (this part is using [SauceLabs](https://saucelabs.com/buildstatus/react-es6-redux), a cross-browser automation tool built on top of Selenium WebDriver)
 
 ###Steps
 
