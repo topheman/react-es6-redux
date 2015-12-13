@@ -5,7 +5,8 @@
     "protractor": true
   },
   "globals": {
-    "goToUrl": true
+    "goToUrl": true,
+    "waitUntilIsElementPresent": true
   },
   "extends": "airbnb",
   "parser": "babel-eslint",

@@ -37,6 +37,12 @@ var config = {
       port = typeof port === 'undefined' ? PORT : port;
       return browser.get(baseUrl + ':' + port + relativeUrl);
     };
+    global.waitUntilIsElementPresent = function(element, timeout) {
+      timeout = typeof timeout !== 'undefined' ? timeout : 4000;
+      return browser.driver.wait(() => {
+        return browser.driver.isElementPresent(element);
+      }, timeout);
+    };
     jasmine.getEnv().addReporter(new SpecReporter());
   }
 };

@@ -4,9 +4,7 @@ describe('Github Search page', () => {
     // go to page (if not yet)
     goToUrl('#/github');
     // don't start test before the page is ready
-    browser.driver.wait(() => {
-      return browser.driver.isElementPresent(by.id('user-name'));
-    }, 4000);
+    waitUntilIsElementPresent(by.id('user-name'));
   });
   it('should have a correct title', () => {
     expect(browser.getTitle()).toEqual('Topheman - react-es6-redux');
@@ -34,9 +32,7 @@ describe('Github Search page', () => {
       username.click().then(() => {
         username.sendKeys('topheman', protractor.Key.ENTER).then(() => {
           expect(username.getAttribute('value')).toEqual('topheman');
-          browser.driver.wait(() => {
-            return browser.driver.isElementPresent(by.css('div.list-group'));
-          }, 4000);
+          waitUntilIsElementPresent(by.css('div.list-group'));
         });
       });
     });
@@ -56,9 +52,7 @@ describe('Github Search page', () => {
       username.click().then(() => {
         username.sendKeys('tophe', protractor.Key.ENTER).then(() => {
           expect(username.getAttribute('value')).toEqual('tophe');
-          browser.driver.wait(() => {
-            return browser.driver.isElementPresent(by.css('div.list-group'));
-          }, 4000);
+          waitUntilIsElementPresent(by.css('div.list-group'));
         });
       });
     });
@@ -79,9 +73,7 @@ describe('Github Search page', () => {
       username.click().then(() => {
         username.sendKeys('topheman', protractor.Key.ENTER).then(() => {
           expect(username.getAttribute('value')).toEqual('topheman');
-          browser.driver.wait(() => {
-            return browser.driver.isElementPresent(by.css('div.list-group'));
-          }, 4000);
+          waitUntilIsElementPresent(by.css('div.list-group'));
         });
       });
     });
