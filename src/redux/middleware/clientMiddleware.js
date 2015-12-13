@@ -4,7 +4,7 @@ import httpService from '../../services/httpService.js';
  * If you manage async actions, this will remove a lot of boilerplate,
  * Accepts an action with an object of the form:
  * {
- *   type: ['LOAD', 'LOAD_SUCCESS', 'LOAD_FAILURE'],
+ *   types: ['LOAD', 'LOAD_SUCCESS', 'LOAD_FAILURE'],
  *   promise: (client) => client.get('/url') // needs to return a promise - using the client is not mandatory
  * }
  * It remains compliant with normal actions (see src/redux/modules/multipleUsers.js for example)
