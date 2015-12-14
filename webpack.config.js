@@ -135,8 +135,9 @@ var config = {
     "css/main": "./src/style/main.scss"
   },
   output: {
-    publicPath: "/assets/",
+    publicPath: "assets/",
     filename: "[name]" + hash + ".js",
+    chunkFilename: 'js/[id]'  + hash + '.chunk.js',
     path: "./build/assets"
   },
   cache: true,

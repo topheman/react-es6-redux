@@ -20,7 +20,18 @@ let combinedCreateStore;
  * Higher order function that compose a store creator and returns a new one: (StoreCreator) => (StoreCreator)
  */
 const storeEnhancers = [
-  reduxReactRouter({ createHistory })
+  reduxReactRouter({
+    createHistory,
+    routerStateSelector: state => ({
+      location: {
+        pathname: undefined
+      },
+      routes: [],
+      params: {},
+      components: [],
+      ...state.router
+    })
+  })
 ];
 
 /**

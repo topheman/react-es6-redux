@@ -4,7 +4,7 @@ const Lazy = ({ children }) => {
   return (
     <div>
       <h2>
-        This part will be lazy-loaded
+        This part is lazy-loaded
       </h2>
       <div>
         {children}
