@@ -49,6 +49,7 @@ export default class Header extends React.Component {
               <ul className="nav navbar-nav">
                 <li><Link to="/github">Search Github Users</Link></li>
                 <li><Link to="/redux">About Redux</Link></li>
+                <li><Link to="/lazy">Test Lazy</Link></li>
               </ul>
             </div>
           </div>
