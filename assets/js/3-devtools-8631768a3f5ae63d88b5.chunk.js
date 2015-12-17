@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.6.0 - 15/12/2015
- * @revision #e4ddb24 - https://github.com/topheman/react-es6-redux/tree/e4ddb24ff51cd80a66128ef0943a467b6d8a70e7
+ * @version v2.6.0 - 17/12/2015
+ * @revision #3cef408 - https://github.com/topheman/react-es6-redux/tree/3cef4082c488bcdefa841de176e1c564c3e0550c
  * @author Christophe Rosset
  * @copyright 2015(c) Christophe Rosset
  * @license MIT
@@ -56,19 +56,13 @@ webpackJsonp([3],{
 	    _react2["default"].createElement(
 	      "p",
 	      null,
-	      "This feature is ",
-	      _react2["default"].createElement(
-	        "strong",
-	        null,
-	        "not yet available on master"
-	      ),
-	      ", you can see the code on branch ",
+	      "There's a bug remaining on this part (an egde case), please consider contribute to ",
 	      _react2["default"].createElement(
 	        "a",
-	        { href: "https://github.com/topheman/react-es6-redux/tree/feature/router-lazy-load" },
-	        "feature/router-lazy-load"
+	        { href: "https://github.com/topheman/react-es6-redux/issues/12" },
+	        "this issue"
 	      ),
-	      "."
+	      " if you've appreciated this project."
 	    )
 	  );
 	};
@@ -81,4 +75,4 @@ webpackJsonp([3],{
 /***/ }
 
 });
-//# sourceMappingURL=3-devtools-40f867fed4682f2bbd4b.chunk.js.map
+//# sourceMappingURL=3-devtools-8631768a3f5ae63d88b5.chunk.js.map
