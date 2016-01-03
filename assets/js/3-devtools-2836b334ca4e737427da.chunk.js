@@ -3,16 +3,16 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.6.0 - 17/12/2015
- * @revision #420a4be - https://github.com/topheman/react-es6-redux/tree/420a4be715ad08109bcf46582270c739dbb3aba4
+ * @version v2.6.0 - 03/01/2016
+ * @revision #3721629 - https://github.com/topheman/react-es6-redux/tree/37216291f3bf8bdfe3d8c096aad033fa3308f4a3
  * @author Christophe Rosset
- * @copyright 2015(c) Christophe Rosset
+ * @copyright 2016(c) Christophe Rosset
  * @license MIT
  * 
  */
 webpackJsonp([3],{
 
-/***/ 279:
+/***/ 277:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -75,4 +75,4 @@ webpackJsonp([3],{
 /***/ }
 
 });
-//# sourceMappingURL=3-devtools-077d80561258e1ac51d8.chunk.js.map
+//# sourceMappingURL=3-devtools-2836b334ca4e737427da.chunk.js.map
