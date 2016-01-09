@@ -58,7 +58,7 @@ describe('Github Search page', () => {
     });
     it('should output multiple results when searching for "tophe" - with correct header', () => {
       const resultHeader = element.all(by.css('div.panel-heading')).first().getText();
-      expect(resultHeader).toEqual('Total results : 270 / showing : 30');
+      expect(resultHeader).toEqual('Total results : 274 / showing : 30');
     });
     it('should output multiple results when searching for "tophe" - with correct body', () => {
       element.all(by.css('div.list-group a')).getText().then((resultLine) => {
