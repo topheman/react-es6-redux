@@ -55,15 +55,13 @@ if (process.env.NODE_ENV !== 'production') {
  * https://webpack.github.io/docs/list-of-plugins.html#defineplugin
  */
 if (process.env.DEVTOOLS) {
-  console.info('redux devtools active, to hide the panel : ctrl+H - for more infos', 'https://github.com/gaearon/redux-devtools');
-  const { DevTools, DebugPanel, LogMonitor } = require('redux-devtools/lib/react');
+  console.info('redux devtools active, to hide the panel: ctrl+H, to change position: ctrl+Q - for more infos', 'https://github.com/gaearon/redux-devtools');
+  const DevTools = require('./redux/DevTools');
   rootElement = (
     <Provider store={store}>
       <div>
         {component}
-        <DebugPanel top right bottom>
-          <DevTools store={store} monitor={LogMonitor} />
-        </DebugPanel>
+        <DevTools/>
       </div>
     </Provider>
   );

@@ -38,8 +38,8 @@ const storeEnhancers = [
  * Only require then add devtools to the store-enhancer when needed
  */
 if (process.env.DEVTOOLS) {
-  const { devTools } = require('redux-devtools');
-  storeEnhancers.push(devTools());
+  const DevTools = require('./DevTools');
+  storeEnhancers.push(DevTools.instrument());
 }
 
 /**
