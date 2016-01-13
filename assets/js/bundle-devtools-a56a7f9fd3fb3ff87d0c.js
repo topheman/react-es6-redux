@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.6.0 - 09/01/2016
- * @revision #7a128ea - https://github.com/topheman/react-es6-redux/tree/7a128ea20cd760e4b322f2553db0dd77906c1f44
+ * @version v2.6.0 - 14/01/2016
+ * @revision #df6a37e - https://github.com/topheman/react-es6-redux/tree/df6a37ee85339e9c0cdaa359280859d5b345a7c5
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
@@ -85,7 +85,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "js/" + chunkId + "-devtools-" + "438c0117e8f16247a3e9" + ".chunk.js";
+/******/ 			script.src = __webpack_require__.p + "js/" + chunkId + "-devtools-" + "a56a7f9fd3fb3ff87d0c" + ".chunk.js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -27915,11 +27915,21 @@
 	
 	      request.get(url).set('Accept', 'application/json').end(function (err, res) {
 	        if (err || !res) {
-	          if (typeof res !== 'undefined' && res.headers && typeof res.headers['x-ratelimit-remaining'] !== 'undefined') {
+	          if (typeof res !== 'undefined' && res.headers && res.headers['x-ratelimit-remaining'] == 0) {
+	            // eslint-disable-line eqeqeq
 	            return reject({
 	              kind: 'rateLimit',
 	              message: err,
 	              humanMessage: 'The server is very crowded, please try again in a few seconds.',
+	              status: res.status,
+	              type: res.type
+	            });
+	          }
+	          if (typeof res !== 'undefined' && res.statusCode === 404) {
+	            return reject({
+	              kind: 'NotFound',
+	              message: err,
+	              humanMessage: 'No results.',
 	              status: res.status,
 	              type: res.type
 	            });
@@ -42494,4 +42504,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-438c0117e8f16247a3e9.js.map
+//# sourceMappingURL=bundle-devtools-a56a7f9fd3fb3ff87d0c.js.map
