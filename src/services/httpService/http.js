@@ -34,11 +34,20 @@ export default {
       request.get(url).set('Accept', 'application/json')
         .end((err, res) => {
           if (err || !res) {
-            if (typeof res !== 'undefined' && res.headers && typeof res.headers['x-ratelimit-remaining'] !== 'undefined') {
+            if (typeof res !== 'undefined' && res.headers && res.headers['x-ratelimit-remaining'] == 0) { // eslint-disable-line eqeqeq
               return reject({
                 kind: 'rateLimit',
                 message: err,
                 humanMessage: 'The server is very crowded, please try again in a few seconds.',
+                status: res.status,
+                type: res.type
+              });
+            }
+            if (typeof res !== 'undefined' && res.statusCode === 404) {
+              return reject({
+                kind: 'NotFound',
+                message: err,
+                humanMessage: 'No results.',
                 status: res.status,
                 type: res.type
               });
