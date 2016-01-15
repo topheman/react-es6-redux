@@ -19,9 +19,13 @@ const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'de
 const DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
 const API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'https://api.github.com';
 const DISABLE_LINTER = process.env.DISABLE_LINTER ? JSON.parse(process.env.DISABLE_LINTER) : false;
+const TRAVIS = process.env.TRAVIS ? JSON.parse(process.env.TRAVIS) : false;
 
 const SOURCEMAPS_ACTIVE = NODE_ENV !== 'production' || DEVTOOLS === true;
 
+if(TRAVIS) {
+  console.log('TRAVIS mode (will fail on error)');
+}
 if(NODE_ENV === 'production'){
   console.log('PRODUCTION mode');
 }
@@ -50,7 +54,9 @@ const hash = (NODE_ENV === 'production' && DEVTOOLS ? '-devtools' : '') + (NODE_
 
 /** plugins setup */
 
-plugins.push(new webpack.NoErrorsPlugin());
+if(!TRAVIS) {
+  plugins.push(new webpack.NoErrorsPlugin());
+}
 // extract css into one main.css file
 plugins.push(new ExtractTextPlugin('css/main' + hash + '.css',{
   disable: false,
@@ -130,6 +136,7 @@ else if(MODE_DEV_SERVER === false && DEVTOOLS === true){
 /** webpack config */
 
 var config = {
+  bail: TRAVIS,
   entry: {
     "js/bundle": "./src/bootstrap.js",
     "css/main": "./src/style/main.scss"
