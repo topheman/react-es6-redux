@@ -18,9 +18,10 @@ This repo holds the front-only part.
 To read further about this project and its evolution:
 
 * [Read the WIKI](https://github.com/topheman/react-es6-redux/wiki)
-* [The slides on the talk I made at the ReactJsParis meetup about this project](http://slides.com/topheman/react-es6-redux)
 * [Blog post about the upgrade to react v0.14](http://dev.topheman.com/upgraded-to-react-v0-14/)
 * [Blog post about the original version](http://dev.topheman.com/playing-with-es6-and-react/)
+* [Slides of the ReactJsParis meetup about this project (nov 2015)](http://slides.com/topheman/react-es6-redux)
+* [Slides of the ParisJS meetup about this project (jan 2016)](https://topheman.github.io/talks/react-es6-redux/)
 
 ###Basic features :
 
