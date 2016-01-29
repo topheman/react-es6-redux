@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.6.0 - 14/01/2016
- * @revision #df6a37e - https://github.com/topheman/react-es6-redux/tree/df6a37ee85339e9c0cdaa359280859d5b345a7c5
+ * @version v2.6.0 - 29/01/2016
+ * @revision #d4bc1ac - https://github.com/topheman/react-es6-redux/tree/d4bc1ac8539875c7ebd8b8cd9132ee883d43a57f
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
@@ -12,10 +12,10 @@
  */
 webpackJsonp([3],{
 
-/***/ 277:
+/***/ 272:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/Tophe/projects/front/react-es6/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 	
 	"use strict";
 	
@@ -75,4 +75,4 @@ webpackJsonp([3],{
 /***/ }
 
 });
-//# sourceMappingURL=3-devtools-a56a7f9fd3fb3ff87d0c.chunk.js.map
+//# sourceMappingURL=3-devtools-ef1c72ace85b3c456633.chunk.js.map
