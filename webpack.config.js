@@ -160,7 +160,7 @@ var config = {
       {
         test: /\.js(x?)$/,
         exclude: /node_modules/,
-        loader: 'react-hot!babel-loader'
+        loader: (MODE_DEV_SERVER && !TRAVIS ? 'react-hot!' : '') + 'babel-loader'
       },
       {
         test: /\.json$/,
