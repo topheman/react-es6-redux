@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.6.0 - 14/02/2016
- * @revision #34b2c8a - https://github.com/topheman/react-es6-redux/tree/34b2c8ad5ec30644a2e7a0ed67ffeccde3162dd4
+ * @version v2.7.0 - 14/02/2016
+ * @revision #808eb4b - https://github.com/topheman/react-es6-redux/tree/808eb4b7cdc9be0b5645a289406f3b62155b10ef
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
@@ -85,7 +85,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "js/" + chunkId + "-devtools-" + "7a14d8528de2df238817" + ".chunk.js";
+/******/ 			script.src = __webpack_require__.p + "js/" + chunkId + "-devtools-" + "002d7c588ac2e33510c3" + ".chunk.js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -26578,8 +26578,6 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(218);
-	
 	var _componentsHeaderHeaderJs = __webpack_require__(237);
 	
 	var _componentsHeaderHeaderJs2 = _interopRequireDefault(_componentsHeaderHeaderJs);
@@ -26600,18 +26598,15 @@
 	      { className: 'container' },
 	      children
 	    ),
-	    _react2['default'].createElement(_componentsFooterFooterJs2['default'], null)
+	    _react2['default'].createElement(_componentsFooterFooterJs2['default'], { year: new Date().getFullYear() })
 	  );
 	};
 	
 	App.propTypes = {
-	  routing: _react2['default'].PropTypes.object.isRequired,
 	  children: _react2['default'].PropTypes.node.isRequired
 	};
 	
-	exports['default'] = (0, _reactRedux.connect)(function (state) {
-	  return { routing: state.routing };
-	})(App);
+	exports['default'] = App;
 	module.exports = exports['default'];
 
 /***/ },
@@ -26812,14 +26807,17 @@
 	
 	var _TwitterButtonTwitterButtonJs2 = _interopRequireDefault(_TwitterButtonTwitterButtonJs);
 	
-	var Footer = function Footer() {
+	var Footer = function Footer(_ref) {
+	  var year = _ref.year;
 	  return _react2['default'].createElement(
 	    'footer',
 	    { className: 'footer container' },
 	    _react2['default'].createElement(
 	      'p',
 	      null,
-	      '©2015 ',
+	      '©',
+	      year,
+	      ' ',
 	      _react2['default'].createElement(
 	        'a',
 	        { href: 'http://labs.topheman.com/' },
@@ -26830,6 +26828,10 @@
 	      _react2['default'].createElement(_TwitterButtonTwitterButtonJs2['default'], null)
 	    )
 	  );
+	};
+	
+	Footer.propTypes = {
+	  year: _react2['default'].PropTypes.number.isRequired
 	};
 	
 	exports['default'] = Footer;
@@ -40876,4 +40878,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-7a14d8528de2df238817.js.map
+//# sourceMappingURL=bundle-devtools-002d7c588ac2e33510c3.js.map
