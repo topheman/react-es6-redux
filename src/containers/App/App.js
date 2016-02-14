@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
-
 import Header from '../../components/Header/Header.js';
 import Footer from '../../components/Footer/Footer.js';
 
@@ -12,14 +10,13 @@ const App = ({ children }) => {
       <div className="container">
         {children}
       </div>
-      <Footer/>
+      <Footer year={(new Date()).getFullYear()}/>
     </div>
   );
 };
 
 App.propTypes = {
-  routing: React.PropTypes.object.isRequired,
   children: React.PropTypes.node.isRequired
 };
 
-export default connect(state => ({ routing: state.routing }))(App);
+export default App;

@@ -2,13 +2,17 @@ import React from 'react';
 
 import TwitterButton from './../TwitterButton/TwitterButton.js';
 
-const Footer = () => (
+const Footer = ({year}) => (
   <footer className="footer container">
     <p>
-      ©2015 <a href="http://labs.topheman.com/">labs.topheman.com</a> - Christophe Rosset<br/>
+      ©{year} <a href="http://labs.topheman.com/">labs.topheman.com</a> - Christophe Rosset<br/>
       <TwitterButton/>
     </p>
   </footer>
 );
+
+Footer.propTypes = {
+  year: React.PropTypes.number.isRequired
+};
 
 export default Footer;
