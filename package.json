@@ -4,6 +4,7 @@
   "description": "A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend",
   "main": "index.js",
   "scripts": {
+    "start": "npm run webpack-dev-simple",
     "postinstall": "npm run webdriver-manager-update",
     "test": "npm run lint && npm run unit-test",
     "test-build": "./bin/test-build.sh",
