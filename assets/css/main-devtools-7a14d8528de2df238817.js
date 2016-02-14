@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.6.0 - 29/01/2016
- * @revision #d4bc1ac - https://github.com/topheman/react-es6-redux/tree/d4bc1ac8539875c7ebd8b8cd9132ee883d43a57f
+ * @version v2.6.0 - 14/02/2016
+ * @revision #34b2c8a - https://github.com/topheman/react-es6-redux/tree/34b2c8ad5ec30644a2e7a0ed67ffeccde3162dd4
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
@@ -60,4 +60,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=main-devtools-ef1c72ace85b3c456633.js.map
+//# sourceMappingURL=main-devtools-7a14d8528de2df238817.js.map
