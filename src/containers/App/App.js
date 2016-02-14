@@ -18,8 +18,8 @@ const App = ({ children }) => {
 };
 
 App.propTypes = {
-  routerState: React.PropTypes.object.isRequired,
+  routing: React.PropTypes.object.isRequired,
   children: React.PropTypes.node.isRequired
 };
 
-export default connect(state => ({ routerState: state.router }))(App);
+export default connect(state => ({ routing: state.routing }))(App);

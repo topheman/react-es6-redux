@@ -3,7 +3,7 @@ global.Promise = global.Promise || require('es6-promise').Promise;
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { ReduxRouter } from 'redux-router';
+import { Router, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
 
 import routes from './routes.js';
@@ -14,12 +14,16 @@ import configureStore from './redux/configure-store.js';
 import httpService from './services/httpService.js';
 httpService.getInstance();
 
-/** Redux initialization */
+/**
+ * Router initialization
+ * react-router-redux config is done in configure-store
+ * If you switch from hashHistory to another, please update configure-store.js
+ */
 
 const component = (
-  <ReduxRouter>
+  <Router history={hashHistory}>
     {routes}
-  </ReduxRouter>
+  </Router>
 );
 
 const initialState = {};

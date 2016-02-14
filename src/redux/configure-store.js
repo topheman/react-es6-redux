@@ -4,35 +4,22 @@
  * I added some comments to help understand the code
  */
 
+import { hashHistory } from 'react-router';// using the same as the one in bootstrap.js @todo find a way to inject it ?
 import { createStore, compose, applyMiddleware } from 'redux';
-import { reduxReactRouter } from 'redux-router';
-import createHashHistory from 'history/lib/createHashHistory';
+import { syncHistory } from 'react-router-redux';
+
 import clientMiddleware from './middleware/clientMiddleware';
 
-const createHistory = () => {
-  return createHashHistory({queryKey: 'hash'});
-};
-
-let combinedCreateStore;
+/**
+ * react-redux-router middleware setup
+ */
+const reduxRouterMiddleware = syncHistory(hashHistory);
 
 /**
  * https://github.com/rackt/redux/blob/master/docs/Glossary.md#store-enhancer
  * Higher order function that compose a store creator and returns a new one: (StoreCreator) => (StoreCreator)
  */
-const storeEnhancers = [
-  reduxReactRouter({
-    createHistory,
-    routerStateSelector: state => ({
-      location: {
-        pathname: undefined
-      },
-      routes: [],
-      params: {},
-      components: [],
-      ...state.router
-    })
-  })
-];
+const storeEnhancers = [];
 
 /**
  * Only require then add devtools to the store-enhancer when needed
@@ -46,9 +33,9 @@ if (process.env.DEVTOOLS) {
  * Compose the store-enhancers with the original createStore function to create a new composed one.
  * Same as: combinedCreateStore = storeEnhancers[0](storeEnhancers[1](createStore))
  */
-combinedCreateStore = compose(...storeEnhancers)(createStore);
+const combinedCreateStore = compose(...storeEnhancers)(createStore);
 
-const middlewares = [clientMiddleware];
+const middlewares = [clientMiddleware, reduxRouterMiddleware];
 
 if (process.env.DEVTOOLS) {
   middlewares.push(require('./middleware/logger'));
@@ -76,6 +63,10 @@ export default function configureStore(initialState) {
    * thanks to functional programming
    */
   const store = finalCreateStore(rootReducer, initialState);
+
+  if (process.env.DEVTOOLS) {
+    reduxRouterMiddleware.listenForReplays(store);
+  }
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
