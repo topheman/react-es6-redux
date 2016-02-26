@@ -1,4 +1,6 @@
 'use strict';
+const log = require('npmlog');
+log.level = 'silly';
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -12,7 +14,7 @@ const MODE_DEV_SERVER = process.argv[1].indexOf('webpack-dev-server') > -1 ? tru
 const LAZY_MODE = process.argv.indexOf('--lazy') > -1 ? true : false;
 const CLEAN_ONLY = process.argv.indexOf('--clean-only') > -1 ? true : false;// webpack --clean-only (useful to cleanup the build folder)
 
-console.log('Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode');
+log.info('webpack', 'Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode');
 
 /** environment setup */
 
@@ -26,30 +28,30 @@ const LOCALHOST = process.env.LOCALHOST ? JSON.parse(process.env.LOCALHOST) : tr
 const SOURCEMAPS_ACTIVE = NODE_ENV !== 'production' || DEVTOOLS === true;
 
 if(TRAVIS) {
-  console.log('TRAVIS mode (will fail on error)');
+  log.info('webpack', 'TRAVIS mode (will fail on error)');
 }
 if(NODE_ENV === 'production'){
-  console.log('PRODUCTION mode');
+  log.info('webpack', 'PRODUCTION mode');
 }
 else if(NODE_ENV === 'mock'){
-  console.log('MOCK mode');
+  log.info('webpack', 'MOCK mode');
 }
 else{
-  console.log('DEVELOPMENT mode');
+  log.info('webpack', 'DEVELOPMENT mode');
 }
 if(DEVTOOLS){
-  console.log('DEVTOOLS active');
+  log.info('webpack', 'DEVTOOLS active');
 }
 if(LAZY_MODE){
-  console.log('LAZY_MODE active (won\'t hot reload - will only build on request)');
+  log.info('webpack', 'LAZY_MODE active (won\'t hot reload - will only build on request)');
 }
 
 if( !(/^https?:\/\/.*(?!\/).$/.test(API_ROOT_URL)) ) {
-  console.log('[WARNING] Your API_ROOT_URL should not have any trailing slash');
+  log.warn('webpack', 'Your API_ROOT_URL should not have any trailing slash');
 }
-console.log('API_ROOT_URL',API_ROOT_URL);
+log.info('webpack', `API_ROOT_URL ${API_ROOT_URL}`);
 if(SOURCEMAPS_ACTIVE){
-  console.log('SOURCEMAPS activated');
+  log.info('webpack', 'SOURCEMAPS activated');
 }
 
 const hash = (NODE_ENV === 'production' && DEVTOOLS ? '-devtools' : '') + (NODE_ENV === 'production' ? '-[hash]' : '');
@@ -86,7 +88,7 @@ if(NODE_ENV === 'production' && DEVTOOLS !== true){
 }
 
 if(MODE_DEV_SERVER === false){
-  console.log('root', root);
+  log.info('webpackbuild', `rootdir: ${root}`);
   //write infos about the build (to retrieve the hash) https://webpack.github.io/docs/long-term-caching.html#get-filenames-from-stats
   plugins.push(function() {
     this.plugin("done", function(stats) {
@@ -98,10 +100,10 @@ if(MODE_DEV_SERVER === false){
 }
 else {
   if(LOCALHOST) {
-    console.log('Check http://localhost:8080');
+    log.info('webpack', 'Check http://localhost:8080');
   }
   else {
-    console.log('Check http://' + myLocalIp() + ':8080');
+    log.info('webpack', 'Check http://' + myLocalIp() + ':8080');
   }
 }
 
@@ -110,10 +112,10 @@ else {
 const preloaders = [];
 
 if(DISABLE_LINTER) {
-  console.log ('LINTER DISABLED');
+  log.info('webpack', 'LINTER DISABLED');
 }
 else{
-  console.log ('LINTER ENABLED');
+  log.info('webpack', 'LINTER ENABLED');
   preloaders.push({
     test: /\.js(x?)$/,
     exclude: /node_modules/,
@@ -125,7 +127,7 @@ else{
 
 //in build mode, cleanup build folder before - since we can build two versions (production & devtools) in a row, skip delete for the devtools
 if(MODE_DEV_SERVER === false && DEVTOOLS === false){
-  console.log('Cleaning ...');
+  log.info('webpackbuild', 'Cleaning ...');
   const deleted = require('del').sync([
     root + '/build/*',
     root + '/build/**/*',
@@ -135,12 +137,12 @@ if(MODE_DEV_SERVER === false && DEVTOOLS === false){
     console.log(e);
   });
   if (CLEAN_ONLY) {
-    console.log('CLEAN_ONLY mode, exiting clean without going further');
+    log.info('webpackbuild', 'CLEAN_ONLY mode, exiting clean without going further');
     process.exit(0);
   }
 }
 else if(MODE_DEV_SERVER === false && DEVTOOLS === true){
-  console.log('[INFO] Not cleaning up build/ folder for this pass (not in devtools mode)');
+  log.info('webpackbuild', 'Not cleaning up build/ folder for this pass (not in devtools mode)');
 }
 
 /** webpack config */

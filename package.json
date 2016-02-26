@@ -83,6 +83,7 @@
     "my-local-ip": "^1.0.0",
     "nock": "^7.0.2",
     "node-sass": "^3.3.3",
+    "npmlog": "^2.0.2",
     "pre-commit": "^1.1.2",
     "protractor": "^3.0.0",
     "react-addons-test-utils": "^0.14.7",
