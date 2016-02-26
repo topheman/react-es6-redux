@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const common = require('./common');
+const myLocalIp = require('my-local-ip');
 const plugins = [];
 
 const root = __dirname;
@@ -20,6 +21,7 @@ const DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false
 const API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'https://api.github.com';
 const DISABLE_LINTER = process.env.DISABLE_LINTER ? JSON.parse(process.env.DISABLE_LINTER) : false;
 const TRAVIS = process.env.TRAVIS ? JSON.parse(process.env.TRAVIS) : false;
+const LOCALHOST = process.env.LOCALHOST ? JSON.parse(process.env.LOCALHOST) : true;
 
 const SOURCEMAPS_ACTIVE = NODE_ENV !== 'production' || DEVTOOLS === true;
 
@@ -94,6 +96,14 @@ if(MODE_DEV_SERVER === false){
     });
   });
 }
+else {
+  if(LOCALHOST) {
+    console.log('Check http://localhost:8080');
+  }
+  else {
+    console.log('Check http://' + myLocalIp() + ':8080');
+  }
+}
 
 /** preloaders */
 
@@ -152,8 +162,9 @@ var config = {
   devtool: SOURCEMAPS_ACTIVE ? "sourcemap" : false,
   devServer: {
     contentBase: './public',
-    inline: true
-  },
+    inline: true,
+    host: LOCALHOST ? 'localhost' : myLocalIp()
+},
   module: {
     preLoaders: preloaders,
     loaders: [
