@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.7.0 - 14/02/2016
- * @revision #e8adb11 - https://github.com/topheman/react-es6-redux/tree/e8adb11c6634267ef42a2e76833a81970e08267b
+ * @version v2.7.1 - 26/02/2016
+ * @revision #e74d1cf - https://github.com/topheman/react-es6-redux/tree/e74d1cf981a4e621279134a6a5a56e938da4e871
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
@@ -85,7 +85,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "js/" + chunkId + "-devtools-" + "e542b6f1a1d1ac12566f" + ".chunk.js";
+/******/ 			script.src = __webpack_require__.p + "js/" + chunkId + "-devtools-" + "508dec70c19f7a692a2a" + ".chunk.js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -168,10 +168,10 @@
 	 * Won't show in production
 	 */
 	if (false) {
-	  if (process.env.DISABLE_LINTER) {
+	  if (!process.env.LINTER) {
 	    console.warn('Linter disabled, make sure to run your code against the linter, otherwise, if it fails, your commit will be rejected');
 	  } else {
-	    console.info('Linter active, if you meet some problems, you can still run without linter :', 'npm run webpack-dev-simple-nolint or npm run webpack-dev-nolint', 'More infos in the README');
+	    console.info('Linter active, if you meet some problems, you can still run without linter :', 'set the env var LINTER=false', 'More infos in the README');
 	  }
 	}
 	
@@ -410,7 +410,7 @@
 	var debugEnviron;
 	exports.debuglog = function(set) {
 	  if (isUndefined(debugEnviron))
-	    debugEnviron = ({"NODE_ENV":"production","DEVTOOLS":true,"API_ROOT_URL":"https://topheman-apis-proxy.herokuapp.com/github","DISABLE_LINTER":false}).NODE_DEBUG || '';
+	    debugEnviron = ({"NODE_ENV":"production","DEVTOOLS":true,"API_ROOT_URL":"https://topheman-apis-proxy.herokuapp.com/github","LINTER":true}).NODE_DEBUG || '';
 	  set = set.toUpperCase();
 	  if (!debugs[set]) {
 	    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
@@ -40878,4 +40878,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-e542b6f1a1d1ac12566f.js.map
+//# sourceMappingURL=bundle-devtools-508dec70c19f7a692a2a.js.map
