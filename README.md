@@ -51,7 +51,7 @@ npm install
 
 #####Dev mode
 
-* `npm run webpack-dev-simple`
+* `npm start`
 * Open [http://localhost:8080/](http://localhost:8080/)
 
 You're good to go with hot-reload / redux-devtools / time-travel / sourcemaps ...!
@@ -107,12 +107,12 @@ I'm using eslint, based on [eslint-config-airbnb](https://github.com/airbnb/java
 
 ####Specific commands
 
-You may want some granularity, the `DEVTOOLS`, `NODE_ENV` & `DISABLE_LINTER` variables are at your disposal:
+You may want some granularity, the `DEVTOOLS`, `NODE_ENV` & `LINTER` variables are at your disposal:
 
 * `DEVTOOLS=true npm run build`: will build a debug version with the devtools
 * `DEVTOOLS=false npm run webpack`: will launch a webpack dev server without the devtools (if you find it annoying)
 * `DEVTOOLS=false NODE_ENV=MOCK npm run webpack` will launch a webpack dev server in mock mode without the devtools
-* `DISABLE_LINTER=true npm run webpack-dev-simple` (if you don't want to be bothered by the linter - at your own risks! the pre-commit hook will run the linter and the tests anyway)
+* `LINTER=false npm start` (if you don't want to be bothered by the linter - at your own risks! the pre-commit hook will run the linter and the tests anyway)
 * ... you can mix and match ;-)
 
 **Read the ["Advanced tasks" wiki section](https://github.com/topheman/react-es6-redux/wiki/Advanced-tasks) for more infos ...**

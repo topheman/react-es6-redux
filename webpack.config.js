@@ -8,6 +8,12 @@ const common = require('./common');
 const myLocalIp = require('my-local-ip');
 const plugins = [];
 
+/** deprecations */
+if(typeof process.env.DISABLE_LINTER !== 'undefined') {
+  log.error('webpack', 'DISABLE_LINTER=true deprecated, please use LINTER=false');
+  process.exit(1);
+}
+
 const root = __dirname;
 
 const MODE_DEV_SERVER = process.argv[1].indexOf('webpack-dev-server') > -1 ? true : false;
@@ -21,7 +27,7 @@ log.info('webpack', 'Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') 
 const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() : 'dev';
 const DEVTOOLS = process.env.DEVTOOLS ? JSON.parse(process.env.DEVTOOLS) : false;
 const API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'https://api.github.com';
-const DISABLE_LINTER = process.env.DISABLE_LINTER ? JSON.parse(process.env.DISABLE_LINTER) : false;
+const LINTER = process.env.LINTER ? JSON.parse(process.env.LINTER) : true;
 const TRAVIS = process.env.TRAVIS ? JSON.parse(process.env.TRAVIS) : false;
 const LOCALHOST = process.env.LOCALHOST ? JSON.parse(process.env.LOCALHOST) : true;
 
@@ -74,7 +80,7 @@ plugins.push(new webpack.DefinePlugin({
     'NODE_ENV': JSON.stringify(NODE_ENV),
     'DEVTOOLS': DEVTOOLS, // I rely on the variable bellow to make a bundle with the redux devtools (or not)
     'API_ROOT_URL': JSON.stringify(API_ROOT_URL), // The httpClient will rely on that (change it at will)
-    'DISABLE_LINTER': DISABLE_LINTER // Simply to log in browser console if linting is on or off
+    'LINTER': LINTER // Simply to log in browser console if linting is on or off
   }
 }));
 
@@ -111,7 +117,7 @@ else {
 
 const preloaders = [];
 
-if(DISABLE_LINTER) {
+if(!LINTER) {
   log.info('webpack', 'LINTER DISABLED');
 }
 else{

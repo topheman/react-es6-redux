@@ -41,11 +41,11 @@ let rootElement = null;
  * Won't show in production
  */
 if (process.env.NODE_ENV !== 'production') {
-  if (process.env.DISABLE_LINTER) {
+  if (!process.env.LINTER) {
     console.warn('Linter disabled, make sure to run your code against the linter, otherwise, if it fails, your commit will be rejected');
   }
   else {
-    console.info('Linter active, if you meet some problems, you can still run without linter :', 'npm run webpack-dev-simple-nolint or npm run webpack-dev-nolint', 'More infos in the README');
+    console.info('Linter active, if you meet some problems, you can still run without linter :', 'set the env var LINTER=false', 'More infos in the README');
   }
 }
 
