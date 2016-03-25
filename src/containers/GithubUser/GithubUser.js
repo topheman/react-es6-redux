@@ -7,10 +7,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getRepositories, getProfile, initUsername } from '../../redux/modules/singleUser.js';// import action creators
 
-@connect(
-  (state) => ({ singleUser: state.singleUser }),
-  (dispatch) => bindActionCreators({ getRepositories, getProfile, initUsername }, dispatch)
-)
 class GithubUser extends React.Component {
 
   static propTypes = {
@@ -49,4 +45,7 @@ class GithubUser extends React.Component {
   }
 }
 
-export default GithubUser;
+export default connect(
+  (state) => ({ singleUser: state.singleUser }),
+  (dispatch) => bindActionCreators({ getRepositories, getProfile, initUsername }, dispatch)
+)(GithubUser);

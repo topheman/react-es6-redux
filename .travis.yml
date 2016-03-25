@@ -17,7 +17,7 @@ addons:
 before_script:
   - npm run build-prod-all-owner
   - npm run build-travis
-  - "npm run serve-build > /dev/null &"
+  - "npm run serve-dist > /dev/null &"
 script:
   - npm test
-  - npm run test-e2e -- --port 9001
+  - npm run test-e2e -- --port 3000

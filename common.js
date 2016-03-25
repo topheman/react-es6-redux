@@ -1,34 +1,20 @@
 'use strict';
-
-function projectIsGitManaged(){
-  var fs = require('fs');
-  var path = require('path');
-  try {
-    // Query the entry
-    var stats = fs.lstatSync(path.join(__dirname,'.git'));
-
-    // Is it a directory?
-    if (stats.isDirectory()) {
-      return true;
-    }
-    return false;
-  }
-  catch (e) {
-    return false;
-  }
+function getRootDir() {
+  return __dirname;
 }
 
-function getInfos(){
-  var gitActive = projectIsGitManaged();
-  var gitRev = require('git-rev-sync');
-  var moment = require('moment');
-  var pkg = require('./package.json');
-  var infos = {
+function getInfos() {
+  const gitActive = projectIsGitManaged();
+  const gitRev = require('git-rev-sync');
+  const moment = require('moment');
+  const pkg = require('./package.json');
+  const infos = {
     pkg: pkg,
     today: moment(new Date()).format('DD/MM/YYYY'),
     year: new Date().toISOString().substr(0, 4),
     gitRevisionShort: gitActive ? gitRev.short() : null,
     gitRevisionLong: gitActive ? gitRev.long() : null,
+    author: (pkg.author && pkg.author.name) ? pkg.author.name : (pkg.author || null),
     urlToCommit: null
   };
   infos.urlToCommit = gitActive ? _getUrlToCommit(pkg, infos.gitRevisionLong) : null;
@@ -41,30 +27,51 @@ function getInfos(){
  * @param {String} mode default/formatted
  * @returns {String}
  */
-function getBanner(mode){
-  var _ = require('lodash');
-  var infos = getInfos();
-  var compiled = _.template([
-    '<%= pkg.name %>',
+function getBanner(mode) {
+  const infos = getInfos();
+  const compiled = [
+    infos.pkg.name,
     '',
-    '<%= pkg.description %>',
+    infos.pkg.description,
     '',
-    '@version v<%= pkg.version %> - <%= today %>',
-    '<% if(gitRevisionShort !== null) { %>@revision #<%= gitRevisionShort %><% if (urlToCommit !== null) { %> - <%= urlToCommit %><% } %><% } %>',
-    '@author <%= (pkg.author && pkg.author.name) ? pkg.author.name : pkg.author %>',
-    '@copyright <%= year %>(c) <%= (pkg.author && pkg.author.name) ? pkg.author.name : pkg.author %>',
-    '@license <%= pkg.license %>',
+    `@version v${infos.pkg.version} - ${infos.today}`,
+    (infos.gitRevisionShort !== null ? `@revision #${infos.gitRevisionShort}` : '') + (infos.urlToCommit !== null ? ` - ${infos.urlToCommit}` : ''),
+    (infos.author !== null ? `@author ${infos.author}` : ''),
+    `@copyright ${infos.year}(c)` + (infos.author !== null ? ` ${infos.author}` : ''),
+    (infos.pkg.license ? `@license ${infos.pkg.license}` : ''),
     ''
-  ].join(mode === 'formatted' ? '\n * ' : '\n'));
-  return compiled(infos);
+  ].join(mode === 'formatted' ? '\n * ' : '\n');
+  return compiled;
 }
 
-function getBannerHtml(){
+function getBannerHtml() {
   return '<!--\n * \n * ' + getBanner('formatted') + '\n-->\n';
 }
 
+function projectIsGitManaged() {
+  const fs = require('fs');
+  const path = require('path');
+  try {
+    // Query the entry
+    const stats = fs.lstatSync(path.join(__dirname,'.git'));
+
+    // Is it a directory?
+    if (stats.isDirectory()) {
+      return true;
+    }
+    return false;
+  }
+  catch (e) {
+    return false;
+  }
+}
+
 function _getUrlToCommit(pkg, gitRevisionLong){
-  var urlToCommit = null;
+  let urlToCommit = null;
+  // if no repository return null
+  if (typeof pkg.repository === 'undefined') {
+    return urlToCommit;
+  }
   //retrieve and reformat repo url from package.json
   if (typeof(pkg.repository) === 'string') {
     urlToCommit = pkg.repository;
@@ -79,6 +86,7 @@ function _getUrlToCommit(pkg, gitRevisionLong){
   return urlToCommit;
 }
 
+module.exports.getRootDir = getRootDir;
 module.exports.getInfos = getInfos;
 module.exports.getBanner = getBanner;
 module.exports.getBannerHtml = getBannerHtml;

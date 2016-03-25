@@ -39,7 +39,7 @@ const ProfileList = ({results}) => {
 };
 
 ProfileList.propTypes = {
-  user: React.PropTypes.object
+  results: React.PropTypes.object
 };
 
 export default ProfileList;

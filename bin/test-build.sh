@@ -14,6 +14,9 @@
 # always stop on errors
 # set -e
 
+echo "This script is deprecated - I maybe upgrade it in the future."
+exit 1
+
 WEBPACK_PATH="$(npm bin)/webpack"
 
 BUILD_IS_GIT=0

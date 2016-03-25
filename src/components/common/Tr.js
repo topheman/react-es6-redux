@@ -28,4 +28,11 @@ const Tr = ({label, value, type, display}) => {
   return <tr/>;
 };
 
+Tr.propTypes = {
+  label: React.PropTypes.string,
+  value: React.PropTypes.any,
+  type: React.PropTypes.string,
+  display: React.PropTypes.string
+};
+
 export default Tr;
