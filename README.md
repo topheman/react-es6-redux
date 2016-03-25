@@ -10,9 +10,12 @@ This project is a POC based on **React** framework, coded in **ES6+**, relying o
 
 It also has **Continuous Integration support** via [Travis CI](https://travis-ci.org/topheman/react-es6-redux), with **unit tests** as well as **e2e tests** (through [SauceLabs](https://saucelabs.com/u/react-es6-redux)).
 
+Since [v3.0.0](https://github.com/topheman/react-es6-redux/releases/tag/v3.0.0), it supports babel v6 and the build routines have been rewritten to have the same semantics as [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter).
+
 This repo holds the front-only part.
 
 * The version without redux remains on the [v1.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x).
+* The version in babel v5 remains on the [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x)
 * You can see the isomorphic (universal if you will) version (with server-side rendering) at [topheman/react-es6-isomorphic](https://github.com/topheman/react-es6-isomorphic/) (based on v1 - not yet with redux at this time).
 
 To read further about this project and its evolution:
@@ -36,6 +39,8 @@ All state management is done via redux. In development mode, you have access to 
 * redux-devtools
 
 ###Setup
+
+This project now follows the same development workflow as the one explained in [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter) (with some additions, specific to the project).
 
 ####Install
 
@@ -72,7 +77,7 @@ At the root of the project :
 * `npm run build-prod`: for production (minified/optimized ...)
 * `npm run build-prod-all`: both at once in the same build (with redux devtools & sourcemaps on dev version)
 
-A `/build` folder will be created with your project built in it.
+A `/build/dist` folder will be created with your project built in it.
 
 You can run it with `npm run serve-build`
 
@@ -142,10 +147,11 @@ The CI configuration is highly inpired by my previous project [topheman/vanilla-
 
 Checkout the [releases sections](https://github.com/topheman/react-es6-redux/releases).
 
-You'll see the releases for both versions:
+You'll see the releases for the following major versions:
 
 * original one (redux free) which is hold on [v1.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x)
-* the version with the redux implementation which is on [master branch](https://github.com/topheman/react-es6-redux)
+* the version with the redux implementation which is on [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x) (babel 5)
+* same kind of runtime with babel 6 on [master](https://github.com/topheman)
 
 ###Notes
 
