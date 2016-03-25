@@ -1,10 +1,12 @@
 react-es6-redux
 ===============
 
-[![Build Status](https://travis-ci.org/topheman/react-es6-redux.svg?branch=master)](https://travis-ci.org/topheman/react-es6-redux)
+[![Build Status](https://travis-ci.org/topheman/react-es6-redux.svg?branch=v2.x)](https://travis-ci.org/topheman/react-es6-redux)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/react-es6-redux)](https://saucelabs.com/u/react-es6-redux)
 
 ![image](http://dev.topheman.com/wp-content/uploads/2015/04/logo-reactjs.png)
+
+**You are on the v2 branch** of this project, which holds the version with react & redux, still with babel 5, switch to [master branch](https://github.com/topheman/react-es6-redux) to see the latest version.
 
 This project is a POC based on **React** framework, coded in **ES6+**, relying on [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) as a backend (providing the github API) and using **redux** for state management.
 
