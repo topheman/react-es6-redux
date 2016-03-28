@@ -6,7 +6,9 @@ This is the distribution version of [topheman/react-es6-redux](https://github.co
 
 ###Infos:
 
-* [How those files where generated (Readme - build section)](https://github.com/topheman/webpack-babel-starter#build)
+Those informations are available on the [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter) project:
+
+* [How those files were generated (Readme - build section)](https://github.com/topheman/webpack-babel-starter#build)
 * [How to deploy your generated version (Wiki - deploy section)](https://github.com/topheman/webpack-babel-starter/wiki#deploy)
 
 As explained in the [README](https://github.com/topheman/react-es6-redux#build), when you `npm run build-prod-all`, two versions will be generated:

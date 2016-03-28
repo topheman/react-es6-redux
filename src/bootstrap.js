@@ -71,7 +71,7 @@ if (process.env.DEVTOOLS) {
   );
 }
 else {
-  console.info('redux devtools not active, you can test them online at', 'https://topheman.github.io/react-es6-redux/devtools.html');
+  console.info('redux devtools not active, you can test them online at', 'https://topheman.github.io/react-es6-redux/devtools/');
   console.info('if you\'re testing the project in local, please refer to the README to activate them');
   rootElement = (
     <Provider store={store}>
