@@ -44,6 +44,11 @@ if (/^\w+/.test(DIST_DIR) === false || /\/$/.test(DIST_DIR) === true) { // @todo
 }
 
 log.info('webpack', `${NODE_ENV.toUpperCase()} mode`);
+if (NODE_ENV === 'development') {
+  // react-transform-hmr is activated is development mode - in some use case you may not need it -> specify a NODE_ENV
+  // don't add the plugin `new webpack.HotModuleReplacementPlugin()` with the --hot flag
+  log.info('webpack', 'HOT RELOAD: activated');
+}
 if (DEVTOOLS) {
   log.info('webpack', 'DEVTOOLS active');
 }
