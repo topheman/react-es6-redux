@@ -1,4 +1,4 @@
-require('babel-core/register');// write tests in es6
+//require('babel-core/register');// write tests in es6 // removing transpilation (babel transformers are messing with protractor config ...)
 var SpecReporter = require('jasmine-spec-reporter');
 var pkg = require('./package.json');
 
