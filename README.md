@@ -10,12 +10,12 @@ This project is a POC based on **React** framework, coded in **ES6+**, relying o
 
 It also has **Continuous Integration support** via [Travis CI](https://travis-ci.org/topheman/react-es6-redux), with **unit tests** as well as **e2e tests** (through [SauceLabs](https://saucelabs.com/u/react-es6-redux)).
 
-Since [v3.0.0](https://github.com/topheman/react-es6-redux/releases/tag/v3.0.0), it supports babel v6 and the build routines have been rewritten to have the same semantics as [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter).
+Since [v3.0.0](https://github.com/topheman/react-es6-redux/releases/tag/v3.0.0), it supports **babel v6** and the build routines have been rewritten to have the same semantics as [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter).
 
 This repo holds the front-only part.
 
 * The version without redux remains on the [v1.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x).
-* The version in babel v5 remains on the [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x)
+* The version in babel v5 remains on the [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v2.x)
 * You can see the isomorphic (universal if you will) version (with server-side rendering) at [topheman/react-es6-isomorphic](https://github.com/topheman/react-es6-isomorphic/) (based on v1 - not yet with redux at this time).
 
 To read further about this project and its evolution:
@@ -32,7 +32,7 @@ To read further about this project and its evolution:
 * `/github` : Provides a search form that displays a list of github users (with their avatars) - a request to the Github API is made.
 * `/github/user/:username` : Displays a user profile with his repositories, with pagination.
 
-All state management is done via redux. In development mode, you have access to the [redux-devtools](https://github.com/gaearon/redux-devtools) (you can also [test them on the online version](https://topheman.github.io/react-es6-redux/devtools.html)).
+All state management is done via redux. In development mode, you have access to the [redux-devtools](https://github.com/gaearon/redux-devtools) (you can also [test them on the online version](https://topheman.github.io/react-es6-redux/devtools/)).
 
 * react-router connected to redux-stores
 * hot reload everything!
@@ -88,7 +88,7 @@ You can run it with `npm run serve-build`
 `npm test` will launch:
 
 * linting of `/src` & `/test` folders via `eslint`
-* the unit-tests in `/test/unit` folder via `mocha`
+* the unit-tests in `/test/unit` folder via `mocha` *(the location of the unit-tests will change in the v3, they will remain right to their component)*
 
 This task is launched on `pre-commit` hook & on Travis CI.
 
@@ -116,7 +116,6 @@ You may want some granularity, the `DEVTOOLS`, `NODE_ENV` & `LINTER` variables a
 
 * `DEVTOOLS=true npm run build`: will build a debug version with the devtools
 * `DEVTOOLS=false npm run webpack`: will launch a webpack dev server without the devtools (if you find it annoying)
-* `DEVTOOLS=false NODE_ENV=MOCK npm run webpack` will launch a webpack dev server in mock mode without the devtools
 * `LINTER=false npm start` (if you don't want to be bothered by the linter - at your own risks! the pre-commit hook will run the linter and the tests anyway)
 * ... you can mix and match ;-)
 
@@ -150,12 +149,12 @@ Checkout the [releases sections](https://github.com/topheman/react-es6-redux/rel
 You'll see the releases for the following major versions:
 
 * original one (redux free) which is hold on [v1.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x)
-* the version with the redux implementation which is on [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x) (babel 5)
+* the version with the redux implementation which is on [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v2.x) (babel 5)
 * same kind of runtime with babel 6 on [master](https://github.com/topheman)
 
 ###Notes
 
-* `build-prod-all-owner`: build task for [topheman.github.io/react-es6-redux](https://topheman.github.io/react-es6-redux)
+* `build-prod-all-owner`: build task for [topheman.github.io/react-es6-redux](https://topheman.github.io/react-es6-redux/)
 
 ###License
 
