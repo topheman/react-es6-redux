@@ -3,42 +3,42 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.7.1 - 26/02/2016
- * @revision #e74d1cf - https://github.com/topheman/react-es6-redux/tree/e74d1cf981a4e621279134a6a5a56e938da4e871
+ * @version v3.0.0 - 29/03/2016
+ * @revision #6af30b9 - https://github.com/topheman/react-es6-redux/tree/6af30b97121c3974abe00c953d5e5e1f3736ef41
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
  * 
  */
-webpackJsonp([2],{
+webpackJsonp([1],{
 
-/***/ 266:
+/***/ 269:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _react = __webpack_require__(8);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var Lazy = function Lazy(_ref) {
 	  var children = _ref.children;
 	
-	  return _react2['default'].createElement(
+	  return _react2.default.createElement(
 	    'div',
 	    null,
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'h2',
 	      null,
 	      'This part is lazy-loaded'
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'div',
 	      null,
 	      children
@@ -47,13 +47,13 @@ webpackJsonp([2],{
 	};
 	
 	Lazy.propTypes = {
-	  children: _react2['default'].PropTypes.node.isRequired
+	  children: _react2.default.PropTypes.node.isRequired
 	};
 	
-	exports['default'] = Lazy;
+	exports.default = Lazy;
 	module.exports = exports['default'];
 
 /***/ }
 
 });
-//# sourceMappingURL=2-devtools-508dec70c19f7a692a2a.chunk.js.map
+//# sourceMappingURL=1-devtools-8bbd6f90b061874d2d3a.chunk.js.map

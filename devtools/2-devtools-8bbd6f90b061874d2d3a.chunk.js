@@ -3,16 +3,16 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v2.7.1 - 26/02/2016
- * @revision #e74d1cf - https://github.com/topheman/react-es6-redux/tree/e74d1cf981a4e621279134a6a5a56e938da4e871
+ * @version v3.0.0 - 29/03/2016
+ * @revision #6af30b9 - https://github.com/topheman/react-es6-redux/tree/6af30b97121c3974abe00c953d5e5e1f3736ef41
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
  * 
  */
-webpackJsonp([3],{
+webpackJsonp([2],{
 
-/***/ 267:
+/***/ 270:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21,34 +21,34 @@ webpackJsonp([3],{
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
 	var _react = __webpack_require__(8);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var LazyHome = function LazyHome() {
-	  return _react2["default"].createElement(
+	  return _react2.default.createElement(
 	    "div",
 	    null,
-	    _react2["default"].createElement(
+	    _react2.default.createElement(
 	      "p",
 	      null,
 	      "Welcome to component lazy-loading, thanks to ",
-	      _react2["default"].createElement(
+	      _react2.default.createElement(
 	        "a",
 	        { href: "https://github.com/rackt/react-router", title: "react-router on github" },
 	        "react-router"
 	      ),
 	      " & ",
-	      _react2["default"].createElement(
+	      _react2.default.createElement(
 	        "a",
 	        { href: "https://webpack.github.io/docs/code-splitting.html" },
 	        "webpack.ensure"
 	      ),
 	      " !"
 	    ),
-	    _react2["default"].createElement(
+	    _react2.default.createElement(
 	      "p",
 	      null,
 	      "Take a look in your devtools, you'll see some chunks required."
@@ -56,10 +56,10 @@ webpackJsonp([3],{
 	  );
 	};
 	
-	exports["default"] = LazyHome;
-	module.exports = exports["default"];
+	exports.default = LazyHome;
+	module.exports = exports['default'];
 
 /***/ }
 
 });
-//# sourceMappingURL=3-devtools-508dec70c19f7a692a2a.chunk.js.map
+//# sourceMappingURL=2-devtools-8bbd6f90b061874d2d3a.chunk.js.map
