@@ -15,8 +15,9 @@ const BANNER_HTML = common.getBannerHtml();
 const root = __dirname;
 
 const MODE_DEV_SERVER = process.argv[1].indexOf('webpack-dev-server') > -1 ? true : false;
+const MODE_UNIT_TEST = process.argv[1].indexOf('karma') > -1 ? true : false;
 
-log.info('webpack', 'Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : 'build') + ' mode');
+log.info('webpack', 'Launched in ' + (MODE_DEV_SERVER ? 'dev-server' : (MODE_UNIT_TEST ? 'unit-test' : 'build') ) + ' mode');
 
 /** environment setup */
 

@@ -6,7 +6,8 @@
   },
   "globals": {
     "goToUrl": true,
-    "waitUntilIsElementPresent": true
+    "waitUntilIsElementPresent": true,
+    "sinon": true
   },
   "extends": "airbnb",
   "parser": "babel-eslint",
