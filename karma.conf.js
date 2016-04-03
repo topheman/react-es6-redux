@@ -1,7 +1,24 @@
+// retrieve args
+const argv = require('minimist')(process.argv.slice(2));
+const COVERAGE = argv.coverage === true;
+
+// the following env vars are used in webpack.config.js
+process.env.UNIT_TEST = true;
+
 const path = require('path');
 const webpackConfig = require('./webpack.config');
+const log = require('npmlog');
+log.level = 'silly';
 
-process.env.UNIT_TEST = true;
+const reporters = ['mocha'];
+const coverageReporter_reporters = [
+  {type: 'lcov', dir: './build/reports/coverage'}
+];
+
+if (COVERAGE) {
+  log.info('karma', 'COVERAGE mode enabled');
+  reporters.push('coverage');
+}
 
 module.exports = function(config) {
   config.set({
@@ -38,7 +55,8 @@ module.exports = function(config) {
       'karma-mocha-reporter',
       'karma-sourcemap-loader',
       'karma-chrome-launcher',
-      'karma-phantomjs-launcher'
+      'karma-phantomjs-launcher',
+      'karma-coverage'
     ],
 
 
@@ -47,7 +65,10 @@ module.exports = function(config) {
     //    presets: ['airbnb']
     //  }
     //},
-    reporters: ['mocha'],
+    coverageReporter: {
+      reporters: coverageReporter_reporters
+    },
+    reporters: reporters,
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

@@ -5,6 +5,12 @@
     // only enable it when process.env.NODE_ENV is 'development' or undefined
     "development": {
       "presets": ["react-hmre"]
+    },
+    // configuration for babel-plugin-__coverage__ - see https://github.com/dtinth/babel-plugin-__coverage__#readme
+    // only enables the coverage loader when process.env.NODE_ENV=mock (used by karma-coverage to create coverage reports)
+    // I use "mock", you might use "test"
+    "mock": {
+      "plugins": [ [ "__coverage__", { "ignore": "src/**/*.spec.js" } ] ]
     }
   }
 }
