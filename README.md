@@ -6,13 +6,40 @@ react-es6-redux
 
 ![image](http://dev.topheman.com/wp-content/uploads/2015/04/logo-reactjs.png)
 
-This project is a POC based on **React** framework, coded in **ES6+**, relying on [topheman-apis-proxy](https://github.com/topheman/topheman-apis-proxy) as a backend (providing the github API) and using **redux** for state management.
+This project started as a POC for **React** and has now become my own sandbox for testing the latest technologies. You'll find documentation across the code, the commits and the READMEs helping you implement the following I'm using:
 
-It also has **Continuous Integration support** via [Travis CI](https://travis-ci.org/topheman/react-es6-redux), with **unit tests** as well as **e2e tests** (through [SauceLabs](https://saucelabs.com/u/react-es6-redux)).
+* [React](https://github.com/facebook/react)
+* [React Router](https://github.com/reactjs/react-router)
+* [Babel v6](http://babeljs.io/) to transpile ES6+
+* [Webpack](http://webpack.github.io/) for bundling
+* [Redux](https://github.com/reactjs/redux) for state management
+* [Redux Dev Tools](https://github.com/gaearon/redux-devtools) please watch [Dan Abramov about Time Travel at React-Europe](https://www.youtube.com/watch?v=xsSnOQynTHs)
+* [React Router Redux](https://github.com/reactjs/react-router-redux) Redux/React Router bindings
+* [Eslint](http://eslint.org/) (with [eslint-config-airbnb](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb))
+* [style-loader](https://github.com/webpack/style-loader), [sass-loader](https://github.com/jtangelder/sass-loader)
+* [babel-preset-react-hmre](https://github.com/danmartinez101/babel-preset-react-hmre) (react-hot-reload for babel v6 - thanks to [react-transform-hmr](https://github.com/gaearon/react-transform-hmr))
+* [Karma](https://karma-runner.github.io) Test runner
+* [Mocha](https://mochajs.org/) / [Chai](http://chaijs.com/) / [Sinon](http://sinonjs.org/) Test framework / Assertion Library / Test spies
+* [Enzyme](http://airbnb.io/enzyme/) Testing utilities for React from Airbnb
+* [babel-plugin-\_\_coverage\_\_](https://github.com/dtinth/babel-plugin-__coverage__) used with [karma-coverage](https://github.com/karma-runner/karma-coverage), spits out coverage reports **directly on es6 source code**
+* [karma-coveralls](https://github.com/caitp/karma-coveralls) (coverage reports in CI mode)
+* [Protractor](https://angular.github.io/protractor/) (e2e tests run with [Selenium WebDriver](http://www.seleniumhq.org/) - on [SauceLabs](https://saucelabs.com/u/react-es6-redux) in CI mode)
+* [nock](https://github.com/node-nock/nock) / [superagent-mocker](https://github.com/A/superagent-mocker) to record & mock http requests
 
-Since [v3.0.0](https://github.com/topheman/react-es6-redux/releases/tag/v3.0.0), it supports **babel v6** and the build routines have been rewritten to have the same semantics as [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter).
+The development / build / deploy workflow is based on [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter), which allows to have online both:
 
-This repo holds the front-only part.
+* production version (minified js/css ...)
+* development version (with sourcemaps, so that users could see the original es6 source code, even online, just by opening the sources panel in the devtools console)
+
+Support for [Travis CI](https://travis-ci.org/topheman/react-es6-redux) (see [.travis.yml](https://github.com/topheman/react-es6-redux/blob/master/.travis.yml) file):
+
+* builds are tested
+* source code is linted
+* unit tests are run
+* code coverage is sent to [coveralls.io](https://coveralls.io/github/topheman/react-es6-redux)
+* e2e tests are run through [SauceLabs](https://saucelabs.com/u/react-es6-redux) (a cross-browser automation tool built on top of Selenium WebDriver)
+
+Previous versions (checkout the [releases sections](https://github.com/topheman/react-es6-redux/releases)):
 
 * The version without redux remains on the [v1.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x).
 * The version in babel v5 remains on the [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v2.x)
@@ -26,17 +53,7 @@ To read further about this project and its evolution:
 * [Slides of the ReactJsParis meetup about this project (nov 2015)](http://slides.com/topheman/react-es6-redux)
 * [Slides of the ParisJS meetup about this project (jan 2016)](https://topheman.github.io/talks/react-es6-redux/)
 
-###Basic features :
-
-* `/` : Home page : Displays a short description of the project with a try button to :
-* `/github` : Provides a search form that displays a list of github users (with their avatars) - a request to the Github API is made.
-* `/github/user/:username` : Displays a user profile with his repositories, with pagination.
-
-All state management is done via redux. In development mode, you have access to the [redux-devtools](https://github.com/gaearon/redux-devtools) (you can also [test them on the online version](https://topheman.github.io/react-es6-redux/devtools/)).
-
-* react-router connected to redux-stores
-* hot reload everything!
-* redux-devtools
+**[ONLINE DEMO](https://topheman.github.io/react-es6-redux/)**
 
 ###Setup
 
@@ -88,11 +105,14 @@ You can run it with `npm run serve-build`
 `npm test` will launch:
 
 * linting of `/src` & `/test` folders via `eslint`
-* the unit-tests in `/test/unit` folder via `mocha` *(the location of the unit-tests will change in the v3, they will remain right to their component)*
+* the unit-tests files are located in `/src` inside `__tests__` folders, named like `*.spec.js`
+* those tests files are run by karma
 
 This task is launched on `pre-commit` hook & on Travis CI.
 
-*Note: There aren't much unit tests currently, this part is still in progress.*
+If you wish to generate coverage reports, just `npm run karma-coverage` (those reports are generated on Travis CI anyway and available on [coveralls.io](https://coveralls.io/github/topheman/react-es6-redux)), you will find them in local at `/build/reports/coverage`.
+
+*Unit tests are still in progress, I assume some parts will be missing - like polyfills for PhantomJS - I'll finish that in a few days.*
 
 #####End to end tests
 
@@ -101,7 +121,7 @@ Open two terminal tabs, on each one:
 * `npm run webpack-mock`: will launch the project in mock mode
 * `npm run test-e2e`: will run the e2e tests in `/test/e2e` via `protractor` against your local server
 
-Those tests are run on Travis CI, via SauceLabs. For more infos about that, see the [Continuous Integration section](#continuous-integration).
+Those tests are run on Travis CI, via [SauceLabs](https://saucelabs.com/u/react-es6-redux).
 
 ####Linter
 
@@ -133,24 +153,11 @@ Then your workflow will be:
 * Open a terminal in the topheman-apis-proxy folder and `grunt serve` (see more in the [run in local](https://github.com/topheman/topheman-apis-proxy#run-in-local) README section)
 * Go to [http://localhost:8080/](http://localhost:8080/)
 
-###Continuous Integration
+###Deploy
 
-The CI configuration is highly inpired by my previous project [topheman/vanilla-es6-jspm](https://github.com/topheman/vanilla-es6-jspm). On each push, Travis CI will run the tests specified in the [.travis.yml](https://github.com/topheman/react-es6-redux/blob/master/.travis.yml) file, which is mostly:
+I'm using github pages for hosting (free https, easy deploy via git - a good deal since I don't need any server-side logic). You'll find a [gh-pages orphan branch](https://github.com/topheman/react-es6-redux/tree/gh-pages) where the deployed builds are stored.
 
-* checking if the build task for production works
-* linting source code
-* running unit tests
-* running e2e tests against a built mock version of the site (this part is using [SauceLabs](https://saucelabs.com/buildstatus/react-es6-redux), a cross-browser automation tool built on top of Selenium WebDriver)
-
-###Steps
-
-Checkout the [releases sections](https://github.com/topheman/react-es6-redux/releases).
-
-You'll see the releases for the following major versions:
-
-* original one (redux free) which is hold on [v1.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x)
-* the version with the redux implementation which is on [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v2.x) (babel 5)
-* same kind of runtime with babel 6 on [master](https://github.com/topheman)
+My deployment routine is described on the [topheman/webpack-babel-starter Wiki](https://github.com/topheman/webpack-babel-starter/wiki).
 
 ###Notes
 
