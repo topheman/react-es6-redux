@@ -1,6 +1,7 @@
 // retrieve args
 const argv = require('minimist')(process.argv.slice(2));
-const COVERAGE = argv.coverage === true;
+const TRAVIS = process.env.TRAVIS;
+const COVERAGE = argv.coverage === true || TRAVIS;// code coverage on by default on TRAVIS, or activated by flag --coverage
 
 // the following env vars are used in webpack.config.js
 process.env.UNIT_TEST = true;
@@ -10,14 +11,33 @@ const webpackConfig = require('./webpack.config');
 const log = require('npmlog');
 log.level = 'silly';
 
-const reporters = ['mocha'];
-const coverageReporter_reporters = [
-  {type: 'lcov', dir: './build/reports/coverage'}
+const plugins = [
+  'karma-webpack',
+  'karma-sinon',
+  'karma-mocha',
+  'karma-mocha-reporter',
+  'karma-sourcemap-loader',
+  'karma-chrome-launcher',
+  'karma-phantomjs-launcher'
 ];
+const reporters = ['mocha'];
+// default coverage reporter (we may want different reporters between local & CI)
+var coverageReporter = {
+  reporters: [
+    {type: 'lcov', dir: './build/reports/coverage'}
+  ]
+};
 
 if (COVERAGE) {
   log.info('karma', 'COVERAGE mode enabled');
   reporters.push('coverage');
+  plugins.push('karma-coverage');
+}
+if (COVERAGE && TRAVIS) {
+  log.info('karma', 'TRAVIS mode - will send coverage reports to coveralls.io');
+  reporters.push('coveralls');
+  plugins.push('karma-coveralls');
+  coverageReporter = { type: 'lcovonly', dir: './build/reports/coverage' };
 }
 
 module.exports = function(config) {
@@ -48,16 +68,7 @@ module.exports = function(config) {
       noInfo: true //please don't spam the console when running in karma!
     },
 
-    plugins: [
-      'karma-webpack',
-      'karma-sinon',
-      'karma-mocha',
-      'karma-mocha-reporter',
-      'karma-sourcemap-loader',
-      'karma-chrome-launcher',
-      'karma-phantomjs-launcher',
-      'karma-coverage'
-    ],
+    plugins: plugins,
 
 
     //babelPreprocessor: {
@@ -65,9 +76,7 @@ module.exports = function(config) {
     //    presets: ['airbnb']
     //  }
     //},
-    coverageReporter: {
-      reporters: coverageReporter_reporters
-    },
+    coverageReporter: coverageReporter,
     reporters: reporters,
     port: 9876,
     colors: true,

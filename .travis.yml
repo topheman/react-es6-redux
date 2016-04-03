@@ -19,9 +19,11 @@ before_script:
   - npm run build-travis
   - "npm run serve-dist > /dev/null &"
 script:
-  - echo "UNIT TESTS - via karma"
+  - echo "UNIT TESTS - via karma - with code coverage"
   - npm test
   - echo "UNIT TESTS - via mocha"
   - npm run mocha
   - echo "END 2 END TESTS - via protractor / through SauceLabs"
   - npm run test-e2e -- --port 3000
+after_success:
+  - cat ./build/reports/coverage/**/lcov.info | ./node_modules/.bin/coveralls
