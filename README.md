@@ -2,6 +2,7 @@ react-es6-redux
 ===============
 
 [![Build Status](https://travis-ci.org/topheman/react-es6-redux.svg?branch=master)](https://travis-ci.org/topheman/react-es6-redux)
+[![Coverage Status](https://coveralls.io/repos/github/topheman/react-es6-redux/badge.svg?branch=master)](https://coveralls.io/github/topheman/react-es6-redux?branch=master)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/react-es6-redux)](https://saucelabs.com/u/react-es6-redux)
 
 ![image](http://dev.topheman.com/wp-content/uploads/2015/04/logo-reactjs.png)
@@ -26,12 +27,12 @@ This project started as a POC for **React** and has now become my own sandbox fo
 * [Protractor](https://angular.github.io/protractor/) (e2e tests run with [Selenium WebDriver](http://www.seleniumhq.org/) - on [SauceLabs](https://saucelabs.com/u/react-es6-redux) in CI mode)
 * [nock](https://github.com/node-nock/nock) / [superagent-mocker](https://github.com/A/superagent-mocker) to record & mock http requests
 
-The development / build / deploy workflow is based on [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter), which allows to have online both:
+The **development / build / deploy workflow** is based on [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter), which allows to have online both:
 
 * production version (minified js/css ...)
 * development version (with sourcemaps, so that users could see the original es6 source code, even online, just by opening the sources panel in the devtools console)
 
-Support for [Travis CI](https://travis-ci.org/topheman/react-es6-redux) (see [.travis.yml](https://github.com/topheman/react-es6-redux/blob/master/.travis.yml) file):
+**Support for [Travis CI](https://travis-ci.org/topheman/react-es6-redux)** (see [.travis.yml](https://github.com/topheman/react-es6-redux/blob/master/.travis.yml) file):
 
 * builds are tested
 * source code is linted
@@ -39,13 +40,13 @@ Support for [Travis CI](https://travis-ci.org/topheman/react-es6-redux) (see [.t
 * code coverage is sent to [coveralls.io](https://coveralls.io/github/topheman/react-es6-redux)
 * e2e tests are run through [SauceLabs](https://saucelabs.com/u/react-es6-redux) (a cross-browser automation tool built on top of Selenium WebDriver)
 
-Previous versions (checkout the [releases sections](https://github.com/topheman/react-es6-redux/releases)):
+**Previous versions** (checkout the [releases sections](https://github.com/topheman/react-es6-redux/releases)):
 
 * The version without redux remains on the [v1.x branch](https://github.com/topheman/react-es6-redux/tree/v1.x).
 * The version in babel v5 remains on the [v2.x branch](https://github.com/topheman/react-es6-redux/tree/v2.x)
 * You can see the isomorphic (universal if you will) version (with server-side rendering) at [topheman/react-es6-isomorphic](https://github.com/topheman/react-es6-isomorphic/) (based on v1 - not yet with redux at this time).
 
-To read further about this project and its evolution:
+To **read further** about this project and its evolution:
 
 * [Read the WIKI](https://github.com/topheman/react-es6-redux/wiki)
 * [Blog post about the upgrade to react v0.14](http://dev.topheman.com/upgraded-to-react-v0-14/)
