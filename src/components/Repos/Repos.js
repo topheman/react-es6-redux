@@ -12,19 +12,8 @@ export default class Repos extends React.Component {
     reposGotoPage: React.PropTypes.func.isRequired
   }
 
-  constructor(props) {
-
-    super(props);
-
-    // init context bindings - due to diff between React.createClass and ES6 class
-    this.reposGotoPage = this.reposGotoPage.bind(this);
-
-  }
-  reposGotoPage(pageNum) {
-    this.props.reposGotoPage(pageNum);
-  }
   render() {
-    const { repositories } = this.props;
+    const { repositories, reposGotoPage } = this.props;
     const fetching = repositories.fetching;
     const originalTitle = repositories.pristineLogin + "'s repositories";
     if (repositories && repositories.data) {
@@ -32,7 +21,7 @@ export default class Repos extends React.Component {
       return (
         <Panel title={originalTitle}>
           <div className="panel-body repos-list">
-            <ReposPaginator infos={repositories.infos} reposGotoPage={this.reposGotoPage} fetching={fetching}/>
+            <ReposPaginator infos={repositories.infos} reposGotoPage={reposGotoPage} fetching={fetching}/>
             <div className="list-group">
               {repos.map((repo) => {
                 return (
@@ -45,7 +34,7 @@ export default class Repos extends React.Component {
                 );
               })}
             </div>
-            <ReposPaginator infos={repositories.infos} reposGotoPage={this.reposGotoPage} fetching={fetching}/>
+            <ReposPaginator infos={repositories.infos} reposGotoPage={reposGotoPage} fetching={fetching}/>
           </div>
         </Panel>
       );

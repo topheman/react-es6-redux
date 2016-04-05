@@ -12,7 +12,10 @@ const ProfileBox = ({user}) => {
 };
 
 ProfileBox.propTypes = {
-  user: React.PropTypes.object.isRequired
+  user: React.PropTypes.shape({
+    login: React.PropTypes.string.isRequired,
+    $avatar_url: React.PropTypes.string.isRequired
+  })
 };
 
 export default ProfileBox;
