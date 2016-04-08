@@ -45,6 +45,7 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['mocha', 'sinon'],
     files: [
+      'test/unit/init.js',// include the throw on console.error
       'src/**/*.spec.js'// unit-test files
     ],
 
