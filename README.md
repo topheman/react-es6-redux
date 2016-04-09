@@ -19,7 +19,7 @@ This project started as a POC for **React** and has now become my own sandbox fo
 * [Eslint](http://eslint.org/) (with [eslint-config-airbnb](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb))
 * [style-loader](https://github.com/webpack/style-loader), [sass-loader](https://github.com/jtangelder/sass-loader)
 * [babel-preset-react-hmre](https://github.com/danmartinez101/babel-preset-react-hmre) (react-hot-reload for babel v6 - thanks to [react-transform-hmr](https://github.com/gaearon/react-transform-hmr))
-* [Karma](https://karma-runner.github.io) Test runner
+* [Karma](https://karma-runner.github.io) Test runner / [PhantomJS](http://phantomjs.org/) Scripted, headless browser
 * [Mocha](https://mochajs.org/) / [Chai](http://chaijs.com/) / [Sinon](http://sinonjs.org/) Test framework / Assertion Library / Test spies
 * [Enzyme](http://airbnb.io/enzyme/) Testing utilities for React from Airbnb
 * [babel-plugin-\_\_coverage\_\_](https://github.com/dtinth/babel-plugin-__coverage__) used with [karma-coverage](https://github.com/karma-runner/karma-coverage), spits out coverage reports **directly on es6 source code**
@@ -29,8 +29,8 @@ This project started as a POC for **React** and has now become my own sandbox fo
 
 The **development / build / deploy workflow** is based on [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter), which allows to have online both:
 
-* production version (minified js/css ...)
-* development version (with sourcemaps, so that users could see the original es6 source code, even online, just by opening the sources panel in the devtools console)
+* [production version](https://topheman.github.io/react-es6-redux/) (minified js/css ...)
+* [development version](https://topheman.github.io/react-es6-redux/devtools/) (with sourcemaps, so that users could see the original es6 source code, even online, just by opening the sources panel in the devtools console)
 
 **Support for [Travis CI](https://travis-ci.org/topheman/react-es6-redux)** (see [.travis.yml](https://github.com/topheman/react-es6-redux/blob/master/.travis.yml) file):
 
@@ -53,6 +53,7 @@ To **read further** about this project and its evolution:
 * [Blog post about the original version](http://dev.topheman.com/playing-with-es6-and-react/)
 * [Slides of the ReactJsParis meetup about this project (nov 2015)](http://slides.com/topheman/react-es6-redux)
 * [Slides of the ParisJS meetup about this project (jan 2016)](https://topheman.github.io/talks/react-es6-redux/)
+* [Blog post about ES6+ code coverage with Babel plugin](http://dev.topheman.com/es6-code-coverage-with-babel-plugin)
 
 **[ONLINE DEMO](https://topheman.github.io/react-es6-redux/)**
 
@@ -109,13 +110,15 @@ You can run it with `npm run serve-build`
 * the unit-tests files are located in `/src` inside `__tests__` folders, named like `*.spec.js`
 * those tests files are run by karma
 
-This task is launched on `pre-commit` hook & on Travis CI.
+This task is launched on `pre-commit` hook & on [Travis CI](https://travis-ci.org/topheman/react-es6-redux).
 
 If you wish to generate coverage reports, just `npm run karma-coverage` (those reports are generated on Travis CI anyway and available on [coveralls.io](https://coveralls.io/github/topheman/react-es6-redux)), you will find them in local at `/build/reports/coverage`.
 
-*Unit tests are still in progress, I assume some parts will be missing - like polyfills for PhantomJS - I'll finish that in a few days.*
+*Note:* Unit-tests are run through karma in PhantomJS (the `webpack.config.js` being injected), they can also be run directly via mocha ([see wiki](https://github.com/topheman/react-es6-redux/wiki/Advanced-tasks#test-tasks)).
 
 #####End to end tests
+
+e2e tests are located in `/test/e2e/spec`.
 
 Open two terminal tabs, on each one:
 
@@ -168,7 +171,7 @@ My deployment routine is described on the [topheman/webpack-babel-starter Wiki](
 
 This software is distributed under an MIT licence.
 
-Copyright 2015 © Christophe Rosset
+Copyright 2015-2016 © Christophe Rosset
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 > and associated documentation files (the "Software"), to deal in the Software without

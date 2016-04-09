@@ -13,12 +13,12 @@ describe('components/common/Tr', () => {
       expect(wrapper.contains(<td>Hello</td>)).to.be.true;
       expect(wrapper.contains(<td>World</td>)).to.be.true;
     });
-    it('should render in 1 column if props.display=colspan', () => {
+    it('should render in 1 column if props.display = colspan', () => {
       const wrapper = shallow(<Tr value="Hello World" display="colspan" />);
       expect(wrapper.find('td').length).to.equal(1);
       expect(wrapper.contains(<td colSpan="2">Hello World</td>)).to.be.true;
     });
-    it('should render value as a link if props.type=link', () => {
+    it('should render value as a link if props.type = link', () => {
       const wrapper = shallow(<Tr value="http://labs.topheman.com" label="Website" type="link" />);
       expect(wrapper.contains(<a href="http://labs.topheman.com">http://labs.topheman.com</a>)).to.be.true;
     });

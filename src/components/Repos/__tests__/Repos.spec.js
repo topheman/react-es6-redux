@@ -32,13 +32,13 @@ describe('components/ProfileBox', () => {
         expect(wrapper.find('a').length).to.equal(3);
       });
       it('should render links properly', () => {
-        const anchor = wrapper.find('a').get(1);
-        expect(anchor.props.href).to.equal('https://github.com/topheman/webpack-babel-starter');
-        expect(anchor.props.title).to.equal('topheman/webpack-babel-starter');
+        const anchor = wrapper.find('a').at(1);
+        expect(anchor.prop('href')).to.equal('https://github.com/topheman/webpack-babel-starter');
+        expect(anchor.prop('title')).to.equal('topheman/webpack-babel-starter');
       });
       it('should render stargazer properly', () => {
-        const displayStars = wrapper.find(DisplayStars).get(1);
-        expect(displayStars.props.number).to.equal(39);
+        const displayStars = wrapper.find(DisplayStars).at(1);
+        expect(displayStars.prop('number')).to.equal(39);
       });
     });
     describe('check paginators', () => {

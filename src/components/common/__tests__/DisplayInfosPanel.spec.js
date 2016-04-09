@@ -9,15 +9,15 @@ import Panel from '../Panel';
 
 describe('components/common/DisplayInfosPanel', () => {
   describe('state/render', () => {
-    it('should render a spinner at fetching=true when props.infos.fetching=true', () => {
+    it('should render a spinner at fetching=true when props.infos.fetching = true', () => {
       const wrapper = shallow(<DisplayInfosPanel infos={{fetching: true}} originalTitle={""} />);
       expect(wrapper.find(Spinner).props().fetching).to.be.true;
     });
-    it('should render a spinner at fetching=false when props.infos.fetching=false', () => {
+    it('should render a spinner at fetching=false when props.infos.fetching = false', () => {
       const wrapper = shallow(<DisplayInfosPanel infos={{fetching: false}} originalTitle={""} />);
       expect(wrapper.find(Spinner).props().fetching).to.be.false;
     });
-    it('should render a panel with a title=props.originalTitle when props.infos.fetching=true', () => {
+    it('should render a panel with a title=props.originalTitle when props.infos.fetching = true', () => {
       const wrapper = shallow(<DisplayInfosPanel infos={{fetching: true}} originalTitle={"Hello World"} />);
       expect(wrapper.find(Panel).props().title).to.equal('Hello World');
     });
