@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v3.0.0 - 03/04/2016
- * @revision #98d5a8a - https://github.com/topheman/react-es6-redux/tree/98d5a8a47c021e974864f93240d5b78002848dd5
+ * @version v3.1.0 - 09/04/2016
+ * @revision #43690a9 - https://github.com/topheman/react-es6-redux/tree/43690a9d5a6f68960c02134cf414cceefd44062a
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
@@ -85,7 +85,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "-devtools-" + "8bbd6f90b061874d2d3a" + ".chunk.js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "-devtools-" + "ed13a51019dd6622003f" + ".chunk.js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -27314,7 +27314,10 @@
 	};
 	
 	ProfileBox.propTypes = {
-	  user: _react2.default.PropTypes.object.isRequired
+	  user: _react2.default.PropTypes.shape({
+	    login: _react2.default.PropTypes.string.isRequired,
+	    $avatar_url: _react2.default.PropTypes.string.isRequired
+	  })
 	};
 	
 	exports.default = ProfileBox;
@@ -29641,27 +29644,18 @@
 	var Repos = function (_React$Component) {
 	  _inherits(Repos, _React$Component);
 	
-	  function Repos(props) {
+	  function Repos() {
 	    _classCallCheck(this, Repos);
 	
-	    // init context bindings - due to diff between React.createClass and ES6 class
-	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Repos).call(this, props));
-	
-	    _this.reposGotoPage = _this.reposGotoPage.bind(_this);
-	
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Repos).apply(this, arguments));
 	  }
 	
 	  _createClass(Repos, [{
-	    key: 'reposGotoPage',
-	    value: function reposGotoPage(pageNum) {
-	      this.props.reposGotoPage(pageNum);
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var repositories = this.props.repositories;
+	      var _props = this.props;
+	      var repositories = _props.repositories;
+	      var reposGotoPage = _props.reposGotoPage;
 	
 	      var fetching = repositories.fetching;
 	      var originalTitle = repositories.pristineLogin + "'s repositories";
@@ -29673,7 +29667,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'panel-body repos-list' },
-	            _react2.default.createElement(_ReposPaginator2.default, { infos: repositories.infos, reposGotoPage: this.reposGotoPage, fetching: fetching }),
+	            _react2.default.createElement(_ReposPaginator2.default, { infos: repositories.infos, reposGotoPage: reposGotoPage, fetching: fetching }),
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'list-group' },
@@ -29690,7 +29684,7 @@
 	                );
 	              })
 	            ),
-	            _react2.default.createElement(_ReposPaginator2.default, { infos: repositories.infos, reposGotoPage: this.reposGotoPage, fetching: fetching })
+	            _react2.default.createElement(_ReposPaginator2.default, { infos: repositories.infos, reposGotoPage: reposGotoPage, fetching: fetching })
 	          )
 	        );
 	      }
@@ -41686,4 +41680,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-8bbd6f90b061874d2d3a.js.map
+//# sourceMappingURL=bundle-devtools-ed13a51019dd6622003f.js.map
