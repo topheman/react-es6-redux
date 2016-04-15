@@ -59,7 +59,7 @@
     "babel-core": "^6.7.4",
     "babel-eslint": "^5.0.0",
     "babel-loader": "^6.2.4",
-    "babel-plugin-__coverage__": "^0.11111.0",
+    "babel-plugin-__coverage__": "^0.111111.1",
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-plugin-transform-class-properties": "^6.6.0",
     "babel-plugin-transform-es2015-destructuring": "^6.6.5",
@@ -121,15 +121,15 @@
     "lscache": "^1.0.5",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-redux": "^4.1.2",
+    "react-redux": "^4.4.5",
     "react-router": "^2.2.4",
     "react-router-redux": "^4.0.2",
-    "redux": "^3.1.7",
-    "redux-devtools": "^3.0.2",
-    "redux-devtools-dock-monitor": "^1.0.1",
-    "redux-devtools-log-monitor": "^1.0.1",
-    "superagent": "^1.7.2",
-    "superagent-mocker": "^0.3.0"
+    "redux": "^3.4.0",
+    "redux-devtools": "^3.2.0",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-log-monitor": "^1.0.10",
+    "superagent": "^1.8.3",
+    "superagent-mocker": "^0.4.0"
   },
   "private": true
 }
