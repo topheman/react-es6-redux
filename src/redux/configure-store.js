@@ -4,16 +4,9 @@
  * I added some comments to help understand the code
  */
 
-import { hashHistory } from 'react-router';// using the same as the one in bootstrap.js @todo find a way to inject it ?
 import { createStore, compose, applyMiddleware } from 'redux';
-import { syncHistory } from 'react-router-redux';
 
 import clientMiddleware from './middleware/clientMiddleware';
-
-/**
- * react-redux-router middleware setup
- */
-const reduxRouterMiddleware = syncHistory(hashHistory);
 
 /**
  * https://github.com/rackt/redux/blob/master/docs/Glossary.md#store-enhancer
@@ -35,7 +28,7 @@ if (process.env.DEVTOOLS) {
  */
 const combinedCreateStore = compose(...storeEnhancers)(createStore);
 
-const middlewares = [clientMiddleware, reduxRouterMiddleware];
+const middlewares = [clientMiddleware];
 
 if (process.env.DEVTOOLS) {
   middlewares.push(require('./middleware/logger'));
@@ -63,10 +56,6 @@ export default function configureStore(initialState) {
    * thanks to functional programming
    */
   const store = finalCreateStore(rootReducer, initialState);
-
-  if (process.env.DEVTOOLS) {
-    reduxRouterMiddleware.listenForReplays(store);
-  }
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Router, hashHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
 import routes from './routes.js';
@@ -14,27 +15,24 @@ import configureStore from './redux/configure-store.js';
 import httpService from './services/httpService.js';
 httpService.getInstance();
 
-/**
- * Router initialization
- * react-router-redux config is done in configure-store
- * If you switch from hashHistory to another, please update configure-store.js
- */
-
-const component = (
-  <Router history={hashHistory}>
-    {routes}
-  </Router>
-);
-
 const initialState = {};
 
 /**
  * The whole store/reducers/actions creators configuration is done inside configureStore
- * The configuration of the router is also done their since it's stored in redux store (using a specific reducer)
  */
 const store = configureStore(initialState);
 
-let rootElement = null;
+/**
+ * Router initialization
+ * API has changed since react-router-redux v4 - checkout this commit for migration v3 -> v4: https://github.com/davezuko/react-redux-starter-kit/commit/0df26907
+ */
+const syncedHistory = syncHistoryWithStore(hashHistory, store);
+
+const component = (
+  <Router history={syncedHistory}>
+    {routes}
+  </Router>
+);
 
 /**
  * The linter can be disabled via DISABLE_LINTER env var - show a message in console to inform if it's on or off
@@ -48,6 +46,8 @@ if (process.env.NODE_ENV !== 'production') {
     console.info('Linter active, if you meet some problems, you can still run without linter :', 'set the env var LINTER=false', 'More infos in the README');
   }
 }
+
+let rootElement = null;
 
 /**
  * Thanks to webpack.DefinePlugin which lets you inject variables at transpile time,
