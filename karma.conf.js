@@ -60,6 +60,8 @@ module.exports = function(config) {
         loaders: webpackConfig.module.loaders // re-use the exact same loaders declared in webpack.config.js
       },
       externals: {
+        'cheerio': 'window',
+        'react/addons': true,
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true
       }
