@@ -13,7 +13,7 @@ describe('components/common/DisplayStars', () => {
     });
     it('should render nothing if props.number = 0', () => {
       const wrapper = shallow(<DisplayStars number={0} />);
-      expect(wrapper.equals(<noscript/>)).to.be.true;
+      expect(wrapper.equals(null)).to.be.true;
     });
   });
 });

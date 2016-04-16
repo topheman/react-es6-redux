@@ -8,7 +8,7 @@ const DisplayStars = ({number}) => {
       </span>
     );
   }
-  return <noscript/>;
+  return null;
 };
 
 DisplayStars.propTypes = {
