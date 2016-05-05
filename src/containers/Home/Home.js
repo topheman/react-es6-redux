@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 const prodMessage = (<div>
   <p>This is the <strong>production packaged</strong> version (html/css/js uglified). You can <a href="./devtools/" title="Test with devtools & sourcemaps" style={{fontWeight: 'bold'}}>test the site in debug mode here</a>, where you'll have access to:</p>
   <ul>
-    <li>sourcemaps for css/js</li>
+    <li>sourcemaps for <code>.scss</code>/<code>.js</code></li>
     <li>redux devtools</li>
   </ul>
   <p className="text-center"><a href="./devtools/" title="Test with devtools & sourcemaps" className="btn btn-default btn-primary" style={{whiteSpace: 'pre-wrap'}}>I'm a developer, I want to see what's under the hood!</a></p>
@@ -13,7 +13,7 @@ const prodMessage = (<div>
 const devtoolsMessage = (<div>
   <p>This is the <strong>development packaged</strong> version (<a href="../" title="checkout in production mode">the production version is here</a>). In the current mode, you have access to:</p>
   <ul>
-    <li>sourcemaps for css/js (open the sources tab of your developer tools)</li>
+    <li>sourcemaps for <code>.scss</code>/<code>.js</code> (open the sources tab of your developer tools)</li>
     <li><a href="https://github.com/gaearon/redux-devtools" title="redux-devtools">redux devtools</a> (this is the tab you can see on the right - ctrl+H to toggle hide), it lets you play with history state of redux</li>
   </ul>
   <p>Those features are meant to be used only in the development but I felt it would be a great way to let you discover them.</p>
