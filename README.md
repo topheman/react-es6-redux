@@ -1,6 +1,6 @@
 ##react-es6-redux - distribution version (gh-pages branch)
 
-This is the distribution version of [topheman/react-es6-redux](https://github.com/topheman/react-es6-redux) - v3.2.0 - [#035d036](https://github.com/topheman/react-es6-redux/tree/035d0367d40675ae9ce44a0b5af87e4c5aec91b3).
+This is the distribution version of [topheman/react-es6-redux](https://github.com/topheman/react-es6-redux) - v3.2.0 - [#bae5203](https://github.com/topheman/react-es6-redux/tree/bae520322177ac84fcfad027a817e52794e76c77).
 
 **Warning**: This is the **generated** code, versionned on the `gh-pages` branch, testable online [here](https://topheman.github.io/react-es6-redux/). If you wish to see the original source code, switch to the [master branch](https://github.com/topheman/react-es6-redux).
 
