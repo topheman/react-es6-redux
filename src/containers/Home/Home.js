@@ -14,7 +14,7 @@ const devtoolsMessage = (<div>
   <p>This is the <strong>development packaged</strong> version (<a href="../" title="checkout in production mode">the production version is here</a>). In the current mode, you have access to:</p>
   <ul>
     <li>sourcemaps for <code>.scss</code>/<code>.js</code> (open the sources tab of your developer tools)</li>
-    <li><a href="https://github.com/gaearon/redux-devtools" title="redux-devtools">redux devtools</a> (this is the tab you can see on the right - ctrl+H to toggle hide), it lets you play with history state of redux</li>
+    <li><a href="https://github.com/gaearon/redux-devtools" title="redux-devtools">redux devtools</a> (this is the tab you can see on the right - ctrl+H to toggle hide - ctrl+Q to change position), it lets you play with history state of redux</li>
   </ul>
   <p>Those features are meant to be used only in the development but I felt it would be a great way to let you discover them.</p>
 </div>);
