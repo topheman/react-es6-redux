@@ -3,8 +3,8 @@
  * 
  * A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend
  * 
- * @version v3.2.0 - 05/05/2016
- * @revision #bae5203 - https://github.com/topheman/react-es6-redux/tree/bae520322177ac84fcfad027a817e52794e76c77
+ * @version v3.2.0 - 09/05/2016
+ * @revision #f722787 - https://github.com/topheman/react-es6-redux/tree/f722787273e8b20617229be40b49e0ab3fcebbdf
  * @author Christophe Rosset
  * @copyright 2016(c) Christophe Rosset
  * @license MIT
@@ -85,7 +85,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "-devtools-" + "e815b846c00ad9ed028e" + ".chunk.js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "-devtools-" + "438f0599c5b61a9bdd05" + ".chunk.js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -31271,7 +31271,7 @@
 	        { href: 'https://github.com/gaearon/redux-devtools', title: 'redux-devtools' },
 	        'redux devtools'
 	      ),
-	      ' (this is the tab you can see on the right - ctrl+H to toggle hide), it lets you play with history state of redux'
+	      ' (this is the tab you can see on the right - ctrl+H to toggle hide - ctrl+Q to change position), it lets you play with history state of redux'
 	    )
 	  ),
 	  _react2.default.createElement(
@@ -31807,7 +31807,7 @@
 	_react2.default.createElement(
 	  _reduxDevtoolsDockMonitor2.default,
 	  { toggleVisibilityKey: 'ctrl-h',
-	    changePositionKey: 'ctrl-q' },
+	    changePositionKey: 'ctrl-q', defaultIsVisible: (true) },
 	  _react2.default.createElement(_reduxDevtoolsLogMonitor2.default, { theme: 'tomorrow' })
 	));
 	
@@ -45792,4 +45792,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle-devtools-e815b846c00ad9ed028e.js.map
+//# sourceMappingURL=bundle-devtools-438f0599c5b61a9bdd05.js.map
