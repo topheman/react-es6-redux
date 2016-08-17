@@ -34,6 +34,7 @@ const STATS = process.env.STATS ? JSON.parse(process.env.STATS) : false; // to o
 const LOCALHOST = process.env.LOCALHOST ? JSON.parse(process.env.LOCALHOST) : true;
 const ASSETS_LIMIT = typeof process.env.ASSETS_LIMIT !== 'undefined' ? parseInt(process.env.ASSETS_LIMIT, 10) : 5000;// limit bellow the assets will be inlines
 const hash = (NODE_ENV === 'production' && DEVTOOLS ? '-devtools' : '') + (NODE_ENV === 'production' ? '-[hash]' : '');
+const DASHBOARD = process.env.DASHBOARD ? JSON.parse(process.env.DASHBOARD) : false;
 
 const API_ROOT_URL = process.env.API_ROOT_URL ? process.env.API_ROOT_URL : 'https://api.github.com';
 
@@ -71,6 +72,17 @@ log.info('webpack', `API_ROOT_URL ${API_ROOT_URL}`);
 
 if(!FAIL_ON_ERROR) {
   plugins.push(new webpack.NoErrorsPlugin());
+}
+
+if (DASHBOARD) {
+  if (!MODE_DEV_SERVER) {
+    log.error('webpackbuild', 'DASHBOARD=true should only be used in dev-server mode (not in build mode)');
+    process.exit(1);
+  }
+  const Dashboard = require('webpack-dashboard');
+  const DashboardPlugin = require('webpack-dashboard/plugin');
+  const dashboard = new Dashboard();
+  plugins.push(new DashboardPlugin(dashboard.setData));
 }
 
 plugins.push(new HtmlWebpackPlugin({
@@ -167,7 +179,8 @@ var config = {
   debug: NODE_ENV === 'production' ? false : true,
   devtool: OPTIMIZE ? false : 'sourcemap',
   devServer: {
-    host: LOCALHOST ? 'localhost' : myLocalIp()
+    host: LOCALHOST ? 'localhost' : myLocalIp(),
+    quiet: DASHBOARD // should be true if dashboard is enabled
   },
   module: {
     preLoaders: preloaders,
