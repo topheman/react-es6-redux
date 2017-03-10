@@ -22,6 +22,7 @@ var specs = [
 var config = {
   framework: 'jasmine2',
   specs: specs,
+  chromeDriver: './node_modules/chromedriver/lib/chromedriver/chromedriver',
   onPrepare: function () {
     browser.ignoreSynchronization = true;
     /**
@@ -54,7 +55,7 @@ if (process.env.TRAVIS) {
     'name': 'react-es6-redux E2E node v' + process.env.TRAVIS_NODE_VERSION,
     'browserName': 'chrome',
     'seleniumVersion': '2.48.2',
-    'chromedriverVersion': '2.20',
+    'chromedriverVersion': '2.28',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     'build': process.env.TRAVIS_BUILD_NUMBER
   };
