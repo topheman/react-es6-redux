@@ -57,11 +57,11 @@ To **read further** about this project and its evolution:
 
 **[ONLINE DEMO](https://topheman.github.io/react-es6-redux/)**
 
-###Setup
+### Setup
 
 This project now follows the same development workflow as the one explained in [topheman/webpack-babel-starter](https://github.com/topheman/webpack-babel-starter) (with some additions, specific to the project).
 
-####Install
+#### Install
 
 ```shell
 git clone https://github.com/topheman/react-es6-redux.git
@@ -71,16 +71,16 @@ npm install
 
 *Note:* Installing the [topheman-apis-proxy](#with-topheman-apis-proxy) backend is **no longer mandatory** (I changed the code so that you could do unauthenticated request to the github API - you will be [rate limited to 10 requests per minute](https://developer.github.com/v3/search/#rate-limit) though).
 
-####Run
+#### Run
 
-#####Dev mode
+##### Dev mode
 
 * `npm start`
 * Open [http://localhost:8080/](http://localhost:8080/)
 
 You're good to go with hot-reload / redux-devtools / time-travel / sourcemaps ...!
 
-#####Mock mode
+##### Mock mode
 
 You can also run the app in mock mode (useful for tests):
 
@@ -88,7 +88,7 @@ You can also run the app in mock mode (useful for tests):
 * Open [http://localhost:8080/](http://localhost:8080/)
 
 
-####Build
+#### Build
 
 At the root of the project :
 
@@ -100,9 +100,9 @@ A `/build/dist` folder will be created with your project built in it.
 
 You can run it with `npm run serve-build`
 
-####Test
+#### Test
 
-#####Unit tests
+##### Unit tests
 
 `npm test` will launch:
 
@@ -116,7 +116,7 @@ If you wish to generate coverage reports, just `npm run karma-coverage` (those r
 
 *Note:* Unit-tests are run through karma in PhantomJS (the `webpack.config.js` being injected), they can also be run directly via mocha ([see wiki](https://github.com/topheman/react-es6-redux/wiki/Advanced-tasks#test-tasks)).
 
-#####End to end tests
+##### End to end tests
 
 e2e tests are located in `/test/e2e/spec`.
 
@@ -127,14 +127,14 @@ Open two terminal tabs, on each one:
 
 Those tests are run on Travis CI, via [SauceLabs](https://saucelabs.com/u/react-es6-redux).
 
-####Linter
+#### Linter
 
 I'm using eslint, based on [eslint-config-airbnb](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb), a preset for `.eslintrc` configuration. For more infos, checkout the release it was implemented: [v2.5.0](https://github.com/topheman/react-es6-redux/releases/tag/v2.5.0).
 
 * `npm run lint`: single run linting of `/src` & `/test` folders
 * `npm run lint-watch`: same in watch mode
 
-####Specific commands
+#### Specific commands
 
 You may want some granularity, the `DEVTOOLS`, `SHOW_DEVTOOLS`, `NODE_ENV` & `LINTER` variables are at your disposal:
 
@@ -147,7 +147,7 @@ You may want some granularity, the `DEVTOOLS`, `SHOW_DEVTOOLS`, `NODE_ENV` & `LI
 
 **Read the ["Advanced tasks" wiki section](https://github.com/topheman/react-es6-redux/wiki/Advanced-tasks) for more infos ...**
 
-####With topheman-apis-proxy
+#### With topheman-apis-proxy
 
 **This part is optional**
 
@@ -159,17 +159,17 @@ Then your workflow will be:
 * Open a terminal in the topheman-apis-proxy folder and `grunt serve` (see more in the [run in local](https://github.com/topheman/topheman-apis-proxy#run-in-local) README section)
 * Go to [http://localhost:8080/](http://localhost:8080/)
 
-###Deploy
+### Deploy
 
 I'm using github pages for hosting (free https, easy deploy via git - a good deal since I don't need any server-side logic). You'll find a [gh-pages orphan branch](https://github.com/topheman/react-es6-redux/tree/gh-pages) where the deployed builds are stored.
 
 My deployment routine is described on the [topheman/webpack-babel-starter Wiki](https://github.com/topheman/webpack-babel-starter/wiki).
 
-###Notes
+### Notes
 
 * `build-prod-all-owner`: build task for [topheman.github.io/react-es6-redux](https://topheman.github.io/react-es6-redux/)
 
-###License
+### License
 
 This software is distributed under an MIT licence.
 
