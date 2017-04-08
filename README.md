@@ -63,10 +63,12 @@ This project now follows the same development workflow as the one explained in [
 
 #### Install
 
+If you don't have [yarn](https://yarnpkg.com/lang/en/) yet, just `npm install yarn -g`
+
 ```shell
 git clone https://github.com/topheman/react-es6-redux.git
 cd react-es6-redux
-npm install
+yarn
 ```
 
 *Note:* Installing the [topheman-apis-proxy](#with-topheman-apis-proxy) backend is **no longer mandatory** (I changed the code so that you could do unauthenticated request to the github API - you will be [rate limited to 10 requests per minute](https://developer.github.com/v3/search/#rate-limit) though).
