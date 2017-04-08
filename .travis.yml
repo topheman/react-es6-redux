@@ -13,6 +13,13 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
+before_install:
+  - echo "Updating npm (need at least v3), because of the following problem - https://github.com/npm/npm/issues/11088"
+  - npm update -g
+  - npm --version
+  - time npm i -g yarn@0.19.x --cache-min 999999999
+install:
+  - time yarn
 before_script:
   - npm run build-prod-all-owner
   - npm run build-travis
