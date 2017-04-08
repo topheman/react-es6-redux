@@ -1,6 +1,6 @@
 {
   "name": "react-es6-redux",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "A simple app to try React / ES6 & redux, using topheman-apis-proxy as data api backend",
   "main": "index.js",
   "scripts": {
